@@ -32,6 +32,13 @@ npm run dev
 npm run build
 ```
 
+### Deploy project on https://victoriaoemer.github.io/CatNap/
+
+```sh
+npm run build
+npm run deploy
+```
+
 ### Run Unit Tests with [Vitest](https://vitest.dev/)
 
 ```sh

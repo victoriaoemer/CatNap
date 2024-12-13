@@ -5,6 +5,8 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 import App from './App.vue'
 import Dashboard from './components/Dashboard.vue'
 import WelcomePage from './components/WelcomePage.vue'
+import './index.css'
+
 
 
 const routes = [

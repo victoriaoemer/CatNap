@@ -13,7 +13,7 @@ import './index.css'
 const routes = [
   { path: '/', component: LoginPage },
   { path: '/signup', component: SignUpPage },
-  { path: '/dashboard', component: DashboardPage },
+  { path: '/dashboard/:username', component: DashboardPage },
 ]
 const router = createRouter({
   history: createWebHashHistory(),

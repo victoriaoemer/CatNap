@@ -1,8 +1,8 @@
 <script setup lang="ts">
+import { getUsers } from '@/api';
 import type { User } from '@/types/User.js';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { getUsers } from '../api/index';
 import CatNapButton from './elements/CatNapButton.vue';
 import CatNapInput from './elements/CatNapInput.vue';
 
@@ -34,7 +34,7 @@ const login = async () => {
 
     if (user) {
       if (password.value === user.password) {
-        router.push('/dashboard');
+        router.push('/dashboard/' + user.username);
       } else {
         console.error('Falsches Passwort für Benutzer:', username.value);
       }
@@ -54,7 +54,7 @@ const clearWarning = () => {
 
 
 <template>
-  <div class="grid grid-cols-2 gap-20">
+  <div class="grid md:grid-cols-2 gap-20">
     <div class="flex items-center ">
       <div>
         <h1>Time for a</h1>

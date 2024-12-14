@@ -1,8 +1,8 @@
 <script setup lang="ts">
+import { createUser, getUsers } from '@/api';
 import type { User } from '@/types/User.js';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { createUser, getUsers } from '../api/index';
 import CatNapButton from './elements/CatNapButton.vue';
 import CatNapInput from './elements/CatNapInput.vue';
 
@@ -68,7 +68,7 @@ const clearWarning = () => {
 
 
 <template>
-  <div class="grid grid-cols-2 gap-20">
+  <div class="grid md:grid-cols-2  gap-20">
     <div class="flex items-center ">
       <div>
         <h1>Time for a</h1>

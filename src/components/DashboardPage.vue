@@ -3,6 +3,7 @@ import { getUserData } from '@/api';
 import type { UserData } from '@/types/User';
 import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
+import CatNapButton from './elements/CatNapButton.vue';
 
 const router = useRouter();
 const user = router.currentRoute.value.params.username.toString();
@@ -29,7 +30,7 @@ onMounted(async () => {
 
 <template>
   <div class="h-screen w-full flex p-8">
-    <aside class="w-24 bg-white rounded-lg p-5 flex flex-col">
+    <aside class="w-24 bg-white  shadow-2xl rounded-lg p-5 flex flex-col">
       <div v-if="userData">
         <p> {{ userData.username }}</p>
       </div>
@@ -51,17 +52,18 @@ onMounted(async () => {
       </div>
 
       <div class="flex flex-grow gap-8">
-        <div class="w-1/3 bg-blue-500 rounded-lg p-3 overflow-auto">
+        <div class="w-1/3 bg-gradientGray shadow-2xl rounded-lg p-3 overflow-auto">
           <p class="mb-3 font-medium">The Exam under water with sealions</p>
           <p class="text-sm">12.12.2024</p>
         </div>
 
-        <div class="w-2/3 bg-blue-200 rounded-lg p-3 flex flex-col">
-          <input type="text" placeholder="Title" class="w-full mb-3 p-2 border border-gray-400 rounded" />
-          <textarea placeholder="Text" class="w-full flex-grow p-2 border border-gray-400 rounded"></textarea>
-          <button class="bg-blue-600 text-white mt-3 py-2 rounded hover:bg-blue-700">
-            Add Entry
-          </button>
+        <div class="w-2/3 bg-gradientGray shadow-2xl rounded-lg pt-3 ">
+          <div class="p-5 flex flex-col h-full">
+            <input type="text" placeholder="Title" class="w-full mb-3 p-2 border bg-inputBlue border-purple rounded" />
+            <textarea placeholder="Text"
+              class="w-full  flex-grow p-2 border bg-inputBlue border-purple rounded"></textarea>
+            <CatNapButton text="Add Entry" type="outline" class="w-1/4 self-center py-5" />
+          </div>
         </div>
       </div>
     </div>

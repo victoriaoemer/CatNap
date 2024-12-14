@@ -3,13 +3,17 @@ import './assets/main.css'
 import { createApp } from 'vue'
 import { createRouter, createWebHashHistory } from 'vue-router'
 import App from './App.vue'
-import Dashboard from './components/Dashboard.vue'
-import WelcomePage from './components/WelcomePage.vue'
+import DashboardPage from './components/DashboardPage.vue'
+import LoginPage from './components/LoginPage.vue'
+import SignUpPage from './components/SignUpPage.vue'
+import './index.css'
+
 
 
 const routes = [
-  { path: '/', component: WelcomePage },
-  { path: '/dashboard', component: Dashboard },
+  { path: '/', component: LoginPage },
+  { path: '/signup', component: SignUpPage },
+  { path: '/dashboard', component: DashboardPage },
 ]
 const router = createRouter({
   history: createWebHashHistory(),

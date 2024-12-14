@@ -1,7 +1,9 @@
+import type { User } from "@/types/User";
+
 const API_URL = 'http://localhost:4000';
 
 // Create
-export async function createUser(data) {
+export async function createUser(data: User) {
   const response = await fetch(`${API_URL}/create-user`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },

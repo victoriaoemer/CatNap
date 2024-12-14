@@ -2,7 +2,7 @@
 import type { User } from '@/types/User.js';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { createUser, getUsers } from '../api/index.js';
+import { createUser, getUsers } from '../api/index';
 import CatNapButton from './elements/CatNapButton.vue';
 import CatNapInput from './elements/CatNapInput.vue';
 
@@ -10,7 +10,6 @@ const firstName = ref('');
 const lastName = ref('');
 const username = ref('');
 const password = ref('');
-const pending = ref(false);
 const emptyValues = ref(false);
 const invalidUser = ref(false);
 
@@ -27,7 +26,6 @@ const signUp = async () => {
     return;
   }
 
-  pending.value = true;
   emptyValues.value = false;
   invalidUser.value = false;
 
@@ -59,8 +57,6 @@ const signUp = async () => {
 
   } catch (error) {
     console.error('Fehler beim Abrufen der Benutzer:', error);
-  } finally {
-    pending.value = false;
   }
 };
 

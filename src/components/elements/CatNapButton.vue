@@ -1,0 +1,23 @@
+<script setup lang="ts" name="Button">
+defineProps({
+  text: String,
+  type: String
+});
+</script>
+
+<template>
+  <div>
+    <button v-if="type === 'filled'" class="gradient-bg">{{ text }}</button>
+    <button v-if="type === 'outline'" class="border rounded-lg border-secondary">{{ text }}
+    </button>
+  </div>
+</template>
+
+<style scoped>
+button {
+  width: 100%;
+  text-align: center;
+  padding: 0.5rem 1.25rem 0.5rem 1.25rem;
+  font-weight: 600;
+}
+</style>

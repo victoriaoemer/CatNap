@@ -1,5 +1,4 @@
 <script setup lang="ts">
-const msg = 'Hello Vue 3 + Vite';
 
 </script>
 

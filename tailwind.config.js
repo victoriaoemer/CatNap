@@ -8,7 +8,7 @@ export default {
     extend: {
       colors: {
         primary: '#1E1F57',
-        secondary: '#373879',
+        secondary: '#3E2FE9',
         light: '#DAD2E7',
       },
       backgroundImage: {

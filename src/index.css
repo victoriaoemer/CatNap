@@ -9,13 +9,24 @@
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
   }
-  .gradient-border {
-    padding: 10px 20px;
+  .gradient-bg {
     background: linear-gradient(90deg, #3e2fe9, #6a3eeb);
-    border: 2px solid transparent;
     border-radius: 10px;
     background-clip: padding-box;
     color: white;
-    font-size: 16px;
+  }
+
+  .gradient-border-bottom {
+    position: relative;
+  }
+
+  .gradient-border-bottom::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(to right, #3e2fe9, #6a3eeb);
   }
 }

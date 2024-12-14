@@ -22,13 +22,12 @@ async function run() {
     await client.connect();
     await client.db("admin").command({ ping: 1 });
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
-  } catch (error) {
-    console.error("Connection error:", error);
-    process.exit(1);
+  } finally {
+    await client.close();
   }
 }
 
-run();
+run().catch(console.dir);
 
 
 const router = express.Router();

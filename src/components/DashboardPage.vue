@@ -4,6 +4,7 @@ import type { UserData } from '@/types/User';
 import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import CatNapButton from './elements/CatNapButton.vue';
+import CatNapSidebar from './elements/CatNapSidebar.vue';
 
 const router = useRouter();
 const user = router.currentRoute.value.params.username.toString();
@@ -27,18 +28,13 @@ onMounted(async () => {
 });
 </script>
 
-
 <template>
   <div class="h-screen w-full flex p-8">
-    <aside class="w-24 bg-white  shadow-2xl rounded-lg p-5 flex flex-col">
-      <div v-if="userData">
-        <p> {{ userData.username }}</p>
-      </div>
-    </aside>
+    <CatNapSidebar :user="user" />
 
     <div class="w-full flex flex-col pl-24">
-      <div class="flex justify-end space-x-5 ">
-        <div class="text-lg py-1 px-3 rounded-lg border border-secondary">
+      <div class="flex justify-end space-x-5">
+        <div class="text-lg py-1 px-3 rounded-xl border border-secondary">
           {{ formattedDate }}
         </div>
         <div class="bg-secondary p-2 rounded-full">
@@ -47,22 +43,52 @@ onMounted(async () => {
       </div>
 
       <div class="mb-5">
-        <h2 class="text-xl font-semibold">Dream Diary</h2>
-        <h1 class="text-2xl font-bold">What was your dream about?</h1>
+        <h2 class="text-xl font-semibold">Home</h2>
+        <h1 class="text-2xl font-bold">Dashboard</h1>
       </div>
 
-      <div class="flex flex-grow gap-8">
-        <div class="w-1/3 bg-gradientGray shadow-2xl rounded-lg p-3 overflow-auto">
-          <p class="mb-3 font-medium">The Exam under water with sealions</p>
-          <p class="text-sm">12.12.2024</p>
+      <div class="flex flex-col flex-grow space-y-5">
+        <div class="flex flex-grow gap-8">
+
+          <div class="flex-grow bg-gradient shadow-2xl rounded-xl p-3 overflow-auto relative">
+            <div class="flex justify-between">
+              <div>
+                <p class="mb-3 font-bold text-3xl">Hello, Minicat!</p>
+                <p>What are we doing today?</p>
+              </div>
+              <img src="@/assets/icons/dashboard-cat.svg" alt="Cat" class="h-56 absolute bottom-0 right-5" />
+            </div>
+          </div>
+
+          <div class="w-1/4 bg-gradientGrayDown shadow-2xl rounded-xl p-3">
+            <p class="text-xl">How are you feeling?</p>
+
+          </div>
+
+          <div class="w-1/4 bg-gradientGrayDown shadow-2xl rounded-xl">
+            <div class="p-5 flex flex-col h-full">
+              <input type="text" placeholder="Title"
+                class="w-full mb-3 p-2 border bg-inputBlue border-purple rounded" />
+              <textarea placeholder="Text"
+                class="w-full flex-grow p-2 border bg-inputBlue border-purple rounded"></textarea>
+            </div>
+          </div>
         </div>
 
-        <div class="w-2/3 bg-gradientGray shadow-2xl rounded-lg pt-3 ">
-          <div class="p-5 flex flex-col h-full">
-            <input type="text" placeholder="Title" class="w-full mb-3 p-2 border bg-inputBlue border-purple rounded" />
-            <textarea placeholder="Text"
-              class="w-full  flex-grow p-2 border bg-inputBlue border-purple rounded"></textarea>
-            <CatNapButton text="Add Entry" type="outline" class="w-1/4 self-center py-5" />
+        <div class="flex flex-grow gap-8">
+          <div class="flex-grow bg-gradient shadow-2xl rounded-xl p-3 overflow-auto w-2/6">
+            <p class="mb-3 font-semibold text-4xl">Today's Quote</p>
+            <p class="text-sm pb-5">Lorem Ipsum</p>
+          </div>
+
+          <div class="flex-grow bg-gradientGrayDown shadow-2xl rounded-xl w-4/6">
+            <div class="p-5 flex flex-col h-full">
+              <input type="text" placeholder="Title"
+                class="w-full mb-3 p-2 border bg-inputBlue border-purple rounded" />
+              <textarea placeholder="Text"
+                class="w-full flex-grow p-2 border bg-inputBlue border-purple rounded"></textarea>
+              <CatNapButton text="Add Entry" type="outline" class="w-1/4 self-center py-5" />
+            </div>
           </div>
         </div>
       </div>

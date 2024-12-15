@@ -16,6 +16,7 @@ export default {
       backgroundImage: {
         gradient: 'linear-gradient(90deg, #3E2FE9, #6A3EEB);',
         gradientGray: 'linear-gradient(90deg, #1E1F57, #373879);',
+        gradientGrayDown: 'linear-gradient(180deg, #1E1F57, #373879);',
         textGradient: 'linear-gradient(90deg, #3E2FE9, #6A3EEB);',
       },
     },

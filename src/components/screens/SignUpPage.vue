@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { createUser, getUsers } from '@/api';
+import { createUser, createUserData, getUsers } from '@/api';
 import type { User } from '@/types/User.js';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
@@ -10,8 +10,7 @@ const firstName = ref('');
 const lastName = ref('');
 const username = ref('');
 const password = ref('');
-const emptyValues = ref(false);
-const invalidUser = ref(false);
+const msg = ref('');
 
 const router = useRouter();
 
@@ -22,12 +21,11 @@ const redirectLogin = () => {
 const signUp = async () => {
   // check if fields are empty
   if (!username.value || !password.value || !firstName.value || !lastName.value) {
-    emptyValues.value = true;
+    msg.value = 'Please fill out all fields';
     return;
   }
 
-  emptyValues.value = false;
-  invalidUser.value = false;
+  msg.value = '';
 
   try {
     const users = await getUsers();
@@ -36,7 +34,7 @@ const signUp = async () => {
     const user = users.find((user: User) => user.username === username.value);
 
     if (user) {
-      invalidUser.value = true;
+      msg.value = 'Username already exists';
       return;
     }
 
@@ -46,6 +44,10 @@ const signUp = async () => {
       lastName: lastName.value,
       username: username.value,
       password: password.value,
+    });
+
+    createUserData({
+      username: username.value,
     });
 
     firstName.value = '';
@@ -61,8 +63,7 @@ const signUp = async () => {
 };
 
 const clearWarning = () => {
-  emptyValues.value = false;
-  invalidUser.value = false;
+  msg.value = '';
 };
 </script>
 
@@ -83,11 +84,8 @@ const clearWarning = () => {
       <CatNapInput v-model="username" type="text" placeholder="Username" @input="clearWarning" />
       <CatNapInput v-model="password" type="password" placeholder="Password" @input="clearWarning" />
 
-      <div v-if="emptyValues" class="text-red-500 text-sm">
-        There are empty fields
-      </div>
-      <div v-if="invalidUser" class="text-red-500 text-sm">
-        Username already exists
+      <div v-if="msg" class="text-red-500 text-sm">
+        {{ msg }}
       </div>
 
       <div class="w-full flex gap-5">

@@ -7,7 +7,6 @@ import CatNapSidebar from '../CatNapSidebar.vue';
 
 const router = useRouter();
 const user = router.currentRoute.value.params.username.toString();
-const enterTitle = ref('');
 
 const userData = ref<UserData>({} as UserData);
 

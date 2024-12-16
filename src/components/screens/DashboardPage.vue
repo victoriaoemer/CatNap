@@ -3,10 +3,11 @@ import { getUserData } from '@/api';
 import type { UserData } from '@/types/User';
 import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
-import CatNapSidebar from './elements/CatNapSidebar.vue';
+import CatNapSidebar from '../CatNapSidebar.vue';
 
 const router = useRouter();
 const user = router.currentRoute.value.params.username.toString();
+const enterTitle = ref('');
 
 const userData = ref<UserData>({} as UserData);
 
@@ -47,7 +48,7 @@ onMounted(async () => {
       </div>
 
       <!-- Dashboard -->
-      <div class="flex flex-col h-2/3 bg-white pb-3">
+      <div class="flex flex-col h-2/3 pb-3">
         <div class="flex gap-8 w-full">
 
           <div class=" bg-gradient shadow-2xl rounded-xl p-3 w-1/2">
@@ -76,7 +77,20 @@ onMounted(async () => {
 
 
       </div>
-      <div class="h-full bg-red-500">d</div>
+      <div class="h-full flex gap-8">
+        <div class="w-1/3 bg-gradientGrayDown shadow-2xl rounded-xl h-full">
+          <div class="p-5 flex flex-col">
+            <p>Today's Quote</p>
+          </div>
+        </div>
+        <div class="w-2/3 bg-gradientGrayDown shadow-2xl rounded-xl h-full">
+          <div class="p-5 flex justify-between h-full">
+            <p>Your Dream Diary</p>
+
+
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>

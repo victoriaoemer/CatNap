@@ -1,11 +1,13 @@
 <script setup lang="ts">
-import { getUsers } from '@/api';
+import { createUser, getUsers } from '@/api';
 import type { User } from '@/types/User.js';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import CatNapButton from './elements/CatNapButton.vue';
-import CatNapInput from './elements/CatNapInput.vue';
+import CatNapButton from '../CatNapButton.vue';
+import CatNapInput from '../CatNapInput.vue';
 
+const firstName = ref('');
+const lastName = ref('');
 const username = ref('');
 const password = ref('');
 const emptyValues = ref(false);
@@ -13,13 +15,13 @@ const invalidUser = ref(false);
 
 const router = useRouter();
 
-const redirectSignUp = () => {
-  router.push('/signup');
+const redirectLogin = () => {
+  router.push('/');
 };
 
-const login = async () => {
+const signUp = async () => {
   // check if fields are empty
-  if (!username.value || !password.value) {
+  if (!username.value || !password.value || !firstName.value || !lastName.value) {
     emptyValues.value = true;
     return;
   }
@@ -29,18 +31,30 @@ const login = async () => {
 
   try {
     const users = await getUsers();
-    // find user in users
+
+    // check if username already exists
     const user = users.find((user: User) => user.username === username.value);
 
     if (user) {
-      if (password.value === user.password) {
-        router.push('/dashboard/' + user.username);
-      } else {
-        console.error('Falsches Passwort für Benutzer:', username.value);
-      }
-    } else {
       invalidUser.value = true;
+      return;
     }
+
+    // create new user
+    createUser({
+      firstName: firstName.value,
+      lastName: lastName.value,
+      username: username.value,
+      password: password.value,
+    });
+
+    firstName.value = '';
+    lastName.value = '';
+    username.value = '';
+    password.value = '';
+
+    router.push('/');
+
   } catch (error) {
     console.error('Fehler beim Abrufen der Benutzer:', error);
   }
@@ -54,7 +68,7 @@ const clearWarning = () => {
 
 
 <template>
-  <div class="grid md:grid-cols-2 gap-20">
+  <div class="grid md:grid-cols-2  gap-20">
     <div class="flex items-center ">
       <div>
         <h1>Time for a</h1>
@@ -64,19 +78,21 @@ const clearWarning = () => {
     </div>
 
     <div class="flex flex-col items-center justify-center space-y-10 ">
+      <CatNapInput v-model="firstName" type="text" placeholder="First Name" @input="clearWarning" />
+      <CatNapInput v-model="lastName" type="text" placeholder="Last Name" @input="clearWarning" />
       <CatNapInput v-model="username" type="text" placeholder="Username" @input="clearWarning" />
       <CatNapInput v-model="password" type="password" placeholder="Password" @input="clearWarning" />
 
       <div v-if="emptyValues" class="text-red-500 text-sm">
-        Please enter a username and password
+        There are empty fields
       </div>
       <div v-if="invalidUser" class="text-red-500 text-sm">
-        Username does not exist
+        Username already exists
       </div>
 
       <div class="w-full flex gap-5">
-        <CatNapButton text="Login" type="filled" @click="login" class="w-1/2" />
-        <CatNapButton text="Sign Up" type="outline" @click="redirectSignUp" class="w-1/2" />
+        <CatNapButton text="Sign Up" type="filled" @click="signUp" class="w-1/2" />
+        <CatNapButton text="Login" type="outline" @click="redirectLogin" class="w-1/2" />
       </div>
     </div>
   </div>

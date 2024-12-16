@@ -3,8 +3,8 @@ import { getUserData } from '@/api';
 import type { UserData } from '@/types/User';
 import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
-import CatNapButton from './elements/CatNapButton.vue';
-import CatNapSidebar from './elements/CatNapSidebar.vue';
+import CatNapButton from '../CatNapButton.vue';
+import CatNapSidebar from '../CatNapSidebar.vue';
 
 const router = useRouter();
 const user = router.currentRoute.value.params.username.toString();

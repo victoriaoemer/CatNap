@@ -7,7 +7,7 @@
 
 <script setup lang="ts">
 import { useRouter } from 'vue-router';
-import CatNapSidebar from './elements/CatNapSidebar.vue';
+import CatNapSidebar from '../CatNapSidebar.vue';
 
 const router = useRouter();
 

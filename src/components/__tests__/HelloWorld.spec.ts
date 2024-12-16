@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 
 import { mount } from '@vue/test-utils'
-import WelcomePage from '../LoginPage.vue'
+import WelcomePage from '../screens/LoginPage.vue'
 
 describe('HelloWorld', () => {
   it('renders properly', () => {

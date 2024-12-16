@@ -3,7 +3,6 @@ import { getUserData } from '@/api';
 import type { UserData } from '@/types/User';
 import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
-import CatNapButton from './elements/CatNapButton.vue';
 import CatNapSidebar from './elements/CatNapSidebar.vue';
 
 const router = useRouter();
@@ -47,51 +46,37 @@ onMounted(async () => {
         <h1 class="text-2xl font-bold">Dashboard</h1>
       </div>
 
-      <div class="flex flex-col flex-grow space-y-5">
-        <div class="flex flex-grow gap-8">
+      <!-- Dashboard -->
+      <div class="flex flex-col h-2/3 bg-white pb-3">
+        <div class="flex gap-8 w-full">
 
-          <div class="flex-grow bg-gradient shadow-2xl rounded-xl p-3 overflow-auto relative">
-            <div class="flex justify-between">
+          <div class=" bg-gradient shadow-2xl rounded-xl p-3 w-1/2">
+            <div class="flex justify-between ">
               <div>
                 <p class="mb-3 font-bold text-3xl">Hello, Minicat!</p>
                 <p>What are we doing today?</p>
               </div>
-              <img src="@/assets/icons/dashboard-cat.svg" alt="Cat" class="h-56 absolute bottom-0 right-5" />
+              <img src="@/assets/icons/dashboard-cat.svg" alt="Cat" class="h-48" />
             </div>
           </div>
 
-          <div class="w-1/4 bg-gradientGrayDown shadow-2xl rounded-xl p-3">
+          <div class="w-1/3 bg-gradientGrayDown shadow-2xl rounded-xl p-3 ">
             <p class="text-xl">How are you feeling?</p>
 
           </div>
 
-          <div class="w-1/4 bg-gradientGrayDown shadow-2xl rounded-xl">
+          <div class="w-1/3 bg-gradientGrayDown shadow-2xl rounded-xl">
             <div class="p-5 flex flex-col h-full">
               <input type="text" placeholder="Title"
                 class="w-full mb-3 p-2 border bg-inputBlue border-purple rounded" />
-              <textarea placeholder="Text"
-                class="w-full flex-grow p-2 border bg-inputBlue border-purple rounded"></textarea>
+              <textarea placeholder="Text" class="w-full  p-2 border bg-inputBlue border-purple rounded"></textarea>
             </div>
           </div>
         </div>
 
-        <div class="flex flex-grow gap-8">
-          <div class="flex-grow bg-gradient shadow-2xl rounded-xl p-3 overflow-auto w-2/6">
-            <p class="mb-3 font-semibold text-4xl">Today's Quote</p>
-            <p class="text-sm pb-5">Lorem Ipsum</p>
-          </div>
 
-          <div class="flex-grow bg-gradientGrayDown shadow-2xl rounded-xl w-4/6">
-            <div class="p-5 flex flex-col h-full">
-              <input type="text" placeholder="Title"
-                class="w-full mb-3 p-2 border bg-inputBlue border-purple rounded" />
-              <textarea placeholder="Text"
-                class="w-full flex-grow p-2 border bg-inputBlue border-purple rounded"></textarea>
-              <CatNapButton text="Add Entry" type="outline" class="w-1/4 self-center py-5" />
-            </div>
-          </div>
-        </div>
       </div>
+      <div class="h-full bg-red-500">d</div>
     </div>
   </div>
 </template>

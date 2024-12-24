@@ -38,7 +38,6 @@ const signUp = async () => {
       return;
     }
 
-    // create new user
     createUser({
       firstName: firstName.value,
       lastName: lastName.value,
@@ -48,6 +47,7 @@ const signUp = async () => {
 
     createUserData({
       username: username.value,
+      data: [],
     });
 
     firstName.value = '';
@@ -61,6 +61,7 @@ const signUp = async () => {
     console.error('Fehler beim Abrufen der Benutzer:', error);
   }
 };
+
 
 const clearWarning = () => {
   msg.value = '';

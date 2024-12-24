@@ -3,6 +3,7 @@ import { getUserData } from '@/api'
 import type { UserData } from '@/types/User'
 import { onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
+import CatNapCalendar from '../CatNapCalendar.vue'
 import CatNapSidebar from '../CatNapSidebar.vue'
 
 const router = useRouter()
@@ -63,17 +64,9 @@ onMounted(async () => {
             <p class="text-xl">How are you feeling?</p>
           </div>
 
-          <div class="w-1/3 bg-gradientGrayDown shadow-2xl rounded-xl">
-            <div class="p-5 flex flex-col h-full">
-              <input
-                type="text"
-                placeholder="Title"
-                class="w-full mb-3 p-2 border bg-inputBlue border-purple rounded"
-              />
-              <textarea
-                placeholder="Text"
-                class="w-full p-2 border bg-inputBlue border-purple rounded"
-              ></textarea>
+          <div class="w-fit bg-gradientGrayDown shadow-2xl rounded-xl">
+            <div v-if="userData.data" class="p-2 flex flex-col h-full items-center justify-center">
+              <CatNapCalendar :userData="userData" />
             </div>
           </div>
         </div>

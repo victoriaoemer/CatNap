@@ -86,7 +86,7 @@ onMounted(async () => {
       <div class="h-full flex gap-8">
         <div class="w-1/3 bg-gradientGrayDown shadow-2xl rounded-xl h-full">
           <div class="p-5 flex flex-col">
-            <p class="mb-3 font-bold text-3xl text-[#3DD8CB]">Today's Quote</p>
+            <p class="mb-3 font-bold text-3xl text-gradient_blue">Today's Quote</p>
             <QuoteDisplay />
           </div>
         </div>

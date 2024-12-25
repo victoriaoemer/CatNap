@@ -1,12 +1,16 @@
 <template>
   <div class="gradient-border-bottom w-full">
-    <input class=" bg-transparent focus:outline-none pb-1" :type="type" :placeholder="placeholder"
-      v-model="inputValue" />
+    <input
+      class="bg-transparent focus:outline-none pb-1"
+      :type="type"
+      :placeholder="placeholder"
+      v-model="inputValue"
+    />
   </div>
 </template>
 
-<script setup lang="ts" name="Input">
-import { computed } from 'vue';
+<script setup lang="ts">
+import { computed } from 'vue'
 
 const props = defineProps({
   modelValue: {
@@ -15,22 +19,22 @@ const props = defineProps({
   },
   type: {
     type: String,
-    default: "text",
+    default: 'text',
   },
   placeholder: {
     type: String,
-    default: "",
+    default: '',
   },
-});
+})
 
-const emit = defineEmits(["update:modelValue"]);
+const emit = defineEmits(['update:modelValue'])
 
 const inputValue = computed({
   get() {
-    return props.modelValue;
+    return props.modelValue
   },
   set(value) {
-    emit("update:modelValue", value);
+    emit('update:modelValue', value)
   },
-});
+})
 </script>

@@ -7,5 +7,6 @@ export interface User {
 
 export interface UserData {
   username: string,
+  data: [],
 }
 

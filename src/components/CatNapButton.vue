@@ -1,15 +1,14 @@
-<script setup lang="ts" name="Button">
+<script setup lang="ts">
 defineProps({
   text: String,
-  type: String
-});
+  type: String,
+})
 </script>
 
 <template>
   <div>
     <button v-if="type === 'filled'" class="gradient-bg">{{ text }}</button>
-    <button v-if="type === 'outline'" class="border rounded-xl border-secondary">{{ text }}
-    </button>
+    <button v-if="type === 'outline'" class="border rounded-xl border-secondary">{{ text }}</button>
   </div>
 </template>
 

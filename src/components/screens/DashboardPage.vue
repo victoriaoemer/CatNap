@@ -3,6 +3,8 @@ import { getUserData } from '@/api'
 import type { UserData } from '@/types/User'
 import { onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
+import CatNapAverageEmotion from '../CatNapAverageEmotion.vue'
+import CatNapCalendar from '../CatNapCalendar.vue'
 import CatNapSidebar from '../CatNapSidebar.vue'
 
 const router = useRouter()
@@ -47,7 +49,7 @@ onMounted(async () => {
       </div>
 
       <!-- Dashboard -->
-      <div class="flex flex-col h-2/3 pb-3">
+      <div class="flex flex-col h-full pb-3">
         <div class="flex gap-8 w-full">
           <div class="bg-gradient shadow-2xl rounded-xl p-3 w-1/2">
             <div class="flex justify-between">
@@ -55,25 +57,19 @@ onMounted(async () => {
                 <p class="mb-3 font-bold text-3xl">Hello, Minicat!</p>
                 <p>What are we doing today?</p>
               </div>
-              <img src="@/assets/cat-images/cat-home1.svg" alt="Cat" class="h-48" />
+              <img src="@/assets/cat-images/cat-home1.svg" alt="Cat" class="h-36" />
             </div>
           </div>
 
           <div class="w-1/3 bg-gradientGrayDown shadow-2xl rounded-xl p-3">
-            <p class="text-xl">How are you feeling?</p>
+            <div v-if="userData.data">
+              <CatNapAverageEmotion :userData="userData" />
+            </div>
           </div>
 
-          <div class="w-1/3 bg-gradientGrayDown shadow-2xl rounded-xl">
-            <div class="p-5 flex flex-col h-full">
-              <input
-                type="text"
-                placeholder="Title"
-                class="w-full mb-3 p-2 border bg-inputBlue border-purple rounded"
-              />
-              <textarea
-                placeholder="Text"
-                class="w-full p-2 border bg-inputBlue border-purple rounded"
-              ></textarea>
+          <div class="w-fit bg-gradientGrayDown shadow-2xl rounded-xl">
+            <div v-if="userData.data" class="p-2 flex flex-col h-full">
+              <CatNapCalendar :userData="userData" />
             </div>
           </div>
         </div>

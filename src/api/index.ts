@@ -34,3 +34,26 @@ export async function getUserData(username: string) {
   return response.json();
 }
 
+// Update user data
+export async function updateUserData(
+  username: string,
+  newEntry: { title: string; content: string; emotion: number }
+) {
+  try {
+    const updateResponse = await fetch(`${API_URL}/update-data/${username}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(newEntry),
+    });
+
+    if (!updateResponse.ok) {
+      throw new Error(`Fehler beim Aktualisieren der Daten: ${updateResponse.status}`);
+    }
+
+    return await updateResponse.json();
+  } catch (error) {
+    console.error("Fehler beim Update:", error);
+    throw error;
+  }
+}
+

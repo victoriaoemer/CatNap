@@ -4,13 +4,13 @@
 
     <div class="w-full">
       <img
-        src="`@/assets/cat-emotes/cat-pin-meh.svg`"
-        alt="Cat Sad"
+        :src="imageMap[averageEmotionPerMonth[month]]"
+        alt="Cat Emotion"
         class="h-16"
         :class="[
           'pb-2',
           { 'place-self-center': averageEmotionPerMonth[month] === 2 },
-          { 'place-self-end': averageEmotionPerMonth[month] === 1 },
+          { 'place-self-end': averageEmotionPerMonth[month] === 3 },
         ]"
       />
       <div class="w-full h-5 bg-emotionGradient rounded-full"></div>
@@ -25,6 +25,16 @@ import { computed, ref } from 'vue'
 const props = defineProps<{
   userData: UserData
 }>()
+
+import catPinHappy from '@/assets/cat-emotes/cat-pin-happy.svg'
+import catPinMeh from '@/assets/cat-emotes/cat-pin-meh.svg'
+import catPinSad from '@/assets/cat-emotes/cat-pin-sad.svg'
+
+const imageMap: Record<number, string> = {
+  1: catPinSad,
+  2: catPinMeh,
+  3: catPinHappy,
+}
 
 const month = ref<string>('12') // Standardwert für Debugging
 
@@ -46,7 +56,7 @@ const averageEmotionPerMonth = computed(() => {
   return Object.fromEntries(
     Object.entries(emotionsPerMonth.value).map(([month, emotions]) => [
       month,
-      emotions.reduce((sum, emotion) => sum + emotion, 0) / emotions.length,
+      Math.round(emotions.reduce((sum, emotion) => sum + emotion, 0) / emotions.length),
     ]),
   )
 })

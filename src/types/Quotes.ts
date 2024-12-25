@@ -27,34 +27,34 @@ export const useQuoteStore = defineStore<'quote', QuoteState, {}, QuoteActions>(
       this.category = newCategory
     },
     async fetchQuote() {
-      const today = new Date().toISOString().split('T')[0]; // (YYYY-MM-DD)
+      const today = new Date().toISOString().split('T')[0] // (YYYY-MM-DD)
 
       // compare if the quote was already fetched today
       if (this.lastUpdated === today) {
-        console.log('Quote already fetched for today:', this.quote);
-        return;
+        console.log('Quote already fetched for today:', this.quote)
+        return
       }
 
-      const apiUrl = `https://api.api-ninjas.com/v1/quotes?category=${this.category}`;
+      const apiUrl = `https://api.api-ninjas.com/v1/quotes?category=${this.category}`
       try {
         const response = await fetch(apiUrl, {
           headers: {
             'X-Api-Key': this.apiKey,
           },
-        });
+        })
         if (response.ok) {
-          const data = await response.json();
-          this.quote = data[0]?.quote || 'No quote found';
-          this.author = data[0]?.author || 'No author found';
-          this.lastUpdated = today;
-          console.log('New quote fetched:', this.quote);
+          const data = await response.json()
+          this.quote = data[0]?.quote || 'No quote found'
+          this.author = data[0]?.author || 'No author found'
+          this.lastUpdated = today
+          console.log('New quote fetched:', this.quote)
         } else {
-          console.error(`Error: ${response.status}`);
+          console.error(`Error: ${response.status}`)
         }
       } catch (error) {
-        console.error('API-fetching gone wrong:', error);
+        console.error('API-fetching gone wrong:', error)
       }
     },
   },
   persist: true,
-});
+})

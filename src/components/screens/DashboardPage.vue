@@ -8,6 +8,7 @@ import CatNapCalendar from '../CatNapCalendar.vue'
 import CatNapSidebar from '../CatNapSidebar.vue'
 import QuoteDisplay from '../QuoteDisplay.vue'
 import { useQuoteStore } from '@/types/Quotes'
+import { usePixabayStore } from '@/types/Pixabay'
 
 const router = useRouter()
 const user = router.currentRoute.value.params.username.toString()
@@ -21,13 +22,15 @@ const formattedDate = date.toLocaleDateString('en-GB', {
   month: 'long',
 })
 
-const quoteStore = useQuoteStore();
+const quoteStore = useQuoteStore()
+const pixabayStore = usePixabayStore();
 
 onMounted(async () => {
   try {
     const data = await getUserData(user)
     userData.value = data
-    quoteStore.fetchQuote();
+    quoteStore.fetchQuote()
+    pixabayStore.fetchImage('moon');
   } catch (error) {
     console.error(error)
   }

@@ -33,7 +33,7 @@ onMounted(async () => {
     <CatNapSidebar :user="user" />
 
     <div class="w-full flex flex-col pl-24">
-      <div class="flex justify-end space-x-5">
+      <div class="flex justify-end space-x-5 items-center">
         <div class="text-lg py-1 px-3 rounded-xl border border-secondary">
           {{ formattedDate }}
         </div>
@@ -43,7 +43,7 @@ onMounted(async () => {
       </div>
 
       <div class="mb-5">
-        <h2 class="text-xl font-semibold">Dream Diary</h2>
+        <h2 class="text-xl font-semibold text-[#C1A2FB]">Dream Diary</h2>
         <h1 class="text-2xl font-bold">What was your dream about?</h1>
       </div>
 

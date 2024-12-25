@@ -30,4 +30,11 @@
     height: 2px;
     background: linear-gradient(to right, #3e2fe9, #6a3eeb);
   }
+
+  .text-gradient_blue {
+    background-image: linear-gradient(90deg, #68d5db, #37a2ed);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
 }

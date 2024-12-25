@@ -7,6 +7,9 @@ import CatNapAverageEmotion from '../CatNapAverageEmotion.vue'
 import CatNapCalendar from '../CatNapCalendar.vue'
 import CatNapEntryWidget from '../CatNapEntryWidget.vue'
 import CatNapSidebar from '../CatNapSidebar.vue'
+import QuoteDisplay from '../QuoteDisplay.vue'
+import { useQuoteStore } from '@/types/Quotes'
+import { usePixabayStore } from '@/types/Pixabay'
 
 const router = useRouter()
 const user = router.currentRoute.value.params.username.toString()
@@ -20,10 +23,15 @@ const formattedDate = date.toLocaleDateString('en-GB', {
   month: 'long',
 })
 
+const quoteStore = useQuoteStore()
+const pixabayStore = usePixabayStore();
+
 onMounted(async () => {
   try {
     const data = await getUserData(user)
     userData.value = data
+    quoteStore.fetchQuote()
+    pixabayStore.fetchImage('moon');
   } catch (error) {
     console.error(error)
   }
@@ -55,8 +63,8 @@ onMounted(async () => {
           <div class="bg-gradient shadow-2xl rounded-xl p-3 w-1/2">
             <div class="flex justify-between">
               <div>
-                <p class="mb-3 font-bold text-3xl">Hello, Minicat!</p>
-                <p>What are we doing today?</p>
+                <p class="mb-3 mt-1 font-bold text-4xl">Hello, Minicat!</p>
+                <p class="font-semibold text-lg">What are we doing today?</p>
               </div>
               <img src="@/assets/cat-images/cat-home1.svg" alt="Cat" class="h-36" />
             </div>
@@ -78,7 +86,8 @@ onMounted(async () => {
       <div class="h-full flex gap-8">
         <div class="w-1/3 bg-gradientGrayDown shadow-2xl rounded-xl h-full">
           <div class="p-5 flex flex-col">
-            <p>Today's Quote</p>
+            <p class="mb-3 font-bold text-3xl text-gradient_blue">Today's Quote</p>
+            <QuoteDisplay />
           </div>
         </div>
         <div class="w-2/3 bg-gradientGrayDown shadow-2xl rounded-xl h-full">

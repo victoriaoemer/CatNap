@@ -10,8 +10,7 @@ import SignUpPage from './components/screens/SignUpPage.vue'
 import UserSettingsPage from './components/screens/UserSettingsPage.vue'
 import './index.css'
 import { createPinia } from 'pinia'
-
-
+import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 
 const routes = [
   { path: '/', component: LoginPage },
@@ -25,9 +24,10 @@ const router = createRouter({
   routes,
 })
 
-const app = createApp(App);
-const pinia = createPinia();
+const app = createApp(App)
+const pinia = createPinia()
+pinia.use(piniaPluginPersistedstate);
 
-app.use(pinia);
-app.use(router);
+app.use(pinia)
+app.use(router)
 app.mount('#app')

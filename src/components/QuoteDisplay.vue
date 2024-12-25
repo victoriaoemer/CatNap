@@ -1,7 +1,7 @@
 <template>
   <div>
-    <p v-if="quote">"{{ quote }}"</p>
-    <p v-if="author">- {{ author }}</p>
+    <p class="font-medium mb-2" v-if="quote">"{{ quote }}"</p>
+    <p class="text-[#37A2ED] font-medium" v-if="author">- {{ author }}</p>
   </div>
 </template>
 

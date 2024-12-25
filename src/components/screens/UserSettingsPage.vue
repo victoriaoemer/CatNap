@@ -43,10 +43,14 @@ onMounted(async () => {
         </div>
       </div>
 
-      <div class="mb-5">
+      <div class=" flex">
+        <div mb-5 >
         <h2 class="text-xl font-semibold text-[#C1A2FB]">Settings</h2>
         <h1 class="text-2xl font-bold">Something you want to change?</h1>
       </div>
+      <img src="@/assets/cat-images/cat-settings1.svg" alt="Cat_Settings1" class="h-16 pl-16" />
+      </div>
+
 
       <!-- Settings -->
       <div class="flex flex-grow gap-8">
@@ -92,6 +96,9 @@ onMounted(async () => {
                 <input id="image" type="text" class="input-field" placeholder="Default: moons" />
               </div>
               <CatNapButton class="pl-64 pr-64" text="Update" type="outline" />
+              <div class="flex justify-start">
+                <img src="@/assets/cat-images/cat-settings2.svg" alt="Cat_Settings2" class="h-28" />
+              </div>
             </div>
           </div>
 
@@ -100,16 +107,16 @@ onMounted(async () => {
             <div class="flex justify-between">
               <div class="flex flex-col gap-4">
                 <h3 class="font-semibold text-3xl text-gradient">Reset Data</h3>
-                <CatNapButton text="Reset" type="outline" />
+                <CatNapButton class="pt-5" text="Reset" type="outline" />
               </div>
               <div class="flex jusitify-between">
                 <div class="flex flex-col gap-4">
                   <h3 class="font-semibold text-3xl text-gradient">Delete Account?</h3>
-                  <div flex gap-3>
-                    <CatNapButton text="Delete" type="outline" />
-                    <img src="@/assets/cat-images/cat-settings3.svg" alt="Delete" class="h-10" />
-                  </div>
+                  <CatNapButton class="pr-16 pt-5" text="Delete" type="outline" />
                 </div>
+              </div>
+              <div class="flex pt-16">
+                    <img src="@/assets/cat-images/cat-settings3.svg" alt="Cat_Settings3" class="h-28" />
               </div>
             </div>
           </div>

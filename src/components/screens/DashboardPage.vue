@@ -63,8 +63,8 @@ onMounted(async () => {
           <div class="bg-gradient shadow-2xl rounded-xl p-3 w-1/2">
             <div class="flex justify-between">
               <div>
-                <p class="mb-3 font-bold text-3xl">Hello, Minicat!</p>
-                <p class="font-semibold text-lg ">What are we doing today?</p>
+                <p class="mb-3 mt-1 font-bold text-4xl">Hello, Minicat!</p>
+                <p class="font-semibold text-lg">What are we doing today?</p>
               </div>
               <img src="@/assets/cat-images/cat-home1.svg" alt="Cat" class="h-36" />
             </div>

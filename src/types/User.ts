@@ -7,6 +7,10 @@ export interface User {
 
 export interface UserData {
   username: string,
-  data: [],
+  data: Array<{
+    title: string,
+    content: string,
+    emotion: number
+  }>
 }
 

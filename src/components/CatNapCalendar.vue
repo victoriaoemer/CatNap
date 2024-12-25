@@ -55,7 +55,7 @@ const emotionClassForDay = (day: number) => {
     }
     return emotionMap[dayData.emotion as keyof typeof emotionMap] || 'bg-gray-400'
   }
-  return 'bg-gray-400' // Standard-Grau
+  return 'bg-gray-400'
 }
 
 const props = defineProps({

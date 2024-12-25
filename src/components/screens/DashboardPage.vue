@@ -5,6 +5,7 @@ import { onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import CatNapAverageEmotion from '../CatNapAverageEmotion.vue'
 import CatNapCalendar from '../CatNapCalendar.vue'
+import CatNapEntryWidget from '../CatNapEntryWidget.vue'
 import CatNapSidebar from '../CatNapSidebar.vue'
 
 const router = useRouter()
@@ -49,7 +50,7 @@ onMounted(async () => {
       </div>
 
       <!-- Dashboard -->
-      <div class="flex flex-col h-full pb-3">
+      <div class="flex flex-col h-fit pb-8">
         <div class="flex gap-8 w-full">
           <div class="bg-gradient shadow-2xl rounded-xl p-3 w-1/2">
             <div class="flex justify-between">
@@ -81,8 +82,8 @@ onMounted(async () => {
           </div>
         </div>
         <div class="w-2/3 bg-gradientGrayDown shadow-2xl rounded-xl h-full">
-          <div class="p-5 flex justify-between h-full">
-            <p>Your Dream Diary</p>
+          <div v-if="userData.data" class="p-5 flex justify-between h-full w-full">
+            <CatNapEntryWidget :userData="userData" />
           </div>
         </div>
       </div>

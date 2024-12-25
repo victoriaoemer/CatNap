@@ -6,6 +6,8 @@ import { useRouter } from 'vue-router'
 import CatNapAverageEmotion from '../CatNapAverageEmotion.vue'
 import CatNapCalendar from '../CatNapCalendar.vue'
 import CatNapSidebar from '../CatNapSidebar.vue'
+import QuoteDisplay from '../QuoteDisplay.vue'
+import { useQuoteStore } from '@/types/Quotes'
 
 const router = useRouter()
 const user = router.currentRoute.value.params.username.toString()
@@ -19,10 +21,13 @@ const formattedDate = date.toLocaleDateString('en-GB', {
   month: 'long',
 })
 
+const quoteStore = useQuoteStore();
+
 onMounted(async () => {
   try {
     const data = await getUserData(user)
     userData.value = data
+    quoteStore.fetchQuote();
   } catch (error) {
     console.error(error)
   }
@@ -77,7 +82,8 @@ onMounted(async () => {
       <div class="h-full flex gap-8">
         <div class="w-1/3 bg-gradientGrayDown shadow-2xl rounded-xl h-full">
           <div class="p-5 flex flex-col">
-            <p>Today's Quote</p>
+            <p class="mb-3 font-bold text-3xl text-[#3DD8CB]">Today's Quote</p>
+            <QuoteDisplay />
           </div>
         </div>
         <div class="w-2/3 bg-gradientGrayDown shadow-2xl rounded-xl h-full">

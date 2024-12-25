@@ -12,12 +12,18 @@ export default {
         light: '#DAD2E7',
         inputBlue: '#3B32AB',
         purple: '#6A3EEB',
+        emotion: {
+          red: '#F87380',
+          orange: '#F6A689',
+          green: '#3DD8CB',
+        },
       },
       backgroundImage: {
         gradient: 'linear-gradient(90deg, #3E2FE9, #6A3EEB);',
         gradientGray: 'linear-gradient(90deg, #1E1F57, #373879);',
         gradientGrayDown: 'linear-gradient(180deg, #1E1F57, #373879);',
         textGradient: 'linear-gradient(90deg, #3E2FE9, #6A3EEB);',
+        emotionGradient: 'linear-gradient(90deg, #F87380, #F6A689, #3DD8CB);',
       },
     },
   },

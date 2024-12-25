@@ -1,0 +1,55 @@
+<template>
+  <div v-if="averageEmotionPerMonth" class="flex flex-col p-2 gap-5 justify-center items-center">
+    <p>Your Dreams in average this month</p>
+
+    <div class="w-full">
+      <img
+        src="`@/assets/cat-emotes/cat-pin-meh.svg`"
+        alt="Cat Sad"
+        class="h-16"
+        :class="[
+          'pb-2',
+          { 'place-self-center': averageEmotionPerMonth[month] === 2 },
+          { 'place-self-end': averageEmotionPerMonth[month] === 1 },
+        ]"
+      />
+      <div class="w-full h-5 bg-emotionGradient rounded-full"></div>
+    </div>
+  </div>
+</template>
+
+<script setup lang="ts">
+import type { UserData } from '@/types/User'
+import { computed, ref } from 'vue'
+
+const props = defineProps<{
+  userData: UserData
+}>()
+
+const month = ref<string>('12') // Standardwert für Debugging
+
+const emotionsPerMonth = computed(() => {
+  return Object.entries(props.userData.data).reduce<Record<string, number[]>>(
+    (acc, [date, data]: [string, { emotion: number }]) => {
+      const currentMonth = date.split('/')[1]
+      if (!acc[currentMonth]) {
+        acc[currentMonth] = []
+      }
+      acc[currentMonth].push(data.emotion)
+      return acc
+    },
+    {},
+  )
+})
+
+const averageEmotionPerMonth = computed(() => {
+  return Object.fromEntries(
+    Object.entries(emotionsPerMonth.value).map(([month, emotions]) => [
+      month,
+      emotions.reduce((sum, emotion) => sum + emotion, 0) / emotions.length,
+    ]),
+  )
+})
+</script>
+
+<style scoped></style>

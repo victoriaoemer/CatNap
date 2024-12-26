@@ -1,5 +1,5 @@
 <template>
-  <div v-if="averageEmotionPerMonth" class="flex flex-col p-2 gap-5 justify-center items-center">
+  <div v-if="averageEmotionPerMonth" class="flex flex-col p-2 gap-3 justify-center items-center">
     <p>Your Dreams in average this month</p>
 
     <div class="w-full">
@@ -8,7 +8,7 @@
         alt="Cat Emotion"
         class="h-16"
         :class="[
-          'pb-2',
+          'pb-1',
           { 'place-self-center': averageEmotionPerMonth[month] === 2 },
           { 'place-self-end': averageEmotionPerMonth[month] === 3 },
         ]"

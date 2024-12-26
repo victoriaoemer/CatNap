@@ -6,10 +6,9 @@
 </template>
 
 <script setup lang="ts">
-import { useRouter } from 'vue-router'
+import { useUserStore } from '@/types/User'
 import CatNapSidebar from '../CatNapSidebar.vue'
 
-const router = useRouter()
-
-const user = router.currentRoute.value.params.username.toString()
+const userStore = useUserStore()
+const user = userStore.username
 </script>

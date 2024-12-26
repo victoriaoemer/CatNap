@@ -16,7 +16,9 @@ export const usePixabayStore = defineStore('pixabay', {
     async fetchImage(query: string) {
       const today = new Date().toISOString().split('T')[0];
 
+
       if (this.lastUpdated === today) {
+        console.log('Image already fetched for today:', this.image);
         return;
       }
 
@@ -26,7 +28,9 @@ export const usePixabayStore = defineStore('pixabay', {
         if (response.ok) {
           const data = await response.json();
           if (data.hits.length > 0) {
-            this.image = data.hits[0].webformatURL;
+            const randomImage = Math.floor(Math.random() * data.hits.length);
+            this.image = data.hits[randomImage].webformatURL;
+            console.log(randomImage);
             this.lastUpdated = today;
           } else {
             this.image = null;

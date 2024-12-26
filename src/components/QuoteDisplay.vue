@@ -1,3 +1,14 @@
+<script setup lang="ts">
+import { useQuoteStore } from '../types/Quotes'
+import { usePixabayStore } from '../types/Pixabay'
+
+const quoteStore = useQuoteStore()
+const pixabayStore = usePixabayStore()
+const quote = quoteStore.quote
+const author = quoteStore.author
+const image = pixabayStore.image
+
+</script>
 <template>
   <div>
     <p class="font-medium" v-if="quote">"{{ quote }}"</p>
@@ -13,20 +24,3 @@
     <p v-else>No image available.</p>
   </div>
 </template>
-
-<script lang="ts">
-import { useQuoteStore } from '../types/Quotes'
-import { usePixabayStore } from '../types/Pixabay'
-
-export default {
-  setup() {
-    const quoteStore = useQuoteStore()
-    const pixabayStore = usePixabayStore()
-    return {
-      quote: quoteStore.quote,
-      author: quoteStore.author,
-      image: pixabayStore.image,
-    }
-  },
-}
-</script>

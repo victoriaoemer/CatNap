@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { createUser, createUserData, getUsers } from '@/api'
-import type { User } from '@/types/User.js'
+import { useUserStore, type User } from '@/types/User.js'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import CatNapButton from '../CatNapButton.vue'
@@ -13,6 +12,7 @@ const password = ref('')
 const msg = ref('')
 
 const router = useRouter()
+const userStore = useUserStore()
 
 const redirectLogin = () => {
   router.push('/')
@@ -28,7 +28,7 @@ const signUp = async () => {
   msg.value = ''
 
   try {
-    const users = await getUsers()
+    const users = await userStore.getUsers()
 
     // check if username already exists
     const user = users.find((user: User) => user.username === username.value)
@@ -38,17 +38,22 @@ const signUp = async () => {
       return
     }
 
-    createUser({
+    userStore.createUser({
       firstName: firstName.value,
       lastName: lastName.value,
       username: username.value,
       password: password.value,
     })
 
-    createUserData({
+    userStore.createUserData({
       username: username.value,
       data: [],
     })
+
+    userStore.username = username.value
+    userStore.firstName = firstName.value
+    userStore.lastName = lastName.value
+    userStore.password = password.value
 
     firstName.value = ''
     lastName.value = ''

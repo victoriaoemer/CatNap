@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="safeDreams.length > 0">
     <div
       v-for="([date, details], index) in reversedDreams"
       :key="index"
@@ -22,6 +22,8 @@ const props = defineProps<{
   dreams: [string, { title: string; content: string; emotion: number }][]
   short?: boolean
 }>()
+
+const safeDreams = props.dreams || []
 
 const emotionConverter = (emotion: number) => {
   if (emotion) {

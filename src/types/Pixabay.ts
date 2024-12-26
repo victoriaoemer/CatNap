@@ -4,6 +4,7 @@ interface PixabayState {
   image: string | null;
   apiKey: string;
   lastUpdated: string | null;
+  theme: string;
 }
 
 export const usePixabayStore = defineStore('pixabay', {
@@ -11,18 +12,15 @@ export const usePixabayStore = defineStore('pixabay', {
     image: null,
     apiKey: import.meta.env.VITE_PIXABAY_API_KEY || '',
     lastUpdated: null,
+    theme: 'moons',
   }),
   actions: {
-    async fetchImage(query: string) {
-      const today = new Date().toISOString().split('T')[0];
-
-
-      if (this.lastUpdated === today) {
-        console.log('Image already fetched for today:', this.image);
-        return;
-      }
-
-      const apiUrl = `https://pixabay.com/api/?key=${this.apiKey}&q=${encodeURIComponent(query)}&image_type=photo`;
+    setTheme(newTheme: string) {
+      this.theme = newTheme;
+      this.fetchImage(); // Automatically fetch a new image when the theme changes
+    },
+    async fetchImage() {
+      const apiUrl = `https://pixabay.com/api/?key=${this.apiKey}&q=${this.theme}&image_type=photo&orientation=horizontal&per_page=100`;
       try {
         const response = await fetch(apiUrl);
         if (response.ok) {
@@ -30,13 +28,15 @@ export const usePixabayStore = defineStore('pixabay', {
           if (data.hits.length > 0) {
             const randomImage = Math.floor(Math.random() * data.hits.length);
             this.image = data.hits[randomImage].webformatURL;
-            console.log(randomImage);
-            this.lastUpdated = today;
+            console.log('Random Image Index:', randomImage);
+            this.lastUpdated = new Date().toISOString(); // Update the timestamp
           } else {
             this.image = null;
+            console.log('No images found for theme:', this.theme);
           }
         }
-      } catch {
+      } catch (error) {
+        console.error('Error fetching image:', error);
         this.image = null;
       }
     },

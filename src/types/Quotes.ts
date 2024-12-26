@@ -1,30 +1,30 @@
 import { defineStore } from 'pinia'
 
 interface QuoteState {
-  category: string
   quote: string | null
   author: string | null
+  theme: string
   apiKey: string
   lastUpdated: string | null
 }
 
 interface QuoteActions {
-  setCategory(newCategory: string): void
+  setTheme(newTheme: string): void
   fetchQuote(): Promise<void>
 }
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export const useQuoteStore = defineStore<'quote', QuoteState, {}, QuoteActions>('quote', {
   state: (): QuoteState => ({
-    category: 'happiness',
     quote: null,
     author: null,
+    theme: 'inspirational',
     apiKey: import.meta.env.VITE_NINJA_API_KEY || '',
     lastUpdated: null, // no date in the beginning
   }),
   actions: {
-    setCategory(newCategory: string) {
-      this.category = newCategory
+    setTheme(newTheme: string) {
+      this.theme = newTheme
     },
     async fetchQuote() {
       const today = new Date().toISOString().split('T')[0] // (YYYY-MM-DD)
@@ -35,7 +35,7 @@ export const useQuoteStore = defineStore<'quote', QuoteState, {}, QuoteActions>(
         return
       }
 
-      const apiUrl = `https://api.api-ninjas.com/v1/quotes?category=${this.category}`
+      const apiUrl = `https://api.api-ninjas.com/v1/quotes?category=${this.theme}`
       try {
         const response = await fetch(apiUrl, {
           headers: {

@@ -8,6 +8,8 @@ const quote = quoteStore.quote
 const author = quoteStore.author
 const image = pixabayStore.image
 
+
+
 </script>
 <template>
   <div>

@@ -44,36 +44,69 @@ onMounted(async () => {
         </div>
       </div>
 
-      <div class=" flex">
-        <div mb-5 >
-        <h2 class="text-xl font-semibold text-[#C1A2FB]">Settings</h2>
-        <h1 class="text-2xl font-bold">Something you want to change?</h1>
+      <div class="flex">
+        <div mb-5>
+          <h2 class="text-xl font-semibold text-[#C1A2FB]">Settings</h2>
+          <h1 class="text-2xl font-bold">Something you want to change?</h1>
+        </div>
+        <img src="@/assets/cat-images/cat-settings1.svg" alt="Cat_Settings1" class="h-16 pl-16" />
       </div>
-      <img src="@/assets/cat-images/cat-settings1.svg" alt="Cat_Settings1" class="h-16 pl-16" />
-      </div>
-
 
       <!-- Settings -->
       <div class="flex flex-grow gap-8">
         <!-- Linke Spalte -->
         <div class="w-1/3 bg-gradientGrayDown shadow-2xl rounded-xl p-3 overflow-auto">
           <h3 class="font-semibold text-3xl text-gradient">Profile</h3>
-          <div class="flex flex-col gap-4 mt-4">
-            <div class="flex flex-col gap-3">
-              <label for="firstName" class="w-24">First Name</label>
-              <CatNapInput v-model="userData.username" :placeholder="'firstName'" :settings="true"  />
+          <div class="flex flex-col gap-3 mt-4">
+            <div class="flex flex-col gap-3 pb-2 ">
+              <label for="firstName" class="w-24 font-semibold text-lg">Image</label>
+              <div class="flex gap-5 items-center justify-center">
+              <div class="bg-secondary p-2 rounded-full">
+                <img src="@/assets/cat-profile/munchkin-default.svg" alt="Cat" />
+              </div>
+              <div class="bg-secondary p-2 rounded-full">
+                <img src="@/assets/cat-profile/munchkin-red.svg" alt="Cat" />
+              </div>
+              <div class="bg-secondary p-2 rounded-full">
+                <img src="@/assets/cat-profile/munchkin-blue.svg" alt="Cat" />
+              </div>
+              <div class="bg-secondary p-2 rounded-full">
+                <img src="@/assets/cat-profile/munchkin-lucky.svg" alt="Cat" />
+              </div>
+              <div class="bg-secondary p-2 rounded-full">
+                <img src="@/assets/cat-profile/munchkin-green.svg" alt="Cat" />
+              </div>
             </div>
-            <div class="flex flex-col  gap-3">
-              <label for="lastName" class="w-24">Last Name</label>
-              <CatNapInput v-model="userData.username" :placeholder="'lastName'" :settings="true"  />
             </div>
-            <div class="flex flex-col  gap-3">
-              <label for="username" class="w-24">Username</label>
-              <CatNapInput v-model="userData.username" :placeholder="userData.username" :settings="true"  />
+            <div class="flex flex-col gap-3 pb-2">
+              <label for="firstName" class="w-24 font-semibold text-lg">First Name</label>
+              <CatNapInput
+                v-model="userData.username"
+                :placeholder="'firstName'"
+                :settings="true"
+              />
             </div>
-            <div class="flex flex-col  gap-3">
-              <label for="password" class="w-24">Password</label>
-              <CatNapInput v-model="userData.username" type="password" :placeholder="'current Password'" @input="'clearWarning'" :settings="true"  />
+            <div class="flex flex-col gap-3 pb-2">
+              <label for="lastName" class="w-24 font-semibold text-lg">Last Name</label>
+              <CatNapInput v-model="userData.username" :placeholder="'lastName'" :settings="true" />
+            </div>
+            <div class="flex flex-col gap-3 pb-2">
+              <label for="username" class="w-24 font-semibold text-lg">Username</label>
+              <CatNapInput
+                v-model="userData.username"
+                :placeholder="userData.username"
+                :settings="true"
+              />
+            </div>
+            <div class="flex flex-col gap-3 pb-2">
+              <label for="password" class="w-24 font-semibold text-lg">Password</label>
+              <CatNapInput
+                v-model="userData.username"
+                type="password"
+                :placeholder="'current Password'"
+                @input="'clearWarning'"
+                :settings="true"
+              />
             </div>
             <CatNapButton class="pl-24 pr-24" text="Update" type="outline" />
           </div>
@@ -117,7 +150,7 @@ onMounted(async () => {
                 </div>
               </div>
               <div class="flex pt-16">
-                    <img src="@/assets/cat-images/cat-settings3.svg" alt="Cat_Settings3" class="h-28" />
+                <img src="@/assets/cat-images/cat-settings3.svg" alt="Cat_Settings3" class="h-28" />
               </div>
             </div>
           </div>

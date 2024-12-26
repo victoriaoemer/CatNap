@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useRouter } from 'vue-router'
+import { useUserStore } from '@/types/User'
 import CatNapSidebar from '../CatNapSidebar.vue'
 import CatNapButton from '../CatNapButton.vue'
 import type { UserData } from '@/types/User'
@@ -9,10 +9,9 @@ import CatNapInput from '../CatNapInput.vue'
 import CatNapSelect from '../CatNapSelect.vue'
 import { usePixabayStore } from '@/types/Pixabay'
 
-const router = useRouter()
+const userStore = useUserStore()
 const pixabayStore = usePixabayStore()
-
-const user = router.currentRoute.value.params.username.toString()
+const user = userStore.username
 const userData = ref<UserData>({} as UserData)
 
 const newTheme = ref("")

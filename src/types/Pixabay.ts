@@ -16,10 +16,20 @@ export const usePixabayStore = defineStore('pixabay', {
   }),
   actions: {
     setTheme(newTheme: string) {
-      this.theme = newTheme;
-      this.fetchImage(); // Automatically fetch a new image when the theme changes
+      if (this.theme !== newTheme) {
+        this.theme = newTheme;
+        this.fetchImage(true); // Fetch image immediately when theme changes
+      }
     },
-    async fetchImage() {
+    async fetchImage(force = false) {
+      const today = new Date().toISOString().split('T')[0];
+
+      // If not forced and the last fetch was today, skip fetching
+      if (!force && this.lastUpdated === today) {
+        console.log('Image already fetched for today:', this.image);
+        return;
+      }
+
       const apiUrl = `https://pixabay.com/api/?key=${this.apiKey}&q=${this.theme}&image_type=photo&orientation=horizontal&per_page=100`;
       try {
         const response = await fetch(apiUrl);
@@ -29,7 +39,7 @@ export const usePixabayStore = defineStore('pixabay', {
             const randomImage = Math.floor(Math.random() * data.hits.length);
             this.image = data.hits[randomImage].webformatURL;
             console.log('Random Image Index:', randomImage);
-            this.lastUpdated = new Date().toISOString(); // Update the timestamp
+            this.lastUpdated = today; // Update the timestamp only if successful
           } else {
             this.image = null;
             console.log('No images found for theme:', this.theme);

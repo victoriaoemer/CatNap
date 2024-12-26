@@ -1,6 +1,6 @@
 <template>
   <div v-if="averageEmotionPerMonth" class="flex flex-col p-2 gap-3 justify-center items-center">
-    <p>Your Dreams in average this month</p>
+    <p>Your dreamy month so far</p>
 
     <div class="w-full">
       <img

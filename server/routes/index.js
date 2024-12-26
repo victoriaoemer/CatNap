@@ -72,6 +72,22 @@ router.get("/get-users", async (req, res) => {
   }
 });
 
+// Update one user
+router.put("/update-user/:username", async (req, res) => {
+  try {
+    const { username } = req.params;
+    const newEntry = req.body; // Direkter Zugriff auf den gesendeten Eintrag
+    const collection = await getLoginCollection();
+    await collection.updateOne({ username }, { $set: newEntry });
+    res.status(200).json({ message: "Daten erfolgreich aktualisiert" });
+  } catch (error) {
+    console.error("Fehler beim Aktualisieren der Daten:", error);
+    res.status(500).json({ error: "Fehler beim Aktualisieren der Daten." });
+  }
+});
+
+
+
 // Create user data
 router.post("/create-data", async (req, res) => {
   try {

@@ -36,6 +36,14 @@ export const useUserStore = defineStore('user', {
       const response = await fetch('http://localhost:4000/get-users')
       return response.json()
     },
+    async updateUser(username: string, data: User) {
+      const response = await fetch(`http://localhost:4000/update-user/${username}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      })
+      return response.json()
+    },
     async createUserData(data: UserData) {
       const response = await fetch('http://localhost:4000/create-data', {
         method: 'POST',

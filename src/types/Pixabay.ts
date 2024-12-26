@@ -4,8 +4,8 @@ interface PixabayState {
   image: string | null;
   apiKey: string;
   lastUpdated: string | null;
-  theme: string; // Current confirmed theme
-  newTheme: string | null; // Temporarily stored new theme
+  theme: string;
+  newTheme: string | null;
 }
 
 export const usePixabayStore = defineStore('pixabay', {
@@ -13,25 +13,23 @@ export const usePixabayStore = defineStore('pixabay', {
     image: null,
     apiKey: import.meta.env.VITE_PIXABAY_API_KEY || '',
     lastUpdated: null,
-    theme: 'moons', // Default theme
-    newTheme: null, // Temporarily holds the new theme before confirmation
+    theme: 'moons',
+    newTheme: null,
   }),
   actions: {
     setNewTheme(newTheme: string) {
-      // Temporarily store the new theme
       this.newTheme = newTheme;
-      console.log('New theme set to:', this.newTheme);
+      //console.log('New theme set to:', this.newTheme);
     },
     confirmThemeChange() {
       // Compare the new theme with the current theme
       if (this.newTheme && this.newTheme !== this.theme) {
-        this.theme = this.newTheme; // Update to the new theme
-        this.fetchImage(true); // Fetch a new image immediately
-        console.log('Theme updated to:', this.theme);
+        this.theme = this.newTheme;
+        this.fetchImage(true);
+        // console.log('Theme updated to:', this.theme);
       } else {
-        console.log('No theme change detected.');
+        // console.log('No theme change detected.');
       }
-      // Clear the newTheme after confirmation
       this.newTheme = null;
     },
     async fetchImage(force = false) {
@@ -39,7 +37,7 @@ export const usePixabayStore = defineStore('pixabay', {
 
       // Check if fetch should be skipped
       if (!force && this.lastUpdated === today) {
-        console.log('Image already fetched for today:', this.image);
+        //console.log('Image already fetched for today:', this.image);
         return;
       }
 
@@ -51,8 +49,8 @@ export const usePixabayStore = defineStore('pixabay', {
           if (data.hits.length > 0) {
             const randomImage = Math.floor(Math.random() * data.hits.length);
             this.image = data.hits[randomImage].webformatURL;
-            console.log('Fetched new image for theme:', this.theme);
-            this.lastUpdated = today; // Update lastUpdated to today's date
+            //console.log('Fetched new image for theme:', this.theme);
+            this.lastUpdated = today;
           } else {
             this.image = null;
             console.warn('No images found for theme:', this.theme);

@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { usePixabayStore } from '@/types/Pixabay'
-import { useQuoteStore } from '@/types/Quotes'
 import { useUserStore, type UserData } from '@/types/User'
 import { onMounted, ref } from 'vue'
 import CatNapAverageEmotion from '../CatNapAverageEmotion.vue'
@@ -21,16 +19,10 @@ const formattedDate = date.toLocaleDateString('en-GB', {
   month: 'long',
 })
 
-const quoteStore = useQuoteStore()
-const pixabayStore = usePixabayStore()
-
 onMounted(async () => {
   try {
     const data = await userStore.getUserData(user)
     userData.value = data
-    quoteStore.fetchQuote()
-    pixabayStore.confirmThemeChange()
-    pixabayStore.fetchImage();
   } catch (error) {
     console.error(error)
   }

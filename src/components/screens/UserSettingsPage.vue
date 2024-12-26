@@ -7,13 +7,17 @@ import { onMounted, ref } from 'vue'
 import CatNapInput from '../CatNapInput.vue'
 import CatNapSelect from '../CatNapSelect.vue'
 import { usePixabayStore } from '@/types/Pixabay'
+import { useQuoteStore } from '@/types/Quotes'
 
 const userStore = useUserStore()
 const pixabayStore = usePixabayStore()
+const quoteStore = useQuoteStore()
+
+const newThemeImage = ref("")
+const newThemeQuote = ref("")
+
 const user = userStore.username
 const userData = ref<UserData>({} as UserData)
-
-const newTheme = ref("")
 
 const date = new Date()
 const formattedDate = date.toLocaleDateString('en-GB', {
@@ -32,24 +36,58 @@ onMounted(async () => {
 })
 
 const updateTheme = () => {
-  pixabayStore.setNewTheme(newTheme.value)
+  pixabayStore.setNewTheme(newThemeImage.value)
   pixabayStore.confirmThemeChange()
-  console.log(newTheme.value)
-  console.log(pixabayStore.theme)
+  quoteStore.setNewTheme(newThemeQuote.value)
+  quoteStore.confirmThemeChange()
+}
+
+const isSidebarOpen = ref(false)
+
+function toggleSidebar() {
+  isSidebarOpen.value = !isSidebarOpen.value
+}
+
+function closeSidebar() {
+  isSidebarOpen.value = false
 }
 </script>
 
 <template>
-  <div class="h-screen w-full flex p-8">
-    <CatNapSidebar :user="user" />
-
-    <div class="w-full flex flex-col pl-24">
-      <div class="flex justify-end space-x-5 items-center">
-        <div class="text-lg py-1 px-3 rounded-xl border border-secondary">
+  <div
+    class="h-screen w-full flex flex-col md:flex-row md:p-8"
+    :class="{ 'overflow-hidden': isSidebarOpen }"
+  >
+    <CatNapSidebar
+      :user="user"
+      class="hidden md:flex fixed top-0 left-0 m-5 h-[calc(100vh-3rem)]"
+    />
+    <div class="h-screen w-full md:w-fit relative">
+      <div
+        v-if="isSidebarOpen"
+        @click="closeSidebar"
+        class="fixed inset-0 bg-black bg-opacity-50 z-40"
+      ></div>
+      <CatNapSidebar
+        v-if="isSidebarOpen"
+        :user="user"
+        :mobile="true"
+        @close="closeSidebar"
+        class="md:hidden z-50 fixed top-0 left-0 h-screen bg-white shadow-lg"
+      />
+    </div>
+    <div class="w-full flex flex-col md:pl-32">
+      <div
+        class="flex items-center justify-between md:justify-end space-x-5 bg-secondary md:bg-transparent pt-4 pb-2 px-6 md:px-0 rounded-b-2xl"
+      >
+        <button @click="toggleSidebar" class="md:hidden">
+          <img src="@/assets/icons/menu.svg" alt="Menu" class="h-8 w-max" />
+        </button>
+        <div class="md:text-lg py-1 px-3 rounded-xl border border-purple md:border-secondary">
           {{ formattedDate }}
         </div>
-        <div class="bg-secondary p-2 rounded-full">
-          <img src="@/assets/icons/profile-cat.svg" alt="Cat" />
+        <div class="md:bg-secondary bg-purple p-2 rounded-full">
+          <img src="@/assets/cat-profile/munchkin-default.svg" alt="Cat" />
         </div>
       </div>
 
@@ -130,21 +168,22 @@ const updateTheme = () => {
               <div>
                 <label for="quote" class="block mb-2 font-semibold text-lg">Quote</label>
                 <CatNapSelect
-                  v-model="userData.username"
+                  v-model="newThemeQuote"
                   :options="['Art', 'Beauty', 'Change', 'Communication', 'Cool', 'Courage', 'Dreams', 'Faith',
                   'Family', 'Freedom', 'Friendship', 'Funny', 'Future', 'Good', 'Graduation', 'Great', 'Happiness',
                   'Health', 'History', 'Home', 'Hope', 'Humor', 'Imagination', 'Inspirational', 'Intelligence', 'Life',
                   'Love', 'Movies', 'Success']"
                   :placeholder="'Select a quote'"
+                  @change="newThemeQuote = $event.target.value"
                   :settings="true"
                 />
               </div>
               <div>
                 <label for="image" class="block mb-2 font-semibold text-lg">Image</label>
                 <CatNapInput
-                  v-model="newTheme"
+                  v-model="newThemeImage"
                   :placeholder="pixabayStore.theme"
-                  @change="newTheme = $event.target.value"
+                  @change="newThemeImage = $event.target.value"
                   :settings="true"
                 />
               </div>

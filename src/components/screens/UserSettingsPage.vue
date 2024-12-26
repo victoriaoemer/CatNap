@@ -15,8 +15,7 @@ const pixabayStore = usePixabayStore()
 const user = router.currentRoute.value.params.username.toString()
 const userData = ref<UserData>({} as UserData)
 
-// Temporary theme input
-const newTheme = ref(pixabayStore.theme)
+const newTheme = ref("")
 
 const date = new Date()
 const formattedDate = date.toLocaleDateString('en-GB', {
@@ -35,7 +34,10 @@ onMounted(async () => {
 })
 
 const updateTheme = () => {
-  pixabayStore.theme = newTheme.value
+  pixabayStore.setNewTheme(newTheme.value)
+  pixabayStore.confirmThemeChange()
+  console.log(newTheme.value)
+  console.log(pixabayStore.theme)
 }
 </script>
 
@@ -91,20 +93,20 @@ const updateTheme = () => {
               <label for="firstName" class="w-24 font-semibold text-lg">First Name</label>
               <CatNapInput
                 v-model="userData.username"
-                :placeholder="'firstName'"
+                :placeholder="'First Name'"
                 :settings="true"
               />
             </div>
             <div class="flex flex-col gap-3 pb-2">
               <label for="lastName" class="w-24 font-semibold text-lg">Last Name</label>
-              <CatNapInput v-model="userData.username" :placeholder="'lastName'" :settings="true" />
+              <CatNapInput v-model="userData.username" :placeholder="'Last Name'" :settings="true" />
             </div>
             <div class="flex flex-col gap-3 pb-2">
               <label for="username" class="w-24 font-semibold text-lg">Username</label>
               <CatNapInput
-                v-model="userData.username"
-                :placeholder="userData.username"
-                :settings="true"
+              v-model="userData.username"
+              :placeholder="'Username'"
+              :settings="true"
               />
             </div>
             <div class="flex flex-col gap-3 pb-2">
@@ -112,7 +114,7 @@ const updateTheme = () => {
               <CatNapInput
                 v-model="userData.username"
                 type="password"
-                :placeholder="'current Password'"
+                :placeholder="'new Password'"
                 @input="'clearWarning'"
                 :settings="true"
               />
@@ -131,6 +133,10 @@ const updateTheme = () => {
                 <label for="quote" class="block mb-2 font-semibold text-lg">Quote</label>
                 <CatNapSelect
                   v-model="userData.username"
+                  :options="['Art', 'Beauty', 'Change', 'Communication', 'Cool', 'Courage', 'Dreams', 'Faith',
+                  'Family', 'Freedom', 'Friendship', 'Funny', 'Future', 'Good', 'Graduation', 'Great', 'Happiness',
+                  'Health', 'History', 'Home', 'Hope', 'Humor', 'Imagination', 'Inspirational', 'Intelligence', 'Life',
+                  'Love', 'Movies', 'Success']"
                   :placeholder="'Select a quote'"
                   :settings="true"
                 />
@@ -138,8 +144,8 @@ const updateTheme = () => {
               <div>
                 <label for="image" class="block mb-2 font-semibold text-lg">Image</label>
                 <CatNapInput
-                  v-model="pixabayStore.theme"
-                  :placeholder="'default: moons'"
+                  v-model="newTheme"
+                  :placeholder="pixabayStore.theme"
                   @change="newTheme = $event.target.value"
                   :settings="true"
                 />

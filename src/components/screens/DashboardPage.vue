@@ -31,6 +31,7 @@ onMounted(async () => {
     const data = await getUserData(user)
     userData.value = data
     quoteStore.fetchQuote()
+    pixabayStore.confirmThemeChange()
     pixabayStore.fetchImage();
   } catch (error) {
     console.error(error)

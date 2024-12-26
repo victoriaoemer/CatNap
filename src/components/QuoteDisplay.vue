@@ -13,13 +13,13 @@
         <img
           src="@/assets/cat-images/cat-home2.svg"
           alt="Cat"
-          class="h-16 absolute -top-16 right-0"
+          class="h-16 absolute -top-16 right-0 pt-4"
         />
 
         <img
           :src="image"
           alt="Pixabay Image"
-          class="rounded-xl border-2 border-emotion-green object-cover min-w-full"
+          class="rounded-xl border-2 border-emotion-green object-cover min-w-full lg:h-48"
         />
       </div>
       <p v-else>No image available.</p>

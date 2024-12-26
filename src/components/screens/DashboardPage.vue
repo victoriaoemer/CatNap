@@ -121,7 +121,7 @@ function closeSidebar() {
       </div>
       <div class="h-full flex flex-col lg:flex-row gap-8 pt-5 px-6 md:p-0">
         <div class="lg:w-1/3 bg-gradientGrayDown shadow-2xl rounded-xl h-full">
-          <div class="p-5 h-full">
+          <div class="p-5">
             <QuoteDisplay />
           </div>
         </div>

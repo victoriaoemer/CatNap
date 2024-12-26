@@ -87,7 +87,7 @@ function closeSidebar() {
       </div>
 
       <div class="mb-5 pt-5 px-6 md:p-0">
-        <h2 class="text-xl font-semibold">Home</h2>
+        <h2 class="text-xl font-semibold text-[#C1A2FB]">Home</h2>
         <h1 class="text-2xl font-bold">Dashboard</h1>
       </div>
 

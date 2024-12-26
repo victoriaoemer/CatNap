@@ -4,7 +4,6 @@ import CatNapSidebar from '../CatNapSidebar.vue'
 import CatNapButton from '../CatNapButton.vue'
 import type { UserData } from '@/types/User'
 import { onMounted, ref } from 'vue'
-import { getUserData } from '@/api'
 import CatNapInput from '../CatNapInput.vue'
 import CatNapSelect from '../CatNapSelect.vue'
 import { usePixabayStore } from '@/types/Pixabay'
@@ -25,7 +24,7 @@ const formattedDate = date.toLocaleDateString('en-GB', {
 
 onMounted(async () => {
   try {
-    const data = await getUserData(user)
+    const data = await userStore.getUserData(user)
     userData.value = data
   } catch (error) {
     console.error(error)

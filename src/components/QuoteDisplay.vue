@@ -19,7 +19,7 @@
         <img
           :src="image"
           alt="Pixabay Image"
-          class="rounded-xl border-2 border-emotion-green object-cover h-28 min-w-full"
+          class="rounded-xl border-2 border-emotion-green object-cover min-w-full"
         />
       </div>
       <p v-else>No image available.</p>

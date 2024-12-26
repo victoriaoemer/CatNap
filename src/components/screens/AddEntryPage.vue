@@ -79,7 +79,7 @@ console.log('Entries:', entries.value)
       </div>
 
       <div class="mb-5 pt-5 px-6 md:p-0">
-        <h2 class="text-xl font-semibold">Dream Diary</h2>
+        <h2 class="text-xl font-semibold text-[#C1A2FB]">Dream Diary</h2>
         <h1 class="text-2xl font-bold">What was your dream about?</h1>
       </div>
 

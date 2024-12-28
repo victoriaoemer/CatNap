@@ -1,6 +1,12 @@
 <script setup lang="ts">
+import MunchkinBlue from '@/assets/cat-profile/munchkin-blue.svg'
+import MunchkinDefault from '@/assets/cat-profile/munchkin-default.svg'
+import MunchkinGreen from '@/assets/cat-profile/munchkin-green.svg'
+import MunchkinLucky from '@/assets/cat-profile/munchkin-lucky.svg'
+import MunchKindRed from '@/assets/cat-profile/munchkin-red.svg'
 import { useUserStore, type UserData } from '@/types/User'
 import { onMounted, ref } from 'vue'
+import { useRouter } from 'vue-router'
 import CatNapAddEntry from '../CatNapAddEntry.vue'
 import CatNapDreamEntries from '../CatNapDreamEntries.vue'
 import CatNapSidebar from '../CatNapSidebar.vue'
@@ -8,6 +14,7 @@ import CatNapSidebar from '../CatNapSidebar.vue'
 const userStore = useUserStore()
 const user = userStore.username
 const userData = ref<UserData>({} as UserData)
+const router = useRouter()
 
 const date = new Date()
 const formattedDate = date.toLocaleDateString('en-GB', {
@@ -16,12 +23,22 @@ const formattedDate = date.toLocaleDateString('en-GB', {
   month: 'long',
 })
 
+const imageMap: Record<number, string> = {
+  1: MunchkinDefault,
+  2: MunchKindRed,
+  3: MunchkinBlue,
+  4: MunchkinLucky,
+  5: MunchkinGreen,
+}
+
 const entries = ref<[string, { title: string; content: string; emotion: number }][]>([])
 onMounted(async () => {
   try {
     const data = await userStore.getUserData(user)
     userData.value = data
-    entries.value = Object.entries(data.data)
+    if (data.data) {
+      entries.value = Object.entries(data.data)
+    }
   } catch (error) {
     console.error(error)
   }
@@ -36,7 +53,6 @@ function toggleSidebar() {
 function closeSidebar() {
   isSidebarOpen.value = false
 }
-console.log('Entries:', entries.value)
 </script>
 
 <template>
@@ -74,12 +90,19 @@ console.log('Entries:', entries.value)
           {{ formattedDate }}
         </div>
         <div class="md:bg-secondary bg-purple p-2 rounded-full">
-          <img src="@/assets/cat-profile/munchkin-default.svg" alt="Cat" />
+          <div v-if="userData.settings">
+            <img
+              :src="imageMap[userData.settings.profilePicture || 1]"
+              alt="Cat"
+              class="cursor-pointer"
+              @click="router.push('/settings/' + userData.username)"
+            />
+          </div>
         </div>
       </div>
 
       <div class="mb-5 pt-5 px-6 md:p-0">
-        <h2 class="text-xl font-semibold">Dream Diary</h2>
+        <h2 class="text-xl font-semibold text-[#C1A2FB]">Dream Diary</h2>
         <h1 class="text-2xl font-bold">What was your dream about?</h1>
       </div>
 
@@ -92,7 +115,10 @@ console.log('Entries:', entries.value)
           <CatNapDreamEntries :dreams="entries" />
         </div>
 
-        <div class="lg:w-2/3 bg-gradientGrayDown shadow-2xl rounded-xl p-5">
+        <div
+          class="bg-gradientGrayDown shadow-2xl rounded-xl p-5"
+          :class="['lg:w-2/3', { '!w-full': !entries.length }]"
+        >
           <CatNapAddEntry :large="true" />
         </div>
       </div>

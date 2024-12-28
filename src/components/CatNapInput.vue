@@ -1,5 +1,5 @@
 <template>
-  <div class="gradient-border-bottom w-full">
+  <div v-bind:class="settings ? 'w-full bg-[#3B32AB] border-2 border-[#3E2FE9] rounded-xl p-2' : 'gradient-border-bottom w-full'">
     <input
       class="bg-transparent focus:outline-none pb-1"
       :type="type"
@@ -24,6 +24,10 @@ const props = defineProps({
   placeholder: {
     type: String,
     default: '',
+  },
+  settings: {
+    type: Boolean,
+    default: false,
   },
 })
 

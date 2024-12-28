@@ -9,7 +9,12 @@ export interface User {
 
 export interface UserData {
   username: string,
-  data: Array<{
+  settings: {
+    themeQuote: string,
+    themeImage: string,
+    profilePicture: number
+  },
+  data?: Array<{
     title: string,
     content: string,
     emotion: number
@@ -21,7 +26,7 @@ export const useUserStore = defineStore('user', {
     firstName: '',
     lastName: '',
     username: '',
-    password: ''
+    password: '',
   }),
   actions: {
     async createUser(data: User) {
@@ -34,6 +39,22 @@ export const useUserStore = defineStore('user', {
     },
     async getUsers() {
       const response = await fetch('http://localhost:4000/get-users')
+      return response.json()
+    },
+    async updateUser(username: string, data: User) {
+      const response = await fetch(`http://localhost:4000/update-user/${username}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      })
+      return response.json()
+    },
+    async updateUserSettings(username: string, settings: { themeQuote: string, themeImage: string, profilePicture: number }) {
+      const response = await fetch(`http://localhost:4000/update-settings/${username}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(settings)
+      })
       return response.json()
     },
     async createUserData(data: UserData) {
@@ -63,6 +84,18 @@ export const useUserStore = defineStore('user', {
         console.error("Fehler beim Update:", error)
         throw error
       }
+    },
+    async resetUserdata(username: string) {
+      const response = await fetch(`http://localhost:4000/reset-data/${username}`, {
+        method: 'PUT'
+      })
+      return response.json()
+    },
+    async deleteUser(username: string) {
+      const response = await fetch(`http://localhost:4000/delete-user/${username}`, {
+        method: 'DELETE'
+      })
+      return response.json()
     }
   },
   persist: true

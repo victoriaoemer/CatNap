@@ -11,7 +11,7 @@ import CatNapAverageEmotion from '../CatNapAverageEmotion.vue'
 import CatNapCalendar from '../CatNapCalendar.vue'
 import CatNapEntryWidget from '../CatNapEntryWidget.vue'
 import CatNapSidebar from '../CatNapSidebar.vue'
-import QuoteDisplay from '../QuoteDisplay.vue'
+import CatNapQuoteDisplay from '../CatNapQuoteDisplay.vue'
 
 const userStore = useUserStore()
 const user = userStore.username
@@ -144,7 +144,7 @@ const getUsername = computed(() => {
       <div class="h-full flex flex-col lg:flex-row gap-8 pt-5 px-6 md:p-0">
         <div class="lg:w-1/3 bg-gradientGrayDown shadow-2xl rounded-xl h-full">
           <div class="p-5">
-            <QuoteDisplay />
+            <CatNapQuoteDisplay />
           </div>
         </div>
         <div class="lg:w-2/3 bg-gradientGrayDown shadow-2xl rounded-xl h-full">

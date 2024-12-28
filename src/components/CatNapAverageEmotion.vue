@@ -45,6 +45,9 @@ const imageMap: Record<number, string> = {
 const month = ref<string>('12')
 
 const emotionsPerMonth = computed(() => {
+  if (!props.userData.data) {
+    return {}
+  }
   return Object.entries(props.userData.data).reduce<Record<string, number[]>>(
     (acc, [date, data]: [string, { emotion: number }]) => {
       const currentMonth = date.split('/')[1]

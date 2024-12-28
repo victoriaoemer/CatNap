@@ -1,6 +1,12 @@
 <script setup lang="ts">
+import MunchkinBlue from '@/assets/cat-profile/munchkin-blue.svg'
+import MunchkinDefault from '@/assets/cat-profile/munchkin-default.svg'
+import MunchkinGreen from '@/assets/cat-profile/munchkin-green.svg'
+import MunchkinLucky from '@/assets/cat-profile/munchkin-lucky.svg'
+import MunchKindRed from '@/assets/cat-profile/munchkin-red.svg'
 import { useUserStore, type UserData } from '@/types/User'
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
+import { useRouter } from 'vue-router'
 import CatNapAverageEmotion from '../CatNapAverageEmotion.vue'
 import CatNapCalendar from '../CatNapCalendar.vue'
 import CatNapEntryWidget from '../CatNapEntryWidget.vue'
@@ -10,6 +16,8 @@ import QuoteDisplay from '../QuoteDisplay.vue'
 const userStore = useUserStore()
 const user = userStore.username
 
+const router = useRouter()
+
 const userData = ref<UserData>({} as UserData)
 
 const date = new Date()
@@ -18,6 +26,14 @@ const formattedDate = date.toLocaleDateString('en-GB', {
   day: 'numeric',
   month: 'long',
 })
+
+const imageMap: Record<number, string> = {
+  1: MunchkinDefault,
+  2: MunchKindRed,
+  3: MunchkinBlue,
+  4: MunchkinLucky,
+  5: MunchkinGreen,
+}
 
 onMounted(async () => {
   try {
@@ -37,6 +53,10 @@ function toggleSidebar() {
 function closeSidebar() {
   isSidebarOpen.value = false
 }
+
+const getUsername = computed(() => {
+  return userStore.username.charAt(0).toUpperCase() + userStore.username.slice(1)
+})
 </script>
 
 <template>
@@ -74,7 +94,14 @@ function closeSidebar() {
           {{ formattedDate }}
         </div>
         <div class="md:bg-secondary bg-purple p-2 rounded-full">
-          <img src="@/assets/cat-profile/munchkin-default.svg" alt="Cat" />
+          <div v-if="userData.settings">
+            <img
+              :src="imageMap[userData.settings.profilePicture || 1]"
+              alt="Cat"
+              class="cursor-pointer"
+              @click="router.push('/settings/' + userData.username)"
+            />
+          </div>
         </div>
       </div>
 
@@ -89,7 +116,7 @@ function closeSidebar() {
           <div class="bg-gradient shadow-2xl rounded-xl p-3 lg:w-1/2">
             <div class="flex justify-between">
               <div>
-                <p class="mb-3 mt-1 font-bold text-4xl">Hello, Minicat!</p>
+                <p class="mb-3 mt-1 font-bold text-4xl">Hello, {{ getUsername }}!</p>
                 <p class="font-semibold text-lg">What are we doing today?</p>
               </div>
               <img src="@/assets/cat-images/cat-home1.svg" alt="Cat" class="h-36" />
@@ -100,6 +127,9 @@ function closeSidebar() {
             <div class="w-full bg-gradientGrayDown shadow-2xl rounded-xl p-3">
               <div v-if="userData.data">
                 <CatNapAverageEmotion :userData="userData" />
+              </div>
+              <div v-else>
+                <p>No data collected yet</p>
               </div>
             </div>
 
@@ -118,7 +148,7 @@ function closeSidebar() {
           </div>
         </div>
         <div class="lg:w-2/3 bg-gradientGrayDown shadow-2xl rounded-xl h-full">
-          <div v-if="userData.data" class="p-5 flex justify-between h-full w-full">
+          <div class="p-5 flex justify-between h-full w-full">
             <CatNapEntryWidget :userData="userData" />
           </div>
         </div>

@@ -1,5 +1,8 @@
 <template>
-  <div v-if="averageEmotionPerMonth" class="flex flex-col p-2 gap-3 justify-center items-center">
+  <div
+    v-if="averageEmotionPerMonth[month]"
+    class="flex flex-col p-2 gap-3 justify-center items-center"
+  >
     <p>Your dreamy month so far</p>
 
     <div class="w-full">
@@ -15,6 +18,9 @@
       />
       <div class="w-full h-5 bg-emotionGradient rounded-full"></div>
     </div>
+  </div>
+  <div v-else>
+    <p>No entries for this month</p>
   </div>
 </template>
 
@@ -36,7 +42,7 @@ const imageMap: Record<number, string> = {
   3: catPinHappy,
 }
 
-const month = ref<string>('12') // Standardwert für Debugging
+const month = ref<string>('12')
 
 const emotionsPerMonth = computed(() => {
   return Object.entries(props.userData.data).reduce<Record<string, number[]>>(
@@ -61,5 +67,3 @@ const averageEmotionPerMonth = computed(() => {
   )
 })
 </script>
-
-<style scoped></style>

@@ -119,6 +119,7 @@ router.get("/get-data/:username", async (req, res) => {
   }
 });
 
+// Update user data
 router.put("/update-data/:username", async (req, res) => {
   try {
     const { username } = req.params;
@@ -142,7 +143,56 @@ router.put("/update-data/:username", async (req, res) => {
   }
 });
 
+// Update user settings
+router.put("/update-settings/:username", async (req, res) => {
+  try {
+    const { username } = req.params;
+    const newEntry = req.body; // Direkter Zugriff auf den gesendeten Eintrag
+    const collection = await getCatNapCollection();
 
+    await collection.updateOne(
+      { username },
+      { $set: { settings: newEntry } },
+      { upsert: true }
+    );
+
+    res.status(200).json({ message: "Daten erfolgreich aktualisiert" });
+  } catch (error) {
+    console.error("Fehler beim Aktualisieren der Daten:", error);
+    res.status(500).json({ error: "Fehler beim Aktualisieren der Daten." });
+  }
+});
+
+// Reset user data
+router.put("/reset-data/:username", async (req, res) => {
+
+  // delete de entire data object including the "data" key
+  try {
+    const { username } = req.params;
+    const collection = await getCatNapCollection();
+    await collection.updateOne
+      ({ username }, { $unset: { data: "" } });
+    res.status(200).json({ message: "Daten erfolgreich zurückgesetzt" });
+  } catch (error) {
+    console.error("Fehler beim Zurücksetzen der Daten:", error);
+    res.status(500).json({ error: "Fehler beim Zurücksetzen der Daten." });
+  }
+});
+
+// delete user and user data
+router.delete("/delete-user/:username", async (req, res) => {
+  try {
+    const { username } = req.params;
+    const collection = await getLoginCollection();
+    const collectionData = await getCatNapCollection();
+    await collection.deleteOne({ username });
+    await collectionData.deleteOne({ username });
+    res.status(200).json({ message: "Daten erfolgreich gelöscht" });
+  } catch (error) {
+    console.error("Fehler beim Löschen der Daten:", error);
+    res.status(500).json({ error: "Fehler beim Löschen der Daten." });
+  }
+});
 
 
 export default router;

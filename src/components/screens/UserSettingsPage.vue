@@ -9,10 +9,13 @@ import { useQuoteStore } from '@/types/Quotes'
 import type { UserData } from '@/types/User'
 import { useUserStore } from '@/types/User'
 import { onMounted, ref } from 'vue'
+import { useRouter } from 'vue-router'
 import CatNapButton from '../CatNapButton.vue'
 import CatNapInput from '../CatNapInput.vue'
 import CatNapSelect from '../CatNapSelect.vue'
 import CatNapSidebar from '../CatNapSidebar.vue'
+
+const router = useRouter()
 
 const userStore = useUserStore()
 const pixabayStore = usePixabayStore()
@@ -20,6 +23,7 @@ const quoteStore = useQuoteStore()
 
 const newThemeImage = ref('')
 const newThemeQuote = ref('')
+const profilePicture = ref(1)
 
 const user = userStore.username
 const userData = ref<UserData>({} as UserData)
@@ -30,8 +34,6 @@ const firstName = ref('')
 const lastName = ref('')
 const username = ref('')
 const password = ref('')
-
-const profilePicture = ref(1)
 
 const date = new Date()
 const formattedDate = date.toLocaleDateString('en-GB', {
@@ -44,6 +46,9 @@ onMounted(async () => {
   try {
     const data = await userStore.getUserData(user)
     userData.value = data
+    newThemeQuote.value = data.settings.themeQuote
+    newThemeImage.value = data.settings.themeImage
+    profilePicture.value = data.settings.profilePicture
   } catch (error) {
     console.error(error)
   }
@@ -54,6 +59,11 @@ const updateTheme = () => {
   pixabayStore.confirmThemeChange()
   quoteStore.setNewTheme(newThemeQuote.value)
   quoteStore.confirmThemeChange()
+  userStore.updateUserSettings(user, {
+    themeQuote: newThemeQuote.value,
+    themeImage: newThemeImage.value,
+    profilePicture: profilePicture.value,
+  })
 }
 
 const isSidebarOpen = ref(false)
@@ -87,6 +97,12 @@ const updateUser = async () => {
     password: password.value,
   })
 
+  userStore.updateUserSettings(user, {
+    themeQuote: newThemeQuote.value,
+    themeImage: newThemeImage.value,
+    profilePicture: profilePicture.value,
+  })
+
   userStore.username = username.value
   userStore.firstName = firstName.value
   userStore.lastName = lastName.value
@@ -100,6 +116,23 @@ const updateUser = async () => {
 
 const clearWarning = () => {
   msg.value = ''
+}
+
+const logout = () => {
+  userStore.firstName = ''
+  userStore.lastName = ''
+  userStore.username = ''
+  userStore.password = ''
+  router.push('/')
+}
+
+const resetData = () => {
+  userStore.resetUserdata(userStore.username)
+}
+
+const deleteAccount = () => {
+  userStore.deleteUser(userStore.username)
+  router.push('/')
 }
 </script>
 
@@ -137,7 +170,7 @@ const clearWarning = () => {
           {{ formattedDate }}
         </div>
         <div class="md:bg-secondary bg-purple p-2 rounded-full">
-          <img src="@/assets/cat-profile/munchkin-default.svg" alt="Cat" />
+          <img :src="imageMap[profilePicture]" alt="Cat" />
         </div>
       </div>
 
@@ -152,7 +185,11 @@ const clearWarning = () => {
       <div class="flex flex-col md:flex-row gap-8 py-8 px-6 h-full md:px-0 md:py-0">
         <!-- left side -->
         <div class="md:w-2/5 bg-gradientGrayDown shadow-2xl rounded-xl p-3">
-          <h3 class="font-semibold text-3xl text-gradient">Profile</h3>
+          <h3 class="flex justify-between">
+            <p class="font-semibold text-3xl text-gradient">Profile</p>
+            <CatNapButton class="w-fit" text="Logout" type="outline" @click="logout" />
+          </h3>
+
           <div class="flex flex-col gap-3 mt-4">
             <div class="flex flex-col gap-3 pb-2">
               <label for="firstName" class="w-32 font-semibold text-lg">Profile Picture</label>
@@ -298,12 +335,17 @@ const clearWarning = () => {
             <div class="flex flex-col md:flex-row md:justify-between justify-center items-center">
               <div class="flex flex-col gap-3">
                 <h3 class="font-semibold text-lg lg:text-3xl text-gradient">Reset Data</h3>
-                <CatNapButton class="" text="Reset" type="outline" />
+                <CatNapButton class="" text="Reset" type="outline" @click="resetData" />
               </div>
               <div class="flex jusitify-between pt-4 md:pt-0">
                 <div class="flex flex-col gap-3">
                   <h3 class="font-semibold text-lg lg:text-3xl text-gradient">Delete Account?</h3>
-                  <CatNapButton class="md:pr-16" text="Delete" type="outline" />
+                  <CatNapButton
+                    class="md:pr-16"
+                    text="Delete"
+                    type="outline"
+                    @click="deleteAccount"
+                  />
                 </div>
               </div>
               <div class="flex pt-4 md:pt-12 md:pr-5">

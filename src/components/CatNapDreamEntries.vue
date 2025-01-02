@@ -4,6 +4,7 @@
       v-for="([date, details], index) in reversedDreams"
       :key="index"
       class="p-2 my-3 bg-gradient flex justify-between gap-5 items-center rounded-xl overflow-hidden"
+      @click = "selectDream(details, date)"
     >
       <p class="title text-lg font-bold">{{ details.title }}</p>
 
@@ -20,8 +21,12 @@ import { computed, defineProps } from 'vue'
 
 const props = defineProps<{
   dreams: [string, { title: string; content: string; emotion: number }][]
+  date: string
   short?: boolean
+  selected?: boolean
 }>()
+
+const emit = defineEmits(['dreamSelected'])
 
 const safeDreams = props.dreams || []
 
@@ -43,6 +48,12 @@ const reversedDreams = computed(() => {
   }
   return props.dreams.slice().reverse()
 })
+
+
+const selectDream = (dream: { title: string; content: string; emotion: number }, date: string) => {
+  emit('dreamSelected', { dream, date })
+  console.log(dream, date)
+}
 </script>
 
 <style scoped></style>

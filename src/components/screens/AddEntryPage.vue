@@ -10,6 +10,7 @@ import { useRouter } from 'vue-router'
 import CatNapAddEntry from '../CatNapAddEntry.vue'
 import CatNapDreamEntries from '../CatNapDreamEntries.vue'
 import CatNapSidebar from '../CatNapSidebar.vue'
+import CatNapReadEntry from '../CatNapReadEntry.vue'
 
 const userStore = useUserStore()
 const user = userStore.username
@@ -53,6 +54,17 @@ function toggleSidebar() {
 function closeSidebar() {
   isSidebarOpen.value = false
 }
+
+const selectedDream = ref(null)
+
+
+const handleDreamSelected = (dream: null) => {
+  selectedDream.value = dream
+}
+
+
+
+
 </script>
 
 <template>
@@ -112,14 +124,16 @@ function closeSidebar() {
           class="lg:w-1/3 bg-gradientGrayDown shadow-2xl rounded-xl p-5 overflow-auto"
         >
           <h2 class="text-gradient text-3xl font-bold w-fit pb-3">Your Dream Entries</h2>
-          <CatNapDreamEntries :dreams="entries" />
+          <CatNapDreamEntries :dreams="entries" :date="formattedDate" @dreamSelected="handleDreamSelected" />
         </div>
 
         <div
           class="bg-gradientGrayDown shadow-2xl rounded-xl p-5"
           :class="['lg:w-2/3', { '!w-full': !entries.length }]"
         >
-          <CatNapAddEntry :large="true" />
+          <CatNapAddEntry v-if="!selectedDream" :date="formattedDate" />
+        <CatNapReadEntry v-if="selectedDream" :dream="selectedDream" @close="selectedDream = null" />
+
         </div>
       </div>
     </div>

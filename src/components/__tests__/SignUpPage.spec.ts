@@ -52,7 +52,7 @@ describe('SignUpPage.vue', () => {
     await wrapper.find('input[placeholder="Username"]').setValue('janedoe');
     await wrapper.find('input[placeholder="Password"]').setValue('password123');
     await wrapper.find('button').trigger('click');
-    expect(routerPush).toHaveBeenCalledWith('/');
+    expect(routerPush).toHaveBeenCalledWith('/'); // redirects to login
     expect(routerPush).toHaveBeenCalledTimes(1);
   });
 });

@@ -16,6 +16,7 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
+    "@pinia/testing": "^0.1.7",
     "concurrently": "^9.1.0",
     "dotenv": "^16.4.7",
     "pinia": "^2.3.0",

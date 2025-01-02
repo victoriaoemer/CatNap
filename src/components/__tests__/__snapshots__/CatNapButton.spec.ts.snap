@@ -1,0 +1,13 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`CatNapButton.vue > matches snapshot for filled button 1`] = `
+"<div data-v-110b83fa=""><button data-v-110b83fa="" class="gradient-bg">Snapshot Button</button>
+  <!--v-if-->
+</div>"
+`;
+
+exports[`CatNapButton.vue > matches snapshot for outline button 1`] = `
+"<div data-v-110b83fa="">
+  <!--v-if--><button data-v-110b83fa="" class="border rounded-xl border-secondary">Snapshot Button</button>
+</div>"
+`;

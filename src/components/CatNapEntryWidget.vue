@@ -2,7 +2,7 @@
   <div class="grid gap-5 w-full" :class="{ 'grid-cols-2': entries.length > 0 }">
     <div v-if="userData.data">
       <h2 class="text-gradient text-3xl font-bold w-fit pb-3">Your Dream Diary</h2>
-      <CatNapDreamEntries :dreams="entries" :short="true" />
+      <CatNapDreamEntries :dreams="entries" :short="true" :date="new Date().toISOString()" />
     </div>
     <div>
       <CatNapAddEntry />

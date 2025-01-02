@@ -61,7 +61,11 @@ const selectedDream = ref<DreamSelected | null>(null)
 
 const handleDreamSelected = (dream: DreamSelected) => {
   selectedDream.value = dream
-  selectedDream.value.date = formattedDate
+  selectedDream.value.date = new Date(selectedDream.value.date).toLocaleDateString('en-GB', {
+    weekday: 'long',
+    day: 'numeric',
+    month: 'long',
+  })
 }
 
 // sidebar

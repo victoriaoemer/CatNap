@@ -47,6 +47,7 @@ describe('CatNapButton.vue', () => {
     expect(wrapper.find('button').exists()).toBe(false);
   });
 
+  // snapshot testing
   it('matches snapshot for filled button', () => {
     const wrapper = mount(Button, {
       props: {

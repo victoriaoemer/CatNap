@@ -1,0 +1,112 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`CatNapCalendar.vue > matches the snapshot 1`] = `
+"<div data-v-d61c7321="" class="flex flex-col gap-1 h-max p-2 rounded-2xl text-white w-max">
+  <div data-v-d61c7321="" class="grid grid-cols-7 gap-1 font-black text-md text-center">
+    <div data-v-d61c7321="" class="p-1 rounded">M</div>
+    <div data-v-d61c7321="" class="p-1 rounded">T</div>
+    <div data-v-d61c7321="" class="p-1 rounded">W</div>
+    <div data-v-d61c7321="" class="p-1 rounded">T</div>
+    <div data-v-d61c7321="" class="p-1 rounded bg-purple text-white">F</div>
+    <div data-v-d61c7321="" class="p-1 rounded">S</div>
+    <div data-v-d61c7321="" class="p-1 rounded">S</div>
+  </div>
+  <div data-v-d61c7321="" class="grid grid-cols-7 gap-1 justify-items-center">
+    <div data-v-d61c7321="" class="calendar-cell empty"></div>
+    <div data-v-d61c7321="" class="calendar-cell empty"></div>
+    <div data-v-d61c7321="" class="calendar-cell">
+      <div data-v-d61c7321="" class="rounded-full w-1 h-1 bg-gray-400"></div>
+    </div>
+    <div data-v-d61c7321="" class="calendar-cell">
+      <div data-v-d61c7321="" class="rounded-full w-1 h-1 bg-gray-400"></div>
+    </div>
+    <div data-v-d61c7321="" class="calendar-cell">
+      <div data-v-d61c7321="" class="rounded-full w-1 h-1 bg-gray-400"></div>
+    </div>
+    <div data-v-d61c7321="" class="calendar-cell">
+      <div data-v-d61c7321="" class="rounded-full w-1 h-1 bg-gray-400"></div>
+    </div>
+    <div data-v-d61c7321="" class="calendar-cell">
+      <div data-v-d61c7321="" class="rounded-full w-1 h-1 bg-gray-400"></div>
+    </div>
+    <div data-v-d61c7321="" class="calendar-cell">
+      <div data-v-d61c7321="" class="rounded-full w-1 h-1 bg-gray-400"></div>
+    </div>
+    <div data-v-d61c7321="" class="calendar-cell">
+      <div data-v-d61c7321="" class="rounded-full w-1 h-1 bg-gray-400"></div>
+    </div>
+    <div data-v-d61c7321="" class="calendar-cell">
+      <div data-v-d61c7321="" class="rounded-full w-1 h-1 bg-gray-400"></div>
+    </div>
+    <div data-v-d61c7321="" class="calendar-cell">
+      <div data-v-d61c7321="" class="rounded-full w-1 h-1 bg-gray-400"></div>
+    </div>
+    <div data-v-d61c7321="" class="calendar-cell">
+      <div data-v-d61c7321="" class="rounded-full w-1 h-1 bg-gray-400"></div>
+    </div>
+    <div data-v-d61c7321="" class="calendar-cell">
+      <div data-v-d61c7321="" class="rounded-full w-1 h-1 bg-gray-400"></div>
+    </div>
+    <div data-v-d61c7321="" class="calendar-cell">
+      <div data-v-d61c7321="" class="rounded-full w-1 h-1 bg-gray-400"></div>
+    </div>
+    <div data-v-d61c7321="" class="calendar-cell">
+      <div data-v-d61c7321="" class="rounded-full w-1 h-1 bg-gray-400"></div>
+    </div>
+    <div data-v-d61c7321="" class="calendar-cell">
+      <div data-v-d61c7321="" class="rounded-full w-1 h-1 bg-gray-400"></div>
+    </div>
+    <div data-v-d61c7321="" class="calendar-cell">
+      <div data-v-d61c7321="" class="rounded-full w-1 h-1 bg-gray-400"></div>
+    </div>
+    <div data-v-d61c7321="" class="calendar-cell">
+      <div data-v-d61c7321="" class="rounded-full w-1 h-1 bg-gray-400"></div>
+    </div>
+    <div data-v-d61c7321="" class="calendar-cell">
+      <div data-v-d61c7321="" class="rounded-full w-1 h-1 bg-gray-400"></div>
+    </div>
+    <div data-v-d61c7321="" class="calendar-cell">
+      <div data-v-d61c7321="" class="rounded-full w-1 h-1 bg-gray-400"></div>
+    </div>
+    <div data-v-d61c7321="" class="calendar-cell">
+      <div data-v-d61c7321="" class="rounded-full w-1 h-1 bg-gray-400"></div>
+    </div>
+    <div data-v-d61c7321="" class="calendar-cell">
+      <div data-v-d61c7321="" class="rounded-full w-1 h-1 bg-gray-400"></div>
+    </div>
+    <div data-v-d61c7321="" class="calendar-cell">
+      <div data-v-d61c7321="" class="rounded-full w-1 h-1 bg-gray-400"></div>
+    </div>
+    <div data-v-d61c7321="" class="calendar-cell">
+      <div data-v-d61c7321="" class="rounded-full w-1 h-1 bg-gray-400"></div>
+    </div>
+    <div data-v-d61c7321="" class="calendar-cell">
+      <div data-v-d61c7321="" class="rounded-full w-1 h-1 bg-gray-400"></div>
+    </div>
+    <div data-v-d61c7321="" class="calendar-cell">
+      <div data-v-d61c7321="" class="rounded-full w-1 h-1 bg-gray-400"></div>
+    </div>
+    <div data-v-d61c7321="" class="calendar-cell">
+      <div data-v-d61c7321="" class="rounded-full w-1 h-1 bg-gray-400"></div>
+    </div>
+    <div data-v-d61c7321="" class="calendar-cell">
+      <div data-v-d61c7321="" class="rounded-full w-1 h-1 bg-gray-400"></div>
+    </div>
+    <div data-v-d61c7321="" class="calendar-cell">
+      <div data-v-d61c7321="" class="rounded-full w-1 h-1 bg-gray-400"></div>
+    </div>
+    <div data-v-d61c7321="" class="calendar-cell">
+      <div data-v-d61c7321="" class="rounded-full w-1 h-1 bg-gray-400"></div>
+    </div>
+    <div data-v-d61c7321="" class="calendar-cell">
+      <div data-v-d61c7321="" class="rounded-full w-1 h-1 bg-gray-400"></div>
+    </div>
+    <div data-v-d61c7321="" class="calendar-cell">
+      <div data-v-d61c7321="" class="rounded-full w-1 h-1 bg-gray-400"></div>
+    </div>
+    <div data-v-d61c7321="" class="calendar-cell">
+      <div data-v-d61c7321="" class="rounded-full w-1 h-1 bg-gray-400"></div>
+    </div>
+  </div>
+</div>"
+`;

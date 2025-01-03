@@ -1,0 +1,3 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`CatNapInput.vue > matches the snapshot 1`] = `"<div class="gradient-border-bottom w-full"><input class="bg-transparent focus:outline-none pb-1" type="password" placeholder="Enter text..."></div>"`;

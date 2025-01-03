@@ -33,13 +33,18 @@ const imageMap: Record<number, string> = {
 }
 
 const entries = ref<[string, { title: string; content: string; emotion: number }][]>([])
+
+const updateEntries = async () => {
+  const data = await userStore.getUserData(user)
+  userData.value = data
+  if (data.data) {
+    entries.value = Object.entries(data.data)
+  }
+}
+
 onMounted(async () => {
   try {
-    const data = await userStore.getUserData(user)
-    userData.value = data
-    if (data.data) {
-      entries.value = Object.entries(data.data)
-    }
+    updateEntries()
   } catch (error) {
     console.error(error)
   }
@@ -120,7 +125,7 @@ function closeSidebar() {
 
         <div class="bg-gradientGrayDown shadow-2xl rounded-xl p-5"
           :class="['lg:w-2/3', { '!w-full': !entries.length }]">
-          <CatNapAddEntry v-if="!selectedDream" :date="formattedDate" />
+          <CatNapAddEntry v-if="!selectedDream" :date="formattedDate" :onUpdateEntries="updateEntries" />
           <CatNapReadEntry v-if="selectedDream" :dream="{ ...selectedDream.dream, date: selectedDream.date }"
             @close="selectedDream = null" />
         </div>

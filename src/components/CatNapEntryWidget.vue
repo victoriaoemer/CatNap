@@ -5,23 +5,44 @@
       <CatNapDreamEntries :dreams="entries" :short="true" :date="new Date().toISOString()" />
     </div>
     <div>
-      <CatNapAddEntry />
+      <CatNapAddEntry :date="formattedDate" :onUpdateEntries="updateEntries" />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import type { UserData } from '@/types/User'
-import { computed } from 'vue'
+import { useUserStore, type UserData } from '@/types/User'
+import {  onMounted, ref } from 'vue'
 import CatNapAddEntry from './CatNapAddEntry.vue'
 import CatNapDreamEntries from './CatNapDreamEntries.vue'
 
-const props = defineProps<{
-  userData: UserData
-}>()
+const userData = ref<UserData>({} as UserData)
 
-const entries = computed(() => {
-  return props.userData.data ? Object.entries(props.userData.data) : []
+const userStore = useUserStore()
+const user = userStore.username
+const date = new Date()
+const formattedDate = date.toLocaleDateString('en-GB', {
+  weekday: 'long',
+  day: 'numeric',
+  month: 'long',
+})
+
+const entries = ref<[string, { title: string; content: string; emotion: number }][]>([])
+
+const updateEntries = async () => {
+  const data = await userStore.getUserData(user)
+  userData.value = data
+  if (data.data) {
+    entries.value = Object.entries(data.data)
+  }
+}
+
+onMounted(async () => {
+  try {
+    updateEntries()
+  } catch (error) {
+    console.error(error)
+  }
 })
 </script>
 

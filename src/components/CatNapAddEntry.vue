@@ -75,9 +75,7 @@
 <script setup lang="ts">
 import { useUserStore } from '@/types/User'
 import { ref } from 'vue'
-import { useRouter } from 'vue-router'
 
-const router = useRouter()
 const userStore = useUserStore()
 const user = userStore.username
 const msg = ref('')

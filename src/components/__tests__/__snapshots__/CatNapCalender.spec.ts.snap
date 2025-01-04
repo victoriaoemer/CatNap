@@ -7,8 +7,8 @@ exports[`CatNapCalendar.vue > matches the snapshot 1`] = `
     <div data-v-d61c7321="" class="p-1 rounded">T</div>
     <div data-v-d61c7321="" class="p-1 rounded">W</div>
     <div data-v-d61c7321="" class="p-1 rounded">T</div>
-    <div data-v-d61c7321="" class="p-1 rounded bg-purple text-white">F</div>
-    <div data-v-d61c7321="" class="p-1 rounded">S</div>
+    <div data-v-d61c7321="" class="p-1 rounded">F</div>
+    <div data-v-d61c7321="" class="p-1 rounded bg-purple text-white">S</div>
     <div data-v-d61c7321="" class="p-1 rounded">S</div>
   </div>
   <div data-v-d61c7321="" class="grid grid-cols-7 gap-1 justify-items-center">

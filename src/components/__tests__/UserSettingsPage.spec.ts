@@ -11,6 +11,15 @@ vi.mock('vue-router', async () => ({
   }),
 }));
 
+// Mock User store
+vi.mock('@/types/User', () => ({
+  useUserStore: vi.fn(() => ({
+    getUsers: vi.fn().mockResolvedValue([{ username: 'testuser' }]),
+    createUser: vi.fn(),
+    createUserData: vi.fn(),
+  })),
+}));
+
 // Mock child components
 vi.mock('@/components/CatNapSidebar.vue', () => ({
   default: {
@@ -34,5 +43,4 @@ describe('UserSettingsPage.vue', () => {
     await wrapper.find('button').trigger('click');
     expect(wrapper.classes()).toContain('overflow-hidden');
   });
-
 });

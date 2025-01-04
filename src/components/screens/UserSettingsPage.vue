@@ -6,7 +6,7 @@ import MunchkinLucky from '@/assets/cat-profile/munchkin-lucky.svg'
 import MunchKindRed from '@/assets/cat-profile/munchkin-red.svg'
 import { usePixabayStore } from '@/types/Pixabay'
 import { useQuoteStore } from '@/types/Quotes'
-import type { UserData } from '@/types/User'
+import type { User, UserData } from '@/types/User'
 import { useUserStore } from '@/types/User'
 import { onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
@@ -28,6 +28,8 @@ const profilePicture = ref(1)
 const user = userStore.username
 const userData = ref<UserData>({} as UserData)
 
+const userLoginData = ref<User>({} as User)
+
 const msg = ref('')
 
 const firstName = ref('')
@@ -45,10 +47,19 @@ const formattedDate = date.toLocaleDateString('en-GB', {
 onMounted(async () => {
   try {
     const data = await userStore.getUserData(user)
+    const loginData = await userStore
+      .getUsers()
+      .then((users) => users.find((u) => u.username === user))
+    userLoginData.value = loginData
     userData.value = data
     newThemeQuote.value = data.settings.themeQuote
     newThemeImage.value = data.settings.themeImage
     profilePicture.value = data.settings.profilePicture
+
+    firstName.value = loginData.firstName
+    lastName.value = loginData.lastName
+    username.value = loginData.username
+    password.value = loginData.password
   } catch (error) {
     console.error(error)
   }
@@ -107,11 +118,6 @@ const updateUser = async () => {
   userStore.firstName = firstName.value
   userStore.lastName = lastName.value
   userStore.password = password.value
-
-  firstName.value = ''
-  lastName.value = ''
-  username.value = ''
-  password.value = ''
 }
 
 const clearWarning = () => {

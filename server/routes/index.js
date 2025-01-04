@@ -147,7 +147,7 @@ router.put("/update-data/:username", async (req, res) => {
 router.put("/update-settings/:username", async (req, res) => {
   try {
     const { username } = req.params;
-    const newEntry = req.body; // Direkter Zugriff auf den gesendeten Eintrag
+    const newEntry = req.body;
     const collection = await getCatNapCollection();
 
     await collection.updateOne(
@@ -165,7 +165,6 @@ router.put("/update-settings/:username", async (req, res) => {
 
 // Reset user data
 router.put("/reset-data/:username", async (req, res) => {
-
   // delete de entire data object including the "data" key
   try {
     const { username } = req.params;

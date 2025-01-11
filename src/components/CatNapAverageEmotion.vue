@@ -42,7 +42,7 @@ const imageMap: Record<number, string> = {
   3: catPinHappy,
 }
 
-const month = ref<string>('12')
+const month = ref<string>((new Date().getMonth() + 1).toString().padStart(2, '0'))
 
 const emotionsPerMonth = computed(() => {
   if (!props.userData.data) {

@@ -316,9 +316,26 @@ const deleteAccount = () => {
               </div>
               <div>
                 <label for="image" class="block mb-2 font-semibold text-lg">Image</label>
-                <CatNapInput
+                <CatNapSelect
                   v-model="newThemeImage"
-                  :placeholder="pixabayStore.theme"
+                  :options="[
+                    'Dreams',
+                    'Clouds',
+                    'Stars',
+                    'Moonlight',
+                    'Galaxy',
+                    'Fantasy',
+                    'Mystical',
+                    'Surreal',
+                    'Journey',
+                    'Illusion',
+                    'Nightfall',
+                    'Sunset',
+                    'Sunrise',
+                    'Horizon',
+                    'Twilight',
+                  ]"
+                  :placeholder="'Select a quote'"
                   @change="newThemeImage = $event.target.value"
                   :settings="true"
                 />

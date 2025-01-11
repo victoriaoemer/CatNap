@@ -75,9 +75,7 @@
 <script setup lang="ts">
 import { useUserStore } from '@/types/User'
 import { ref } from 'vue'
-import { useRouter } from 'vue-router'
 
-const router = useRouter()
 const userStore = useUserStore()
 const user = userStore.username
 const msg = ref('')
@@ -88,6 +86,7 @@ const emotion = ref(0)
 
 const props = defineProps({
   large: Boolean,
+  onUpdateEntries: Function,
 })
 
 const selectEmotion = (selectedEmotion: number) => {
@@ -98,23 +97,32 @@ const selectEmotion = (selectedEmotion: number) => {
 const updateData = async () => {
   try {
     if (!title.value || !content.value || !emotion.value) {
-      msg.value = 'Please fill out all fields'
-      return
+      msg.value = 'Please fill out all fields';
+      return;
     }
     const newEntry = {
       title: title.value,
       content: content.value,
       emotion: emotion.value,
+    };
+
+    userStore.updateUserData(user, newEntry);
+
+    const updatedEntries = await userStore.getUserData(user);
+    if (props.onUpdateEntries) {
+      props.onUpdateEntries(updatedEntries);
     }
 
-    userStore.updateUserData(user, newEntry)
-
-    // reload page to display new entry
-    router.go(0)
+    // Formular zurücksetzen
+    title.value = '';
+    content.value = '';
+    emotion.value = 0;
+    clearWarning();
   } catch (error) {
-    console.error('Fehler beim Abrufen der Benutzer:', error)
+    console.error('Fehler beim Abrufen der Benutzer:', error);
   }
-}
+};
+
 
 const clearWarning = () => {
   msg.value = ''

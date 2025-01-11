@@ -184,10 +184,7 @@ const clearWarning = () => {
 }
 
 const logout = () => {
-  userStore.firstName = ''
-  userStore.lastName = ''
-  userStore.username = ''
-  userStore.password = ''
+  userStore.logout()
   router.push('/')
 }
 

@@ -1,6 +1,6 @@
-import { mount } from '@vue/test-utils';
-import { describe, it, expect } from 'vitest';
 import CatNapDreamEntries from '@/components/CatNapDreamEntries.vue';
+import { mount } from '@vue/test-utils';
+import { describe, expect, it } from 'vitest';
 
 describe('CatNapDreamEntries.vue', () => {
   const dreams: [string, { title: string; content: string; emotion: number; }][] = [
@@ -10,7 +10,7 @@ describe('CatNapDreamEntries.vue', () => {
 
   it('displays dream entries in reverse order', () => {
     const wrapper = mount(CatNapDreamEntries, {
-      props: { dreams },
+      props: { dreams, date: '2025-01-01' },
     });
     const titles = wrapper.findAll('.title').map((el) => el.text());
     expect(titles).toEqual(['Dream 2', 'Dream 1']);
@@ -18,7 +18,7 @@ describe('CatNapDreamEntries.vue', () => {
 
   it('shows the correct emotion badge', () => {
     const wrapper = mount(CatNapDreamEntries, {
-      props: { dreams },
+      props: { dreams, date: '2025-01-01' },
     });
     const badges = wrapper.findAll('.bg-emotion-green');
     expect(badges.length).toBe(1);

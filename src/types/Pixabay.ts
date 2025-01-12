@@ -4,6 +4,7 @@ import { useUserStore } from './User';
 interface UserImageState {
   image: string | null;
   lastUpdated: string | null;
+  theme: string | null; // Theme hinzugefügt
 }
 
 interface PixabayState {
@@ -15,8 +16,8 @@ interface PixabayState {
 export const usePixabayStore = defineStore('pixabay', {
   state: (): PixabayState => ({
     apiKey: import.meta.env.VITE_PIXABAY_API_KEY || '',
-    theme: 'moon',
-    userImages: {},
+    theme: 'moon', // Standardwert
+    userImages: {}, // Benutzerbilder mit Thema und anderen Metadaten
   }),
   actions: {
     async initializeTheme() {
@@ -26,10 +27,8 @@ export const usePixabayStore = defineStore('pixabay', {
           console.warn('UserStore is not properly initialized.');
           return;
         }
-
         const user = userStore.username;
         const data = await userStore.getUserData(user);
-
         if (data.settings?.themeImage) {
           this.theme = data.settings.themeImage;
         }
@@ -44,6 +43,12 @@ export const usePixabayStore = defineStore('pixabay', {
         console.warn('UserStore is not properly initialized.');
         return;
       }
+
+      // Aktualisiere das Theme in den Benutzerbildern
+      if (this.userImages[userID]) {
+        this.userImages[userID].theme = theme;
+      }
+
       this.confirmThemeChange(userID, theme);
     },
     confirmThemeChange(userID: string, theme: string) {
@@ -80,6 +85,7 @@ export const usePixabayStore = defineStore('pixabay', {
             this.userImages[userID] = {
               image: newImage,
               lastUpdated: today,
+              theme: this.theme, // Theme hinzufügen
             };
 
             console.log('Fetched new image for theme:', this.theme, 'for user:', userID);
@@ -95,6 +101,9 @@ export const usePixabayStore = defineStore('pixabay', {
     },
     getUserImage(userID: string): string {
       return this.userImages[userID]?.image || '';
+    },
+    getUserTheme(userID: string): string {
+      return this.userImages[userID]?.theme || 'default';
     },
   },
   persist: true,

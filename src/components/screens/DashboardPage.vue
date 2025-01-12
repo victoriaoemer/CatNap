@@ -40,15 +40,12 @@ onMounted(async () => {
   try {
     const data = await userStore.getUserData(user);
     userData.value = data;
-
-
     const pixabayStore = usePixabayStore();
     const userImage = pixabayStore.getUserImage(user);
 
     if (userImage.valueOf() === '') {
       await pixabayStore.fetchImage(true, data.username);
     }
-
     console.log('User Data:', data);
     console.log('User Image:', userImage);
   } catch (error) {

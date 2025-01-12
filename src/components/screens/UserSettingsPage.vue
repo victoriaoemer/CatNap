@@ -67,7 +67,7 @@ onMounted(async () => {
       .then((users) => users.find((u: User) => u.username === user))
     userLoginData.value = loginData
     userData.value = data
-    newThemeImage.value = data.settings.themeImage
+    newThemeImage.value = pixabayStore.getUserTheme(user)
     profilePicture.value = data.settings.profilePicture
     firstName.value = loginData.firstName
     lastName.value = loginData.lastName
@@ -78,13 +78,14 @@ onMounted(async () => {
 watch(
   () => userStore.settings,
   (newSettings) => {
-    newThemeImage.value = newSettings?.themeImage || 'default';
+    newThemeImage.value = newSettings?.themeImage || 'moon';
     profilePicture.value = newSettings?.profilePicture || 1;
   },
   { immediate: true }
 );
 
   } catch (error) {
+    console.log('old Theme ' + userData.value.settings.themeImage)
     console.error(error)
   }
 })
@@ -150,7 +151,7 @@ function confimUpdateTheme() {
 const updateTheme = () => {
   updateThemeAndSyncStores();
   console.log('Theme updated new Theme ' + newThemeImage.value)
-  console.log('old Theme ' + userData.value.settings.themeImage)
+
   overlayVisible.value = false
 }
 
@@ -377,7 +378,7 @@ const deleteAccount = () => {
                     'Twilight',
                   ]"
                   :placeholder="'Select a Theme'"
-                  @change="newThemeImage = $event.target.value"
+                  @change="pixabayStore.getUserTheme(user)"
                   :settings="true"
                 />
               </div>

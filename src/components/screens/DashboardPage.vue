@@ -117,7 +117,7 @@ const getUsername = computed(() => {
         </div>
         <div class="lg:w-2/3 bg-gradientGrayDown shadow-2xl rounded-xl h-full">
           <div class="p-5 flex justify-between h-full w-full">
-            <CatNapEntryWidget :userData="userData" />
+            <CatNapEntryWidget :userData="userData"/>
           </div>
         </div>
       </div>

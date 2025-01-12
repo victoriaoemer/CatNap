@@ -1,7 +1,10 @@
 <template>
   <div v-if="safeDreams.length > 0">
     <div v-for="([date, details], index) in reversedDreams" :key="index"
-      class="p-2 my-3 bg-gradient flex justify-between gap-5 items-center rounded-xl overflow-hidden"
+      :class="[
+        'p-2 my-3 flex border border-secondary justify-between gap-5 items-center rounded-xl overflow-hidden',
+        !disableHover && 'hover:bg-gradient',
+      ]"
       @click="selectDream(details, date)">
       <p class="title text-lg font-bold">{{ details.title }}</p>
       <div class="flex flex-col gap-2 items-end">
@@ -20,11 +23,14 @@ const props = defineProps<{
   date: string
   short?: boolean
   selected?: boolean
+  disableHover?: boolean
+
 }>()
 
 const emit = defineEmits(['dreamSelected'])
 
 const safeDreams = props.dreams || []
+
 
 const emotionConverter = (emotion: number) => {
   if (emotion) {

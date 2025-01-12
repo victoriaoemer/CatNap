@@ -62,7 +62,7 @@
       <img
         src="@/assets/icons/add.svg"
         alt="Add"
-        class="absolute bottom-5 right-5 h-10 border border-purple rounded-xl"
+        class="absolute bottom-5 right-5 h-10 border border-purple rounded-xl hover:bg-gradient"
         @click="updateData"
       />
       <div v-if="msg" class="absolute bottom-5 left-5 text-red-500 text-sm">

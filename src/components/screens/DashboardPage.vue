@@ -1,39 +1,19 @@
 <script setup lang="ts">
-import MunchkinBlue from '@/assets/cat-profile/munchkin-blue.svg'
-import MunchkinDefault from '@/assets/cat-profile/munchkin-default.svg'
-import MunchkinGreen from '@/assets/cat-profile/munchkin-green.svg'
-import MunchkinLucky from '@/assets/cat-profile/munchkin-lucky.svg'
-import MunchKindRed from '@/assets/cat-profile/munchkin-red.svg'
+
 import { useUserStore, type UserData } from '@/types/User'
 import { computed, onMounted, ref } from 'vue'
-import { useRouter } from 'vue-router'
+//import { useRouter } from 'vue-router'
 import CatNapAverageEmotion from '../CatNapAverageEmotion.vue'
 import CatNapCalendar from '../CatNapCalendar.vue'
 import CatNapEntryWidget from '../CatNapEntryWidget.vue'
 import CatNapSidebar from '../CatNapSidebar.vue'
 import CatNapQuoteDisplay from '../CatNapQuoteDisplay.vue'
+import CatNapTimestamp from '../CatNapTimestamp.vue'
 
 const userStore = useUserStore()
 const user = userStore.username
 
-const router = useRouter()
-
 const userData = ref<UserData>({} as UserData)
-
-const date = new Date()
-const formattedDate = date.toLocaleDateString('en-GB', {
-  weekday: 'long',
-  day: 'numeric',
-  month: 'long',
-})
-
-const imageMap: Record<number, string> = {
-  1: MunchkinDefault,
-  2: MunchKindRed,
-  3: MunchkinBlue,
-  4: MunchkinLucky,
-  5: MunchkinGreen,
-}
 
 onMounted(async () => {
   try {
@@ -90,19 +70,7 @@ const getUsername = computed(() => {
         <button @click="toggleSidebar" class="md:hidden">
           <img src="@/assets/icons/menu.svg" alt="Menu" class="h-8 w-max" />
         </button>
-        <div class="md:text-lg py-1 px-3 rounded-xl border border-purple md:border-secondary">
-          {{ formattedDate }}
-        </div>
-        <div class="md:bg-secondary bg-purple p-2 rounded-full">
-          <div v-if="userData.settings">
-            <img
-              :src="imageMap[userData.settings.profilePicture || 1]"
-              alt="Cat"
-              class="cursor-pointer"
-              @click="router.push('/settings/' + userData.username)"
-            />
-          </div>
-        </div>
+        <CatNapTimestamp :userData="userData"/>
       </div>
 
       <div class="mb-5 pt-5 px-6 md:p-0">

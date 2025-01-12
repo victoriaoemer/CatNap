@@ -14,6 +14,7 @@ import CatNapButton from '../CatNapButton.vue'
 import CatNapInput from '../CatNapInput.vue'
 import CatNapSelect from '../CatNapSelect.vue'
 import CatNapSidebar from '../CatNapSidebar.vue'
+import CatNapTimestamp from '../CatNapTimestamp.vue'
 
 const router = useRouter()
 
@@ -37,19 +38,12 @@ const lastName = ref('')
 const username = ref('')
 const password = ref('')
 
-const date = new Date()
-const formattedDate = date.toLocaleDateString('en-GB', {
-  weekday: 'long',
-  day: 'numeric',
-  month: 'long',
-})
-
 onMounted(async () => {
   try {
     const data = await userStore.getUserData(user)
     const loginData = await userStore
       .getUsers()
-      .then((users) => users.find((u) => u.username === user))
+      .then((users) => users.find((u: User) => u.username === user))
     userLoginData.value = loginData
     userData.value = data
     newThemeQuote.value = data.settings.themeQuote
@@ -172,12 +166,7 @@ const deleteAccount = () => {
         <button @click="toggleSidebar" class="md:hidden">
           <img src="@/assets/icons/menu.svg" alt="Menu" class="h-8 w-max" />
         </button>
-        <div class="md:text-lg py-1 px-3 rounded-xl border border-purple md:border-secondary">
-          {{ formattedDate }}
-        </div>
-        <div class="md:bg-secondary bg-purple p-2 rounded-full">
-          <img :src="imageMap[profilePicture]" alt="Cat" />
-        </div>
+        <CatNapTimestamp/>
       </div>
 
       <div class="flex">

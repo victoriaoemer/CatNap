@@ -97,32 +97,34 @@ const selectEmotion = (selectedEmotion: number) => {
 const updateData = async () => {
   try {
     if (!title.value || !content.value || !emotion.value) {
-      msg.value = 'Please fill out all fields';
-      return;
+      msg.value = 'Please fill out all fields'
+      return
     }
     const newEntry = {
       title: title.value,
       content: content.value,
       emotion: emotion.value,
-    };
+    }
 
-    userStore.updateUserData(user, newEntry);
+    userStore.updateUserData(user, newEntry)
 
-    const updatedEntries = await userStore.getUserData(user);
+    const updatedEntries = await userStore.getUserData(user)
     if (props.onUpdateEntries) {
-      props.onUpdateEntries(updatedEntries);
+      props.onUpdateEntries(updatedEntries)
     }
 
     // Formular zurücksetzen
-    title.value = '';
-    content.value = '';
-    emotion.value = 0;
-    clearWarning();
-  } catch (error) {
-    console.error('Fehler beim Abrufen der Benutzer:', error);
-  }
-};
+    title.value = ''
+    content.value = ''
+    emotion.value = 0
+    clearWarning()
 
+    // to update all widgets in the dashboard
+    window.location.reload()
+  } catch (error) {
+    console.error('Fehler beim Abrufen der Benutzer:', error)
+  }
+}
 
 const clearWarning = () => {
   msg.value = ''

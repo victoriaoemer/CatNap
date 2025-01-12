@@ -4,7 +4,7 @@
       <p class="mb-3 font-bold text-3xl text-gradient-blue w-fit">Today's Picture</p>
       </div>
     </div>
-    <div v-if="image" class="relative lg:top-10">
+  <div v-if="image" class="relative lg:top-10">
   <img
     src="@/assets/cat-images/cat-home2.svg"
     alt="Cat"
@@ -14,7 +14,7 @@
     <img
       :src="image"
       alt="Pixabay Image"
-      class="rounded-xl border-2 object-fit border-emotion-green w-full"
+      class="rounded-xl border-2 border-emotion-green w-full"
     />
   </div>
 </div>

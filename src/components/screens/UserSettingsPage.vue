@@ -74,15 +74,15 @@ onMounted(async () => {
     username.value = loginData.username
     password.value = loginData.password
 
-    // Synchronisierung von Einstellungen mit dem Store
-watch(
-  () => userStore.settings,
-  (newSettings) => {
-    newThemeImage.value = newSettings?.themeImage || 'moon';
-    profilePicture.value = newSettings?.profilePicture || 1;
-  },
-  { immediate: true }
-);
+    // synchronisation with the stores
+    watch(
+      () => userStore.settings,
+      (newSettings) => {
+        newThemeImage.value = pixabayStore.getUserTheme(user)
+        profilePicture.value = newSettings?.profilePicture || 1
+      },
+      { immediate: true }
+    );
 
   } catch (error) {
     console.log('old Theme ' + userData.value.settings.themeImage)

@@ -53,7 +53,6 @@ onMounted(async () => {
   }
 });
 
-
 const isSidebarOpen = ref(false)
 
 function toggleSidebar() {

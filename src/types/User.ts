@@ -1,5 +1,4 @@
 import { defineStore } from "pinia"
-import { usePixabayStore } from "./Pixabay"
 
 export interface User {
   firstName: string,
@@ -46,8 +45,7 @@ export const useUserStore = defineStore('user', {
       this.username = user.username;
       this.password = user.password
       this.isAuthenticated = true;
-
-      console.log('User logged in:', this.username)
+      //console.log('User logged in:', this.username)
     },
     logout() {
       this.firstName = '';
@@ -89,15 +87,12 @@ export const useUserStore = defineStore('user', {
         }
 
         const updatedData = await response.json();
-        const pixabayStore = usePixabayStore();
-        const theme = pixabayStore.$state.theme;
 
-        // Aktualisiere den lokalen Zustand
+        // update local state
         if (updatedData && updatedData.settings) {
-          this.settings = updatedData.settings; // Sicherstellen, dass der Zustand korrekt aktualisiert wird
+          this.settings = updatedData.settings;
         } else {
-          this.settings = { themeImage: settings.themeImage , profilePicture: settings.profilePicture }; // Fallback, falls die Antwort fehlerhaft ist
-          console.log('theme', theme)
+          this.settings = { themeImage: settings.themeImage , profilePicture: settings.profilePicture }; // fallback
         }
       } catch (error) {
         console.error("Error updating user settings:", error);

@@ -4,7 +4,7 @@ import { useUserStore } from './User';
 interface UserImageState {
   image: string | null;
   lastUpdated: string | null;
-  theme: string | null; // Theme hinzugefügt
+  theme: string | null;
 }
 
 interface PixabayState {
@@ -16,8 +16,8 @@ interface PixabayState {
 export const usePixabayStore = defineStore('pixabay', {
   state: (): PixabayState => ({
     apiKey: import.meta.env.VITE_PIXABAY_API_KEY || '',
-    theme: 'moon', // Standardwert
-    userImages: {}, // Benutzerbilder mit Thema und anderen Metadaten
+    theme: 'moon', // default
+    userImages: {}, // UserImages with Image, Theme and date
   }),
   actions: {
     async initializeTheme() {
@@ -43,17 +43,15 @@ export const usePixabayStore = defineStore('pixabay', {
         console.warn('UserStore is not properly initialized.');
         return;
       }
-
-      // Aktualisiere das Theme in den Benutzerbildern
       if (this.userImages[userID]) {
         this.userImages[userID].theme = theme;
       }
 
-      this.confirmThemeChange(userID, theme);
+      this.confirmThemeChange(userID);
     },
-    confirmThemeChange(userID: string, theme: string) {
+    confirmThemeChange(userID: string) {
       this.fetchImage(true, userID);
-      console.log('Theme changed to:', theme, 'for user:', userID);
+      //console.log('Theme changed to:', theme, 'for user:', userID);
     },
     async fetchImage(force = false, userID: string) {
       if (!this.apiKey) {
@@ -68,7 +66,7 @@ export const usePixabayStore = defineStore('pixabay', {
         this.userImages[userID] &&
         this.userImages[userID].lastUpdated === today
       ) {
-        console.log('Image already fetched for today for user:', userID);
+        //console.log('Image already fetched for today for user:', userID);
         return;
       }
 
@@ -85,10 +83,10 @@ export const usePixabayStore = defineStore('pixabay', {
             this.userImages[userID] = {
               image: newImage,
               lastUpdated: today,
-              theme: this.theme, // Theme hinzufügen
+              theme: this.theme,
             };
 
-            console.log('Fetched new image for theme:', this.theme, 'for user:', userID);
+            //console.log('Fetched new image for theme:', this.theme, 'for user:', userID);
           } else {
             console.warn('No images found for theme:', this.theme);
           }

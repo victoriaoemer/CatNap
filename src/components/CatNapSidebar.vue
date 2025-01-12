@@ -20,7 +20,7 @@
         active-class="bg-gradient"
         class="relative p-2 border border-secondary rounded-xl w-full flex items-center justify-center hover:bg-gradient"
       >
-        <img src="@/assets/icons/add.svg" alt="Add" class="w-full h-full object-contain" />
+        <img src="@/assets/icons/add-book.svg" alt="Add" class="w-full h-full object-contain" />
       </RouterLink>
     </div>
     <div class="flex flex-col items-center gap-3">

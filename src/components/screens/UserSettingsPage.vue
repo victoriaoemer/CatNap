@@ -14,6 +14,7 @@ import CatNapInput from '../CatNapInput.vue'
 import CatNapOverlay from '../CatNapOverlay.vue'
 import CatNapSelect from '../CatNapSelect.vue'
 import CatNapSidebar from '../CatNapSidebar.vue'
+import CatNapTimestamp from '../CatNapTimestamp.vue'
 
 const router = useRouter()
 
@@ -37,19 +38,6 @@ const lastName = ref('')
 const username = ref('')
 const password = ref('')
 
-const date = new Date()
-const formattedDate = date.toLocaleDateString('en-GB', {
-  weekday: 'long',
-  day: 'numeric',
-  month: 'long',
-})
-
-// confirmation overlay
-const overlayVisible = ref(false)
-const overlayContent = ref('Title')
-const overlayTitle = ref('hi')
-const overlayButtons = ref([{ text: '', action: () => {} }])
-
 const imageMap: Record<number, string> = {
   1: MunchkinDefault,
   2: MunchKindRed,
@@ -57,6 +45,12 @@ const imageMap: Record<number, string> = {
   4: MunchkinLucky,
   5: MunchkinGreen,
 }
+
+// confirmation overlay
+const overlayVisible = ref(false)
+const overlayContent = ref('Title')
+const overlayTitle = ref('hi')
+const overlayButtons = ref([{ text: '', action: () => {} }])
 
 onMounted(async () => {
 
@@ -120,7 +114,20 @@ function closeOverlay() {
   overlayButtons.value = []
 }
 
-function confirmUpdateUser() {
+async function confirmUpdateUser() {
+  const users = await userStore.getUsers()
+  const user = users.find((user: User) => user.username === username.value)
+
+  if (!firstName.value || !lastName.value || !username.value || !password.value) {
+    msg.value = 'Please fill out all fields'
+    return
+  }
+
+  if (user) {
+    msg.value = 'Username already exists'
+    return
+  }
+
   showOverlay('Update User?', 'Are you sure you want to update your user?', [
     { text: 'Cancel', action: closeOverlay },
     { text: 'Update', action: updateUser },
@@ -171,11 +178,6 @@ const updateThemeAndSyncStores = async () => {
 
 
 const updateUser = async () => {
-  if (!firstName.value || !lastName.value || !username.value || !password.value) {
-    msg.value = 'Please fill out all fields'
-    return
-  }
-
   userStore.updateUser(userData.value.username, {
     firstName: firstName.value,
     lastName: lastName.value,
@@ -200,10 +202,7 @@ const clearWarning = () => {
   msg.value = ''
 }
 
-const logout = () => {
-  userStore.logout()
-  router.push('/')
-}
+
 
 const resetData = () => {
   userStore.resetUserdata(userStore.username)
@@ -254,12 +253,7 @@ const deleteAccount = () => {
         <button @click="toggleSidebar" class="md:hidden">
           <img src="@/assets/icons/menu.svg" alt="Menu" class="h-8 w-max" />
         </button>
-        <div class="md:text-lg py-1 px-3 rounded-xl border border-purple md:border-secondary">
-          {{ formattedDate }}
-        </div>
-        <div class="md:bg-secondary bg-purple p-2 rounded-full">
-          <img :src="imageMap[profilePicture]" alt="Cat" />
-        </div>
+        <CatNapTimestamp />
       </div>
 
       <div class="flex">
@@ -275,7 +269,6 @@ const deleteAccount = () => {
         <div class="md:w-2/5 bg-gradientGrayDown shadow-2xl rounded-xl p-3">
           <h3 class="flex justify-between">
             <p class="font-semibold text-3xl text-gradient">Profile</p>
-            <CatNapButton class="w-fit" text="Logout" type="outline" @click="logout" />
           </h3>
 
           <div class="flex flex-col gap-3 mt-4">

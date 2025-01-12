@@ -11,7 +11,6 @@ export interface User {
 export interface UserData {
   username: string,
   settings: {
-    themeQuote: string,
     themeImage: string,
     profilePicture: number
   },
@@ -65,7 +64,7 @@ export const useUserStore = defineStore('user', {
       })
       return response.json()
     },
-    async updateUserSettings(username: string, settings: { themeQuote: string, themeImage: string, profilePicture: number }) {
+    async updateUserSettings(username: string, settings: { themeImage: string, profilePicture: number }) {
       const response = await fetch(`http://localhost:4000/update-settings/${username}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },

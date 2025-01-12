@@ -30,7 +30,6 @@ describe('CatNapEntryWidget.vue', () => {
           data: [{ title: 'Test Dream', content: 'Test content', emotion: 2 }],
           username: 'testuser',
           settings: {
-            themeQuote: '',
             themeImage: '',
             profilePicture: 0,
           },

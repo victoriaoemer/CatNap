@@ -5,7 +5,6 @@ import MunchkinGreen from '@/assets/cat-profile/munchkin-green.svg'
 import MunchkinLucky from '@/assets/cat-profile/munchkin-lucky.svg'
 import MunchKindRed from '@/assets/cat-profile/munchkin-red.svg'
 import { usePixabayStore } from '@/types/Pixabay'
-import { useQuoteStore } from '@/types/Quotes'
 import type { User, UserData } from '@/types/User'
 import { useUserStore } from '@/types/User'
 import { onMounted, ref } from 'vue'
@@ -20,10 +19,8 @@ const router = useRouter()
 
 const userStore = useUserStore()
 const pixabayStore = usePixabayStore()
-const quoteStore = useQuoteStore()
 
 const newThemeImage = ref('')
-const newThemeQuote = ref('')
 const profilePicture = ref(1)
 
 const user = userStore.username
@@ -69,7 +66,6 @@ onMounted(async () => {
       .then((users) => users.find((u: User) => u.username === user))
     userLoginData.value = loginData
     userData.value = data
-    newThemeQuote.value = data.settings.themeQuote
     newThemeImage.value = data.settings.themeImage
     profilePicture.value = data.settings.profilePicture
 
@@ -142,10 +138,7 @@ function confimUpdateTheme() {
 const updateTheme = () => {
   pixabayStore.setNewTheme(newThemeImage.value)
   pixabayStore.confirmThemeChange()
-  quoteStore.setNewTheme(newThemeQuote.value)
-  quoteStore.confirmThemeChange()
   userStore.updateUserSettings(user, {
-    themeQuote: newThemeQuote.value,
     themeImage: newThemeImage.value,
     profilePicture: profilePicture.value,
   })
@@ -166,7 +159,6 @@ const updateUser = async () => {
   })
 
   userStore.updateUserSettings(user, {
-    themeQuote: newThemeQuote.value,
     themeImage: newThemeImage.value,
     profilePicture: profilePicture.value,
   })
@@ -340,46 +332,6 @@ const deleteAccount = () => {
             <h3 class="font-semibold text-3xl text-gradient">Themes</h3>
             <div class="flex flex-col gap-4 mt-4">
               <div>
-                <label for="quote" class="block mb-2 font-semibold text-lg">Quote</label>
-                <CatNapSelect
-                  v-model="newThemeQuote"
-                  :options="[
-                    'Art',
-                    'Beauty',
-                    'Change',
-                    'Communication',
-                    'Cool',
-                    'Courage',
-                    'Dreams',
-                    'Faith',
-                    'Family',
-                    'Freedom',
-                    'Friendship',
-                    'Funny',
-                    'Future',
-                    'Good',
-                    'Graduation',
-                    'Great',
-                    'Happiness',
-                    'Health',
-                    'History',
-                    'Home',
-                    'Hope',
-                    'Humor',
-                    'Imagination',
-                    'Inspirational',
-                    'Intelligence',
-                    'Life',
-                    'Love',
-                    'Movies',
-                    'Success',
-                  ]"
-                  :placeholder="'Select a quote'"
-                  @change="newThemeQuote = $event.target.value"
-                  :settings="true"
-                />
-              </div>
-              <div>
                 <label for="image" class="block mb-2 font-semibold text-lg">Image</label>
                 <CatNapSelect
                   v-model="newThemeImage"
@@ -400,7 +352,7 @@ const deleteAccount = () => {
                     'Horizon',
                     'Twilight',
                   ]"
-                  :placeholder="'Select a quote'"
+                  :placeholder="'Select a Theme'"
                   @change="newThemeImage = $event.target.value"
                   :settings="true"
                 />

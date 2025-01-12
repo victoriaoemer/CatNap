@@ -37,7 +37,7 @@ export const usePixabayStore = defineStore('pixabay', {
 
       // Check if fetch should be skipped
       if (!force && this.lastUpdated === today) {
-        //console.log('Image already fetched for today:', this.image);
+        console.log('Image already fetched for today:', this.image);
         return;
       }
 
@@ -49,7 +49,7 @@ export const usePixabayStore = defineStore('pixabay', {
           if (data.hits.length > 0) {
             const randomImage = Math.floor(Math.random() * data.hits.length);
             this.image = data.hits[randomImage].webformatURL;
-            //console.log('Fetched new image for theme:', this.theme);
+            console.log('Fetched new image for theme:', this.theme);
             this.lastUpdated = today;
           } else {
             this.image = null;

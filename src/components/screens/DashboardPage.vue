@@ -38,17 +38,24 @@ const imageMap: Record<number, string> = {
 
 onMounted(async () => {
   try {
-    const data = await userStore.getUserData(user)
-    userData.value = data
-    usePixabayStore().getUserImage(user)
-    usePixabayStore().fetchImage(data.username, 'moon')
-    const userImage = usePixabayStore().getUserImage(user)
-    console.log(data)
-    console.log(userImage)
+    const data = await userStore.getUserData(user);
+    userData.value = data;
+
+
+    const pixabayStore = usePixabayStore();
+    const userImage = pixabayStore.getUserImage(user);
+
+    if (userImage.valueOf() === '') {
+      await pixabayStore.fetchImage(true, data.username);
+    }
+
+    console.log('User Data:', data);
+    console.log('User Image:', userImage);
   } catch (error) {
-    console.error(error)
+    console.error('Error loading data:', error);
   }
-})
+});
+
 
 const isSidebarOpen = ref(false)
 

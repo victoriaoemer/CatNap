@@ -7,7 +7,7 @@ import MunchKindRed from '@/assets/cat-profile/munchkin-red.svg'
 import { usePixabayStore } from '@/types/Pixabay'
 import type { User, UserData } from '@/types/User'
 import { useUserStore } from '@/types/User'
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import CatNapButton from '../CatNapButton.vue'
 import CatNapInput from '../CatNapInput.vue'
@@ -59,6 +59,7 @@ const imageMap: Record<number, string> = {
 }
 
 onMounted(async () => {
+
   try {
     const data = await userStore.getUserData(user)
     const loginData = await userStore
@@ -68,15 +69,26 @@ onMounted(async () => {
     userData.value = data
     newThemeImage.value = data.settings.themeImage
     profilePicture.value = data.settings.profilePicture
-
     firstName.value = loginData.firstName
     lastName.value = loginData.lastName
     username.value = loginData.username
     password.value = loginData.password
+
+    // Synchronisierung von Einstellungen mit dem Store
+watch(
+  () => userStore.settings,
+  (newSettings) => {
+    newThemeImage.value = newSettings?.themeImage || 'default';
+    profilePicture.value = newSettings?.profilePicture || 1;
+  },
+  { immediate: true }
+);
+
   } catch (error) {
     console.error(error)
   }
 })
+
 
 function toggleSidebar() {
   isSidebarOpen.value = !isSidebarOpen.value
@@ -136,14 +148,26 @@ function confimUpdateTheme() {
 }
 
 const updateTheme = () => {
-  pixabayStore.setNewTheme(newThemeImage.value)
-  pixabayStore.confirmThemeChange()
-  userStore.updateUserSettings(user, {
-    themeImage: newThemeImage.value,
-    profilePicture: profilePicture.value,
-  })
+  updateThemeAndSyncStores();
+  console.log('Theme updated new Theme ' + newThemeImage.value)
+  console.log('old Theme ' + userData.value.settings.themeImage)
   overlayVisible.value = false
 }
+
+const updateThemeAndSyncStores = async () => {
+  try {
+    pixabayStore.setNewTheme(user, newThemeImage.value);
+    await userStore.updateUserSettings(user, {
+      themeImage: newThemeImage.value,
+      profilePicture: profilePicture.value,
+    });
+
+    console.log('Theme updated in both stores.');
+  } catch (error) {
+    console.error('Error syncing theme across stores:', error);
+  }
+};
+
 
 const updateUser = async () => {
   if (!firstName.value || !lastName.value || !username.value || !password.value) {

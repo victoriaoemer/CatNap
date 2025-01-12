@@ -12,6 +12,7 @@ import CatNapCalendar from '../CatNapCalendar.vue'
 import CatNapEntryWidget from '../CatNapEntryWidget.vue'
 import CatNapSidebar from '../CatNapSidebar.vue'
 import CatNapQuoteDisplay from '../CatNapQuoteDisplay.vue'
+import { usePixabayStore } from '@/types/Pixabay'
 
 const userStore = useUserStore()
 const user = userStore.username
@@ -39,6 +40,11 @@ onMounted(async () => {
   try {
     const data = await userStore.getUserData(user)
     userData.value = data
+    usePixabayStore().getUserImage(user)
+    usePixabayStore().fetchImage(data.username, 'moon')
+    const userImage = usePixabayStore().getUserImage(user)
+    console.log(data)
+    console.log(userImage)
   } catch (error) {
     console.error(error)
   }

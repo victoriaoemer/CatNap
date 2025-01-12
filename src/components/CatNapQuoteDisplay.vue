@@ -22,7 +22,10 @@
 </template>
 
 <script setup lang="ts">
+import { useUserStore } from '@/types/User';
 import { usePixabayStore } from '../types/Pixabay'
 const pixabayStore = usePixabayStore()
-const image = pixabayStore.image
+const userStore = useUserStore();
+const user = userStore.username;
+const image = pixabayStore.getUserImage(user)
 </script>

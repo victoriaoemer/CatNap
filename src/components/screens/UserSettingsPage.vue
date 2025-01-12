@@ -105,7 +105,20 @@ function closeOverlay() {
   overlayButtons.value = []
 }
 
-function confirmUpdateUser() {
+async function confirmUpdateUser() {
+  const users = await userStore.getUsers()
+  const user = users.find((user: User) => user.username === username.value)
+
+  if (!firstName.value || !lastName.value || !username.value || !password.value) {
+    msg.value = 'Please fill out all fields'
+    return
+  }
+
+  if (user) {
+    msg.value = 'Username already exists'
+    return
+  }
+
   showOverlay('Update User?', 'Are you sure you want to update your user?', [
     { text: 'Cancel', action: closeOverlay },
     { text: 'Update', action: updateUser },
@@ -147,11 +160,6 @@ const updateTheme = () => {
 }
 
 const updateUser = async () => {
-  if (!firstName.value || !lastName.value || !username.value || !password.value) {
-    msg.value = 'Please fill out all fields'
-    return
-  }
-
   userStore.updateUser(userData.value.username, {
     firstName: firstName.value,
     lastName: lastName.value,

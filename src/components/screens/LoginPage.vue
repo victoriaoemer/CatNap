@@ -31,10 +31,7 @@ const login = async () => {
 
     if (user) {
       if (password.value === user.password) {
-        userStore.username = user.username
-        userStore.firstName = user.firstName
-        userStore.lastName = user.lastName
-        userStore.password = user.password
+        userStore.login(user)
         router.push('/dashboard/' + user.username)
       } else {
         msg.value = 'Password is incorrect'

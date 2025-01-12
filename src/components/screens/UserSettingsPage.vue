@@ -41,15 +41,19 @@ const lastName = ref('')
 const username = ref('')
 const password = ref('')
 
-const date = new Date()
-
+const imageMap: Record<number, string> = {
+  1: MunchkinDefault,
+  2: MunchKindRed,
+  3: MunchkinBlue,
+  4: MunchkinLucky,
+  5: MunchkinGreen,
+}
 
 // confirmation overlay
 const overlayVisible = ref(false)
 const overlayContent = ref('Title')
 const overlayTitle = ref('hi')
 const overlayButtons = ref([{ text: '', action: () => {} }])
-
 
 onMounted(async () => {
   try {
@@ -227,7 +231,7 @@ const deleteAccount = () => {
         <button @click="toggleSidebar" class="md:hidden">
           <img src="@/assets/icons/menu.svg" alt="Menu" class="h-8 w-max" />
         </button>
-        <CatNapTimestamp/>
+        <CatNapTimestamp />
       </div>
 
       <div class="flex">

@@ -5,10 +5,9 @@ import MunchkinGreen from '@/assets/cat-profile/munchkin-green.svg'
 import MunchkinLucky from '@/assets/cat-profile/munchkin-lucky.svg'
 import MunchKindRed from '@/assets/cat-profile/munchkin-red.svg'
 import { usePixabayStore } from '@/types/Pixabay'
-import { useQuoteStore } from '@/types/Quotes'
 import type { User, UserData } from '@/types/User'
 import { useUserStore } from '@/types/User'
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import CatNapButton from '../CatNapButton.vue'
 import CatNapInput from '../CatNapInput.vue'
@@ -21,10 +20,8 @@ const router = useRouter()
 
 const userStore = useUserStore()
 const pixabayStore = usePixabayStore()
-const quoteStore = useQuoteStore()
 
 const newThemeImage = ref('')
-const newThemeQuote = ref('')
 const profilePicture = ref(1)
 
 const user = userStore.username
@@ -56,6 +53,7 @@ const overlayTitle = ref('hi')
 const overlayButtons = ref([{ text: '', action: () => {} }])
 
 onMounted(async () => {
+
   try {
     const data = await userStore.getUserData(user)
     const loginData = await userStore
@@ -63,18 +61,29 @@ onMounted(async () => {
       .then((users) => users.find((u: User) => u.username === user))
     userLoginData.value = loginData
     userData.value = data
-    newThemeQuote.value = data.settings.themeQuote
-    newThemeImage.value = data.settings.themeImage
+    newThemeImage.value = pixabayStore.getUserTheme(user)
     profilePicture.value = data.settings.profilePicture
-
     firstName.value = loginData.firstName
     lastName.value = loginData.lastName
     username.value = loginData.username
     password.value = loginData.password
+
+    // synchronisation with the stores
+    watch(
+      () => userStore.settings,
+      (newSettings) => {
+        newThemeImage.value = pixabayStore.getUserTheme(user)
+        profilePicture.value = newSettings?.profilePicture || 1
+      },
+      { immediate: true }
+    );
+
   } catch (error) {
+    console.log('old Theme ' + userData.value.settings.themeImage)
     console.error(error)
   }
 })
+
 
 function toggleSidebar() {
   isSidebarOpen.value = !isSidebarOpen.value
@@ -147,17 +156,26 @@ function confimUpdateTheme() {
 }
 
 const updateTheme = () => {
-  pixabayStore.setNewTheme(newThemeImage.value)
-  pixabayStore.confirmThemeChange()
-  quoteStore.setNewTheme(newThemeQuote.value)
-  quoteStore.confirmThemeChange()
-  userStore.updateUserSettings(user, {
-    themeQuote: newThemeQuote.value,
-    themeImage: newThemeImage.value,
-    profilePicture: profilePicture.value,
-  })
+  updateThemeAndSyncStores();
+  console.log('Theme updated new Theme ' + newThemeImage.value)
+
   overlayVisible.value = false
 }
+
+const updateThemeAndSyncStores = async () => {
+  try {
+    pixabayStore.setNewTheme(user, newThemeImage.value);
+    await userStore.updateUserSettings(user, {
+      themeImage: newThemeImage.value,
+      profilePicture: profilePicture.value,
+    });
+
+    console.log('Theme updated in both stores.');
+  } catch (error) {
+    console.error('Error syncing theme across stores:', error);
+  }
+};
+
 
 const updateUser = async () => {
   userStore.updateUser(userData.value.username, {
@@ -168,7 +186,6 @@ const updateUser = async () => {
   })
 
   userStore.updateUserSettings(user, {
-    themeQuote: newThemeQuote.value,
     themeImage: newThemeImage.value,
     profilePicture: profilePicture.value,
   })
@@ -333,46 +350,6 @@ const deleteAccount = () => {
             <h3 class="font-semibold text-3xl text-gradient">Themes</h3>
             <div class="flex flex-col gap-4 mt-4">
               <div>
-                <label for="quote" class="block mb-2 font-semibold text-lg">Quote</label>
-                <CatNapSelect
-                  v-model="newThemeQuote"
-                  :options="[
-                    'Art',
-                    'Beauty',
-                    'Change',
-                    'Communication',
-                    'Cool',
-                    'Courage',
-                    'Dreams',
-                    'Faith',
-                    'Family',
-                    'Freedom',
-                    'Friendship',
-                    'Funny',
-                    'Future',
-                    'Good',
-                    'Graduation',
-                    'Great',
-                    'Happiness',
-                    'Health',
-                    'History',
-                    'Home',
-                    'Hope',
-                    'Humor',
-                    'Imagination',
-                    'Inspirational',
-                    'Intelligence',
-                    'Life',
-                    'Love',
-                    'Movies',
-                    'Success',
-                  ]"
-                  :placeholder="'Select a quote'"
-                  @change="newThemeQuote = $event.target.value"
-                  :settings="true"
-                />
-              </div>
-              <div>
                 <label for="image" class="block mb-2 font-semibold text-lg">Image</label>
                 <CatNapSelect
                   v-model="newThemeImage"
@@ -393,8 +370,8 @@ const deleteAccount = () => {
                     'Horizon',
                     'Twilight',
                   ]"
-                  :placeholder="'Select a quote'"
-                  @change="newThemeImage = $event.target.value"
+                  :placeholder="'Select a Theme'"
+                  @change="pixabayStore.getUserTheme(user)"
                   :settings="true"
                 />
               </div>

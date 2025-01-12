@@ -1,3 +1,5 @@
+// Quotes were removed from the app, because the API did some changes
+// and there is now a premium plan necessary to use it as we wanted (but it worked before).
 import { defineStore } from 'pinia';
 
 interface QuoteState {
@@ -45,7 +47,7 @@ export const useQuoteStore = defineStore('quote', {
         return;
       }
 
-      const apiUrl = `https://api.api-ninjas.com/v1/quotes?category=${this.theme}`;
+      const apiUrl = `https://api.api-ninjas.com/v1/quotes`;
       try {
         const response = await fetch(apiUrl, {
           headers: {

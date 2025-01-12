@@ -8,6 +8,7 @@ import CatNapCalendar from '../CatNapCalendar.vue'
 import CatNapEntryWidget from '../CatNapEntryWidget.vue'
 import CatNapSidebar from '../CatNapSidebar.vue'
 import CatNapQuoteDisplay from '../CatNapQuoteDisplay.vue'
+import { usePixabayStore } from '@/types/Pixabay'
 import CatNapTimestamp from '../CatNapTimestamp.vue'
 
 const userStore = useUserStore()
@@ -17,12 +18,20 @@ const userData = ref<UserData>({} as UserData)
 
 onMounted(async () => {
   try {
-    const data = await userStore.getUserData(user)
-    userData.value = data
+    const data = await userStore.getUserData(user);
+    userData.value = data;
+    const pixabayStore = usePixabayStore();
+    const userImage = pixabayStore.getUserImage(user);
+
+    if (userImage.valueOf() === '') {
+      await pixabayStore.fetchImage(true, data.username);
+    }
+    console.log('User Data:', data);
+    console.log('User Image:', userImage);
   } catch (error) {
-    console.error(error)
+    console.error('Error loading data:', error);
   }
-})
+});
 
 const isSidebarOpen = ref(false)
 

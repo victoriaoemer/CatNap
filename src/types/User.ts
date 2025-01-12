@@ -5,6 +5,7 @@ export interface User {
   lastName: string
   username: string,
   password: string,
+  isAuthenticated?: boolean
 }
 
 export interface UserData {
@@ -27,8 +28,23 @@ export const useUserStore = defineStore('user', {
     lastName: '',
     username: '',
     password: '',
+    isAuthenticated: false
   }),
   actions: {
+    login(user: User) {
+      this.firstName = user.firstName;
+      this.lastName = user.lastName;
+      this.username = user.username;
+      this.password = user.password
+      this.isAuthenticated = true;
+    },
+    logout() {
+      this.firstName = '';
+      this.lastName = '';
+      this.username = '';
+      this.password = '';
+      this.isAuthenticated = false;
+    },
     async createUser(data: User) {
       const response = await fetch('http://localhost:4000/create-user', {
         method: 'POST',

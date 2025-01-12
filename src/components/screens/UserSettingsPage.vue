@@ -12,6 +12,7 @@ import { onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import CatNapButton from '../CatNapButton.vue'
 import CatNapInput from '../CatNapInput.vue'
+import CatNapOverlay from '../CatNapOverlay.vue'
 import CatNapSelect from '../CatNapSelect.vue'
 import CatNapSidebar from '../CatNapSidebar.vue'
 import CatNapTimestamp from '../CatNapTimestamp.vue'
@@ -33,10 +34,22 @@ const userLoginData = ref<User>({} as User)
 
 const msg = ref('')
 
+const isSidebarOpen = ref(false)
+
 const firstName = ref('')
 const lastName = ref('')
 const username = ref('')
 const password = ref('')
+
+const date = new Date()
+
+
+// confirmation overlay
+const overlayVisible = ref(false)
+const overlayContent = ref('Title')
+const overlayTitle = ref('hi')
+const overlayButtons = ref([{ text: '', action: () => {} }])
+
 
 onMounted(async () => {
   try {
@@ -59,6 +72,63 @@ onMounted(async () => {
   }
 })
 
+function toggleSidebar() {
+  isSidebarOpen.value = !isSidebarOpen.value
+}
+
+function closeSidebar() {
+  isSidebarOpen.value = false
+}
+
+function showOverlay(
+  title: string,
+  content: string,
+  buttons?: { text: string; action: () => void }[],
+) {
+  overlayVisible.value = true
+  overlayContent.value = content
+  overlayTitle.value = title
+  overlayButtons.value = buttons || [
+    { text: 'No', action: closeOverlay },
+    { text: 'Yes', action: closeOverlay },
+  ]
+}
+
+function closeOverlay() {
+  overlayVisible.value = false
+  overlayContent.value = ''
+  overlayTitle.value = ''
+  overlayButtons.value = []
+}
+
+function confirmUpdateUser() {
+  showOverlay('Update User?', 'Are you sure you want to update your user?', [
+    { text: 'Cancel', action: closeOverlay },
+    { text: 'Update', action: updateUser },
+  ])
+}
+
+function confirmResetData() {
+  showOverlay('Reset Data?', 'Are you sure you want to reset all dream entries?', [
+    { text: 'Cancel', action: closeOverlay },
+    { text: 'Reset', action: resetData },
+  ])
+}
+
+function confirmDeleteAccount() {
+  showOverlay('Delete Account?', 'Are you sure you want to permanently delete your account?', [
+    { text: 'Cancel', action: closeOverlay },
+    { text: 'Delete', action: deleteAccount },
+  ])
+}
+
+function confimUpdateTheme() {
+  showOverlay('Update Theme?', 'Are you sure you want to update your theme?', [
+    { text: 'Cancel', action: closeOverlay },
+    { text: 'Update', action: updateTheme },
+  ])
+}
+
 const updateTheme = () => {
   pixabayStore.setNewTheme(newThemeImage.value)
   pixabayStore.confirmThemeChange()
@@ -69,24 +139,7 @@ const updateTheme = () => {
     themeImage: newThemeImage.value,
     profilePicture: profilePicture.value,
   })
-}
-
-const isSidebarOpen = ref(false)
-
-function toggleSidebar() {
-  isSidebarOpen.value = !isSidebarOpen.value
-}
-
-function closeSidebar() {
-  isSidebarOpen.value = false
-}
-
-const imageMap: Record<number, string> = {
-  1: MunchkinDefault,
-  2: MunchKindRed,
-  3: MunchkinBlue,
-  4: MunchkinLucky,
-  5: MunchkinGreen,
+  overlayVisible.value = false
 }
 
 const updateUser = async () => {
@@ -112,6 +165,8 @@ const updateUser = async () => {
   userStore.firstName = firstName.value
   userStore.lastName = lastName.value
   userStore.password = password.value
+
+  overlayVisible.value = false
 }
 
 const clearWarning = () => {
@@ -119,24 +174,30 @@ const clearWarning = () => {
 }
 
 const logout = () => {
-  userStore.firstName = ''
-  userStore.lastName = ''
-  userStore.username = ''
-  userStore.password = ''
+  userStore.logout()
   router.push('/')
 }
 
 const resetData = () => {
   userStore.resetUserdata(userStore.username)
+  overlayVisible.value = false
 }
 
 const deleteAccount = () => {
   userStore.deleteUser(userStore.username)
+  overlayVisible.value = false
   router.push('/')
 }
 </script>
 
 <template>
+  <CatNapOverlay
+    :content="overlayContent"
+    :title="overlayTitle"
+    :buttons="overlayButtons"
+    :overlay-visible="overlayVisible"
+  />
+
   <div
     class="h-screen w-full flex flex-col md:flex-row md:p-8"
     :class="{ 'overflow-hidden': isSidebarOpen }"
@@ -246,7 +307,7 @@ const deleteAccount = () => {
               {{ msg }}
             </div>
             <div class="w-full flex justify-center">
-              <CatNapButton class="w-fit" text="Update" type="outline" @click="updateUser" />
+              <CatNapButton class="w-fit" text="Update" type="outline" @click="confirmUpdateUser" />
             </div>
           </div>
         </div>
@@ -330,7 +391,12 @@ const deleteAccount = () => {
                 />
               </div>
               <div class="w-full flex justify-center">
-                <CatNapButton class="w-fit" text="Update" type="outline" v-on:click="updateTheme" />
+                <CatNapButton
+                  class="w-fit"
+                  text="Update"
+                  type="outline"
+                  v-on:click="confimUpdateTheme"
+                />
               </div>
               <div class="absolute bottom-5 left-5">
                 <img
@@ -347,7 +413,7 @@ const deleteAccount = () => {
             <div class="flex flex-col md:flex-row md:justify-between justify-center items-center">
               <div class="flex flex-col gap-3">
                 <h3 class="font-semibold text-lg lg:text-3xl text-gradient">Reset Data</h3>
-                <CatNapButton class="" text="Reset" type="outline" @click="resetData" />
+                <CatNapButton class="" text="Reset" type="outline" @click="confirmResetData" />
               </div>
               <div class="flex jusitify-between pt-4 md:pt-0">
                 <div class="flex flex-col gap-3">
@@ -356,7 +422,7 @@ const deleteAccount = () => {
                     class="md:pr-16"
                     text="Delete"
                     type="outline"
-                    @click="deleteAccount"
+                    @click="confirmDeleteAccount"
                   />
                 </div>
               </div>

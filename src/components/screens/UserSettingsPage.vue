@@ -185,10 +185,7 @@ const clearWarning = () => {
   msg.value = ''
 }
 
-const logout = () => {
-  userStore.logout()
-  router.push('/')
-}
+
 
 const resetData = () => {
   userStore.resetUserdata(userStore.username)
@@ -255,7 +252,6 @@ const deleteAccount = () => {
         <div class="md:w-2/5 bg-gradientGrayDown shadow-2xl rounded-xl p-3">
           <h3 class="flex justify-between">
             <p class="font-semibold text-3xl text-gradient">Profile</p>
-            <CatNapButton class="w-fit" text="Logout" type="outline" @click="logout" />
           </h3>
 
           <div class="flex flex-col gap-3 mt-4">

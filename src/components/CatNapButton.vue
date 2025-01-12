@@ -7,8 +7,8 @@ defineProps({
 
 <template>
   <div>
-    <button v-if="type === 'filled'" class="gradient-bg">{{ text }}</button>
-    <button v-if="type === 'outline'" class="border rounded-xl border-secondary">{{ text }}</button>
+    <button v-if="type === 'filled'" class="gradient-bg hover:bg-gradient">{{ text }}</button>
+    <button v-if="type === 'outline'" class="border rounded-xl border-secondary hover:bg-gradient">{{ text }}</button>
   </div>
 </template>
 

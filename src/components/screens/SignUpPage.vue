@@ -48,7 +48,6 @@ const signUp = async () => {
     userStore.createUserData({
       username: username.value,
       settings: {
-        themeQuote: 'Inspirational',
         themeImage: 'moons',
         profilePicture: 1,
       },

@@ -5,76 +5,38 @@ import MunchkinGreen from '@/assets/cat-profile/munchkin-green.svg'
 import MunchkinLucky from '@/assets/cat-profile/munchkin-lucky.svg'
 import MunchKindRed from '@/assets/cat-profile/munchkin-red.svg'
 import { usePixabayStore } from '@/types/Pixabay'
-import { useQuoteStore } from '@/types/Quotes'
-import type { UserData } from '@/types/User'
+import type { User, UserData } from '@/types/User'
 import { useUserStore } from '@/types/User'
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import CatNapButton from '../CatNapButton.vue'
 import CatNapInput from '../CatNapInput.vue'
+import CatNapOverlay from '../CatNapOverlay.vue'
 import CatNapSelect from '../CatNapSelect.vue'
 import CatNapSidebar from '../CatNapSidebar.vue'
+import CatNapTimestamp from '../CatNapTimestamp.vue'
 
 const router = useRouter()
 
 const userStore = useUserStore()
 const pixabayStore = usePixabayStore()
-const quoteStore = useQuoteStore()
 
 const newThemeImage = ref('')
-const newThemeQuote = ref('')
 const profilePicture = ref(1)
 
 const user = userStore.username
 const userData = ref<UserData>({} as UserData)
 
+const userLoginData = ref<User>({} as User)
+
 const msg = ref('')
+
+const isSidebarOpen = ref(false)
 
 const firstName = ref('')
 const lastName = ref('')
 const username = ref('')
 const password = ref('')
-
-const date = new Date()
-const formattedDate = date.toLocaleDateString('en-GB', {
-  weekday: 'long',
-  day: 'numeric',
-  month: 'long',
-})
-
-onMounted(async () => {
-  try {
-    const data = await userStore.getUserData(user)
-    userData.value = data
-    newThemeQuote.value = data.settings.themeQuote
-    newThemeImage.value = data.settings.themeImage
-    profilePicture.value = data.settings.profilePicture
-  } catch (error) {
-    console.error(error)
-  }
-})
-
-const updateTheme = () => {
-  pixabayStore.setNewTheme(newThemeImage.value)
-  pixabayStore.confirmThemeChange()
-  quoteStore.setNewTheme(newThemeQuote.value)
-  quoteStore.confirmThemeChange()
-  userStore.updateUserSettings(user, {
-    themeQuote: newThemeQuote.value,
-    themeImage: newThemeImage.value,
-    profilePicture: profilePicture.value,
-  })
-}
-
-const isSidebarOpen = ref(false)
-
-function toggleSidebar() {
-  isSidebarOpen.value = !isSidebarOpen.value
-}
-
-function closeSidebar() {
-  isSidebarOpen.value = false
-}
 
 const imageMap: Record<number, string> = {
   1: MunchkinDefault,
@@ -84,12 +46,138 @@ const imageMap: Record<number, string> = {
   5: MunchkinGreen,
 }
 
-const updateUser = async () => {
+// confirmation overlay
+const overlayVisible = ref(false)
+const overlayContent = ref('Title')
+const overlayTitle = ref('hi')
+const overlayButtons = ref([{ text: '', action: () => {} }])
+
+onMounted(async () => {
+
+  try {
+    const data = await userStore.getUserData(user)
+    const loginData = await userStore
+      .getUsers()
+      .then((users) => users.find((u: User) => u.username === user))
+    userLoginData.value = loginData
+    userData.value = data
+    newThemeImage.value = pixabayStore.getUserTheme(user)
+    profilePicture.value = data.settings.profilePicture
+    firstName.value = loginData.firstName
+    lastName.value = loginData.lastName
+    username.value = loginData.username
+    password.value = loginData.password
+
+    // synchronisation with the stores
+    watch(
+      () => userStore.settings,
+      (newSettings) => {
+        newThemeImage.value = pixabayStore.getUserTheme(user)
+        profilePicture.value = newSettings?.profilePicture || 1
+      },
+      { immediate: true }
+    );
+
+  } catch (error) {
+    console.log('old Theme ' + userData.value.settings.themeImage)
+    console.error(error)
+  }
+})
+
+
+function toggleSidebar() {
+  isSidebarOpen.value = !isSidebarOpen.value
+}
+
+function closeSidebar() {
+  isSidebarOpen.value = false
+}
+
+function showOverlay(
+  title: string,
+  content: string,
+  buttons?: { text: string; action: () => void }[],
+) {
+  overlayVisible.value = true
+  overlayContent.value = content
+  overlayTitle.value = title
+  overlayButtons.value = buttons || [
+    { text: 'No', action: closeOverlay },
+    { text: 'Yes', action: closeOverlay },
+  ]
+}
+
+function closeOverlay() {
+  overlayVisible.value = false
+  overlayContent.value = ''
+  overlayTitle.value = ''
+  overlayButtons.value = []
+}
+
+async function confirmUpdateUser() {
+  const users = await userStore.getUsers()
+  const user = users.find((user: User) => user.username === username.value)
+
   if (!firstName.value || !lastName.value || !username.value || !password.value) {
     msg.value = 'Please fill out all fields'
     return
   }
 
+  if (user) {
+    msg.value = 'Username already exists'
+    return
+  }
+
+  showOverlay('Update User?', 'Are you sure you want to update your user?', [
+    { text: 'Cancel', action: closeOverlay },
+    { text: 'Update', action: updateUser },
+  ])
+}
+
+function confirmResetData() {
+  showOverlay('Reset Data?', 'Are you sure you want to reset all dream entries?', [
+    { text: 'Cancel', action: closeOverlay },
+    { text: 'Reset', action: resetData },
+  ])
+}
+
+function confirmDeleteAccount() {
+  showOverlay('Delete Account?', 'Are you sure you want to permanently delete your account?', [
+    { text: 'Cancel', action: closeOverlay },
+    { text: 'Delete', action: deleteAccount },
+  ])
+}
+
+function confimUpdateTheme() {
+  showOverlay('Update Theme?', 'Are you sure you want to update your theme?', [
+    { text: 'Cancel', action: closeOverlay },
+    { text: 'Update', action: updateTheme },
+  ])
+}
+
+const updateTheme = () => {
+  updateThemeAndSyncStores();
+  console.log('Theme updated new Theme ' + newThemeImage.value)
+
+  overlayVisible.value = false
+}
+
+const updateThemeAndSyncStores = async () => {
+  try {
+    pixabayStore.setNewTheme(user, newThemeImage.value);
+    await userStore.updateUserSettings(user, {
+      themeImage: newThemeImage.value,
+      profilePicture: profilePicture.value,
+    });
+
+    console.log('Theme updated in both stores.');
+  } catch (error) {
+    console.error('Error syncing theme across stores:', error);
+  }
+};
+
+
+const updateUser = async () => {
   userStore.updateUser(userData.value.username, {
     firstName: firstName.value,
     lastName: lastName.value,
@@ -98,7 +186,6 @@ const updateUser = async () => {
   })
 
   userStore.updateUserSettings(user, {
-    themeQuote: newThemeQuote.value,
     themeImage: newThemeImage.value,
     profilePicture: profilePicture.value,
   })
@@ -108,35 +195,35 @@ const updateUser = async () => {
   userStore.lastName = lastName.value
   userStore.password = password.value
 
-  firstName.value = ''
-  lastName.value = ''
-  username.value = ''
-  password.value = ''
+  overlayVisible.value = false
 }
 
 const clearWarning = () => {
   msg.value = ''
 }
 
-const logout = () => {
-  userStore.firstName = ''
-  userStore.lastName = ''
-  userStore.username = ''
-  userStore.password = ''
-  router.push('/')
-}
+
 
 const resetData = () => {
   userStore.resetUserdata(userStore.username)
+  overlayVisible.value = false
 }
 
 const deleteAccount = () => {
   userStore.deleteUser(userStore.username)
+  overlayVisible.value = false
   router.push('/')
 }
 </script>
 
 <template>
+  <CatNapOverlay
+    :content="overlayContent"
+    :title="overlayTitle"
+    :buttons="overlayButtons"
+    :overlay-visible="overlayVisible"
+  />
+
   <div
     class="h-screen w-full flex flex-col md:flex-row md:p-8"
     :class="{ 'overflow-hidden': isSidebarOpen }"
@@ -166,12 +253,7 @@ const deleteAccount = () => {
         <button @click="toggleSidebar" class="md:hidden">
           <img src="@/assets/icons/menu.svg" alt="Menu" class="h-8 w-max" />
         </button>
-        <div class="md:text-lg py-1 px-3 rounded-xl border border-purple md:border-secondary">
-          {{ formattedDate }}
-        </div>
-        <div class="md:bg-secondary bg-purple p-2 rounded-full">
-          <img :src="imageMap[profilePicture]" alt="Cat" />
-        </div>
+        <CatNapTimestamp />
       </div>
 
       <div class="flex">
@@ -187,7 +269,6 @@ const deleteAccount = () => {
         <div class="md:w-2/5 bg-gradientGrayDown shadow-2xl rounded-xl p-3">
           <h3 class="flex justify-between">
             <p class="font-semibold text-3xl text-gradient">Profile</p>
-            <CatNapButton class="w-fit" text="Logout" type="outline" @click="logout" />
           </h3>
 
           <div class="flex flex-col gap-3 mt-4">
@@ -251,7 +332,7 @@ const deleteAccount = () => {
               {{ msg }}
             </div>
             <div class="w-full flex justify-center">
-              <CatNapButton class="w-fit" text="Update" type="outline" @click="updateUser" />
+              <CatNapButton class="w-fit" text="Update" type="outline" @click="confirmUpdateUser" />
             </div>
           </div>
         </div>
@@ -269,56 +350,38 @@ const deleteAccount = () => {
             <h3 class="font-semibold text-3xl text-gradient">Themes</h3>
             <div class="flex flex-col gap-4 mt-4">
               <div>
-                <label for="quote" class="block mb-2 font-semibold text-lg">Quote</label>
-                <CatNapSelect
-                  v-model="newThemeQuote"
-                  :options="[
-                    'Art',
-                    'Beauty',
-                    'Change',
-                    'Communication',
-                    'Cool',
-                    'Courage',
-                    'Dreams',
-                    'Faith',
-                    'Family',
-                    'Freedom',
-                    'Friendship',
-                    'Funny',
-                    'Future',
-                    'Good',
-                    'Graduation',
-                    'Great',
-                    'Happiness',
-                    'Health',
-                    'History',
-                    'Home',
-                    'Hope',
-                    'Humor',
-                    'Imagination',
-                    'Inspirational',
-                    'Intelligence',
-                    'Life',
-                    'Love',
-                    'Movies',
-                    'Success',
-                  ]"
-                  :placeholder="'Select a quote'"
-                  @change="newThemeQuote = $event.target.value"
-                  :settings="true"
-                />
-              </div>
-              <div>
                 <label for="image" class="block mb-2 font-semibold text-lg">Image</label>
-                <CatNapInput
+                <CatNapSelect
                   v-model="newThemeImage"
-                  :placeholder="pixabayStore.theme"
-                  @change="newThemeImage = $event.target.value"
+                  :options="[
+                    'Dreams',
+                    'Clouds',
+                    'Stars',
+                    'Moonlight',
+                    'Galaxy',
+                    'Fantasy',
+                    'Mystical',
+                    'Surreal',
+                    'Journey',
+                    'Illusion',
+                    'Nightfall',
+                    'Sunset',
+                    'Sunrise',
+                    'Horizon',
+                    'Twilight',
+                  ]"
+                  :placeholder="'Select a Theme'"
+                  @change="pixabayStore.getUserTheme(user)"
                   :settings="true"
                 />
               </div>
               <div class="w-full flex justify-center">
-                <CatNapButton class="w-fit" text="Update" type="outline" v-on:click="updateTheme" />
+                <CatNapButton
+                  class="w-fit"
+                  text="Update"
+                  type="outline"
+                  v-on:click="confimUpdateTheme"
+                />
               </div>
               <div class="absolute bottom-5 left-5">
                 <img
@@ -335,7 +398,7 @@ const deleteAccount = () => {
             <div class="flex flex-col md:flex-row md:justify-between justify-center items-center">
               <div class="flex flex-col gap-3">
                 <h3 class="font-semibold text-lg lg:text-3xl text-gradient">Reset Data</h3>
-                <CatNapButton class="" text="Reset" type="outline" @click="resetData" />
+                <CatNapButton class="" text="Reset" type="outline" @click="confirmResetData" />
               </div>
               <div class="flex jusitify-between pt-4 md:pt-0">
                 <div class="flex flex-col gap-3">
@@ -344,7 +407,7 @@ const deleteAccount = () => {
                     class="md:pr-16"
                     text="Delete"
                     type="outline"
-                    @click="deleteAccount"
+                    @click="confirmDeleteAccount"
                   />
                 </div>
               </div>

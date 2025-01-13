@@ -11,29 +11,44 @@
       <RouterLink
         :to="'/dashboard/' + user"
         active-class="bg-gradient"
-        class="relative p-2 border border-secondary rounded-xl w-full flex items-center justify-center"
+        class="relative p-2 border border-secondary rounded-xl w-full flex items-center justify-center hover:bg-gradient"
       >
         <img src="@/assets/icons/home.svg" alt="Home" class="w-full h-full object-contain" />
       </RouterLink>
       <RouterLink
         :to="'/add-entry/' + user"
         active-class="bg-gradient"
-        class="relative p-2 border border-secondary rounded-xl w-full flex items-center justify-center"
+        class="relative p-2 border border-secondary rounded-xl w-full flex items-center justify-center hover:bg-gradient"
       >
         <img src="@/assets/icons/add.svg" alt="Add" class="w-full h-full object-contain" />
       </RouterLink>
     </div>
-    <RouterLink
-      :to="'/settings/' + user"
-      active-class="bg-gradient"
-      class="relative p-2 border border-secondary rounded-xl w-full flex items-center justify-center"
-    >
-      <img src="@/assets/icons/settings.svg" alt="Settings" class="w-full h-full object-contain" />
-    </RouterLink>
+    <div class="flex flex-col items-center gap-3">
+      <RouterLink
+        :to="'/settings/' + user"
+        active-class="bg-gradient"
+        class="relative p-2 border border-secondary rounded-xl w-full flex items-center justify-center hover:bg-gradient"
+      >
+        <img src="@/assets/icons/settings.svg" alt="Settings" class="w-full h-full object-contain" />
+      </RouterLink>
+      <CatNapButton
+        text="Logout"
+        type="outline"
+        @click="logout"
+        class="relative p-2 border border-secondary rounded-xl w-full flex items-center justify-center hover:bg-gradient"
+      >
+        <img src="@/assets/icons/logout.svg" class="w-full h-full object-contain" />
+      </CatNapButton>
+    </div>
   </aside>
 </template>
 
 <script setup lang="ts">
+import { useRouter } from 'vue-router'
+import { useUserStore } from '@/types/User'
+const userStore = useUserStore()
+const router = useRouter()
+
 defineProps({
   user: String,
   mobile: Boolean,
@@ -44,4 +59,9 @@ const emit = defineEmits(['close'])
 const closeSidebar = () => {
   emit('close')
 }
+const logout = () => {
+  userStore.logout()
+  router.push('/')
+}
+
 </script>

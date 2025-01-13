@@ -75,9 +75,7 @@
 <script setup lang="ts">
 import { useUserStore } from '@/types/User'
 import { ref } from 'vue'
-import { useRouter } from 'vue-router'
 
-const router = useRouter()
 const userStore = useUserStore()
 const user = userStore.username
 const msg = ref('')
@@ -88,6 +86,7 @@ const emotion = ref(0)
 
 const props = defineProps({
   large: Boolean,
+  onUpdateEntries: Function,
 })
 
 const selectEmotion = (selectedEmotion: number) => {
@@ -109,8 +108,19 @@ const updateData = async () => {
 
     userStore.updateUserData(user, newEntry)
 
-    // reload page to display new entry
-    router.go(0)
+    const updatedEntries = await userStore.getUserData(user)
+    if (props.onUpdateEntries) {
+      props.onUpdateEntries(updatedEntries)
+    }
+
+    // Formular zurücksetzen
+    title.value = ''
+    content.value = ''
+    emotion.value = 0
+    clearWarning()
+
+    // to update all widgets in the dashboard
+    window.location.reload()
   } catch (error) {
     console.error('Fehler beim Abrufen der Benutzer:', error)
   }

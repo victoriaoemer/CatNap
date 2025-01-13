@@ -78,7 +78,12 @@ router.put("/update-user/:username", async (req, res) => {
     const { username } = req.params;
     const newEntry = req.body; // Direkter Zugriff auf den gesendeten Eintrag
     const collection = await getLoginCollection();
+    const dataCollection = await getCatNapCollection();
+
     await collection.updateOne({ username }, { $set: newEntry });
+
+    // Update username in data collection
+    await dataCollection.updateOne({ username }, { $set: { username: newEntry.username } });
     res.status(200).json({ message: "Daten erfolgreich aktualisiert" });
   } catch (error) {
     console.error("Fehler beim Aktualisieren der Daten:", error);
@@ -147,7 +152,7 @@ router.put("/update-data/:username", async (req, res) => {
 router.put("/update-settings/:username", async (req, res) => {
   try {
     const { username } = req.params;
-    const newEntry = req.body; // Direkter Zugriff auf den gesendeten Eintrag
+    const newEntry = req.body;
     const collection = await getCatNapCollection();
 
     await collection.updateOne(
@@ -165,7 +170,6 @@ router.put("/update-settings/:username", async (req, res) => {
 
 // Reset user data
 router.put("/reset-data/:username", async (req, res) => {
-
   // delete de entire data object including the "data" key
   try {
     const { username } = req.params;

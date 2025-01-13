@@ -5,12 +5,16 @@ export interface User {
   lastName: string
   username: string,
   password: string,
+  isAuthenticated?: boolean,
+  settings?: {
+    themeImage: string,
+    profilePicture: number
+  }
 }
 
 export interface UserData {
   username: string,
   settings: {
-    themeQuote: string,
     themeImage: string,
     profilePicture: number
   },
@@ -23,12 +27,33 @@ export interface UserData {
 
 export const useUserStore = defineStore('user', {
   state: (): User => ({
+    isAuthenticated: false,
+    settings: {
+      themeImage: 'moon',
+      profilePicture: 0
+    },
     firstName: '',
     lastName: '',
     username: '',
-    password: '',
+    password: ''
+
   }),
   actions: {
+    login(user: User) {
+      this.firstName = user.firstName;
+      this.lastName = user.lastName;
+      this.username = user.username;
+      this.password = user.password
+      this.isAuthenticated = true;
+      //console.log('User logged in:', this.username)
+    },
+    logout() {
+      this.firstName = '';
+      this.lastName = '';
+      this.username = '';
+      this.password = '';
+      this.isAuthenticated = false;
+    },
     async createUser(data: User) {
       const response = await fetch('http://localhost:4000/create-user', {
         method: 'POST',
@@ -49,13 +74,29 @@ export const useUserStore = defineStore('user', {
       })
       return response.json()
     },
-    async updateUserSettings(username: string, settings: { themeQuote: string, themeImage: string, profilePicture: number }) {
-      const response = await fetch(`http://localhost:4000/update-settings/${username}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(settings)
-      })
-      return response.json()
+    async updateUserSettings(username: string, settings: { themeImage: string, profilePicture: number }) {
+      try {
+        const response = await fetch(`http://localhost:4000/update-settings/${username}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(settings),
+        });
+
+        if (!response.ok) {
+          throw new Error(`Failed to update settings: ${response.status}`);
+        }
+
+        const updatedData = await response.json();
+
+        // update local state
+        if (updatedData && updatedData.settings) {
+          this.settings = updatedData.settings;
+        } else {
+          this.settings = { themeImage: settings.themeImage , profilePicture: settings.profilePicture }; // fallback
+        }
+      } catch (error) {
+        console.error("Error updating user settings:", error);
+      }
     },
     async createUserData(data: UserData) {
       const response = await fetch('http://localhost:4000/create-data', {

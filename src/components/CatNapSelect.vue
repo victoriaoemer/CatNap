@@ -1,7 +1,7 @@
 <template>
   <div>
     <select
-      class="w-full bg-[#3B32AB] border-2 border-[#3E2FE9] rounded-xl p-2 "
+      class="w-full bg-[#3B32AB] border border-[#3E2FE9] rounded-xl p-2 "
       v-model="inputValue"
     >
     <option :value="null" disabled>{{ placeholder }}</option>

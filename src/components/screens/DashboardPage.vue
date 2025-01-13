@@ -90,7 +90,7 @@ const getUsername = computed(() => {
       <!-- Dashboard -->
       <div class="flex flex-col flex-grow pt-5 px-6 md:pb-8 md:px-0 md:pt-0">
         <div class="flex flex-col lg:flex-row gap-8 w-full">
-          <div class="bg-gradient shadow-2xl rounded-xl p-3 lg:w-1/2">
+          <div class="bg-gradient shadow-2xl rounded-xl p-5 lg:w-1/2">
             <div class="flex justify-between">
               <div>
                 <p class="mb-3 mt-1 font-bold text-4xl">Hello, {{ getUsername }}!</p>

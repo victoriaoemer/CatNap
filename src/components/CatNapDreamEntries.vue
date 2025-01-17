@@ -1,9 +1,11 @@
 <template>
   <div v-if="safeDreams.length > 0">
-    <div v-for="([date, details], index) in reversedDreams" :key="index"
+    <div v-for="([date, details], index) in reversedDreams"
+      :key="index"
       :class="[
-        'p-2 my-3 flex border border-secondary justify-between gap-5 items-center rounded-xl overflow-hidden',
-        !disableHover && 'hover:bg-gradient',
+        'p-2 my-3 flex border bg-gradient border-secondary justify-between gap-5 items-center rounded-xl overflow-hidden transition-all duration-300 ease-in-out',
+        (!disableHover || selectedDream === details) && 'hover:border-violet-500 hover:shadow-xl hover:bg-opacity-80 hover:brightness-125',
+        selectedDream === details && 'border-violet-500 shadow-xl bg-opacity-80 brightness-125',
       ]"
       @click="selectDream(details, date)">
       <p class="title text-lg font-bold">{{ details.title }}</p>
@@ -22,15 +24,12 @@ const props = defineProps<{
   dreams: [string, { title: string; content: string; emotion: number }][]
   date: string
   short?: boolean
-  selected?: boolean
+  selectedDream: { title: string; content: string; emotion: number } | null
   disableHover?: boolean
-
 }>()
 
 const emit = defineEmits(['dreamSelected'])
-
 const safeDreams = props.dreams || []
-
 
 const emotionConverter = (emotion: number) => {
   if (emotion) {
@@ -53,8 +52,5 @@ const reversedDreams = computed(() => {
 
 const selectDream = (dream: { title: string; content: string; emotion: number }, date: string) => {
   emit('dreamSelected', { dream, date })
-  console.log(dream, date)
 }
 </script>
-
-<style scoped></style>

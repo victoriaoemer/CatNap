@@ -46,6 +46,10 @@ interface DreamSelected {
 
 const selectedDream = ref<DreamSelected | null>(null)
 
+const clearSelection = () => {
+  selectedDream.value = null;
+};
+
 const handleDreamSelected = (dream: DreamSelected) => {
   selectedDream.value = dream;
   const [day, month, year] = dream.date.split('/');
@@ -98,14 +102,15 @@ function closeSidebar() {
       <div class="flex flex-grow flex-col lg:flex-row gap-8 pt-5 px-6 md:p-0">
         <div v-if="entries.length" class="lg:w-1/3 bg-gradientGrayDown shadow-2xl rounded-xl p-5 overflow-auto ">
           <h2 class="text-gradient text-3xl font-bold w-fit pb-3 ">Your Dream Entries</h2>
-          <CatNapDreamEntries :dreams="entries" :date="formattedDate" @dreamSelected="handleDreamSelected" />
+          <CatNapDreamEntries :dreams="entries" :date="formattedDate" @dreamSelected="handleDreamSelected" :selectedDream="selectedDream?.dream || null"/>
         </div>
 
         <div class="bg-gradientGrayDown shadow-2xl rounded-xl p-5"
           :class="['lg:w-2/3', { '!w-full': !entries.length }]">
           <CatNapAddEntry v-if="!selectedDream" :date="formattedDate" :onUpdateEntries="updateEntries" />
           <CatNapReadEntry v-if="selectedDream" :dream="{ ...selectedDream.dream, date: selectedDream.date }"
-            @close="selectedDream = null" />
+            @close="clearSelection"
+            />
         </div>
       </div>
     </div>

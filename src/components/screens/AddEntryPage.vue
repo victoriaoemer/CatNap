@@ -96,8 +96,8 @@ function closeSidebar() {
       </div>
 
       <div class="flex flex-grow flex-col lg:flex-row gap-8 pt-5 px-6 md:p-0">
-        <div v-if="entries.length" class="lg:w-1/3 bg-gradientGrayDown shadow-2xl rounded-xl p-5 overflow-auto">
-          <h2 class="text-gradient text-3xl font-bold w-fit pb-3">Your Dream Entries</h2>
+        <div v-if="entries.length" class="lg:w-1/3 bg-gradientGrayDown shadow-2xl rounded-xl p-5 overflow-auto ">
+          <h2 class="text-gradient text-3xl font-bold w-fit pb-3 ">Your Dream Entries</h2>
           <CatNapDreamEntries :dreams="entries" :date="formattedDate" @dreamSelected="handleDreamSelected" />
         </div>
 

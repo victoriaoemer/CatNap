@@ -1,6 +1,6 @@
 <template>
   <div class="flex items-center space-x-5">
-    <div class="md:text-lg py-1 px-3 rounded-xl border border-purple md:border-secondary">
+    <div class="md:text-lg py-1 px-3 rounded-xl">
       {{ formattedDate }}
     </div>
     <div class="md:bg-secondary bg-purple p-2 rounded-full">

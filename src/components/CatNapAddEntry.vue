@@ -1,15 +1,15 @@
 <template>
   <div class="flex flex-col h-full">
-    <div class="flex gap-4 pb-5">
+    <div class="flex flex-col md:flex-row gap-4 pb-5">
       <input
         v-model="title"
         type="text"
         placeholder="Enter Title"
-        class="bg-[#3B32AB] border border-purple rounded-xl p-2 md:text-xl w-2/3"
+        class="bg-[#3B32AB] border border-purple rounded-xl p-2 md:text-xl md:w-2/3"
         @input="clearWarning"
       />
       <div
-        class="bg-[#3B32AB] border border-purple rounded-xl p-1 w-1/3 flex flex-col justify-center items-center"
+        class="bg-[#3B32AB] border border-purple rounded-xl p-1 md:w-1/3 flex flex-col justify-center items-center"
       >
         <p v-if="props.large">How was your dream?</p>
         <div
@@ -56,7 +56,7 @@
       <textarea
         v-model="content"
         placeholder="Enter Text"
-        class="bg-[#3B32AB] border border-purple rounded-xl p-2 md:text-xl w-full h-full resize-none"
+        class="bg-[#3B32AB] border border-purple rounded-xl p-2 md:text-xl w-full h-full resize-none min-h-28"
         @input="clearWarning"
       />
       <img

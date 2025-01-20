@@ -30,7 +30,7 @@ export const usePixabayStore = defineStore('pixabay', {
         const user = userStore.username;
         const data = await userStore.getUserData(user);
         if (data.settings?.themeImage) {
-          this.theme = data.settings.themeImage;
+          this.theme = data.settings?.themeImage || "moon";
         }
       } catch (error) {
         console.error('Error initializing theme:', error);
@@ -61,16 +61,11 @@ export const usePixabayStore = defineStore('pixabay', {
 
       const today = new Date().toISOString().split('T')[0];
 
-      if (
-        !force &&
-        this.userImages[userID] &&
-        this.userImages[userID].lastUpdated === today
-      ) {
-        //console.log('Image already fetched for today for user:', userID);
+      if (!force && this.userImages[userID] && this.userImages[userID].lastUpdated === today) {
         return;
       }
 
-      const apiUrl = `https://pixabay.com/api/?key=${this.apiKey}&q=${this.theme}&image_type=photo&orientation=horizontal&per_page=100`;
+      const apiUrl = `https://pixabay.com/api/?key=${this.apiKey}&q=${this.theme}&image_type=photo&orientation=horizontal&per_page=20`;
 
       try {
         const response = await fetch(apiUrl);
@@ -78,7 +73,16 @@ export const usePixabayStore = defineStore('pixabay', {
           const data = await response.json();
           if (data.hits?.length > 0) {
             const randomImage = Math.floor(Math.random() * data.hits.length);
-            const newImage = data.hits[randomImage].largeImageURL;
+            const selectedImage = data.hits[randomImage];
+
+            const newImage = selectedImage.fullHDURL || selectedImage.largeImageURL || selectedImage.webformatURL || selectedImage.pageURL;
+
+            const imagePage = selectedImage.pageURL;
+
+            if (!newImage) {
+              console.warn("No valid image found for theme:", this.theme);
+              return;
+            }
 
             this.userImages[userID] = {
               image: newImage,
@@ -86,17 +90,19 @@ export const usePixabayStore = defineStore('pixabay', {
               theme: this.theme,
             };
 
-            //console.log('Fetched new image for theme:', this.theme, 'for user:', userID);
+            console.log("Fetched new image:", newImage);
+            console.log("Image page:", imagePage);
           } else {
-            console.warn('No images found for theme:', this.theme);
+            console.warn("No images found for theme:", this.theme);
           }
         } else {
-          console.error('Failed to fetch image. HTTP status:', response.status);
+          console.error("Failed to fetch image. HTTP status:", response.status);
         }
       } catch (error) {
-        console.error('Error fetching image:', error);
+        console.error("Error fetching image:", error);
       }
     },
+
     getUserImage(userID: string): string {
       return this.userImages[userID]?.image || '';
     },

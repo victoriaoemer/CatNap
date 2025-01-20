@@ -47,10 +47,19 @@ const formattedDate = date.toLocaleDateString('en-GB', {
 const entries = ref<[string, { title: string; content: string; emotion: number }][]>([])
 
 const updateEntries = async () => {
-  const data = await userStore.getUserData(user)
-  userData.value = data
-  if (data.data) {
-    entries.value = Object.entries(data.data)
+  if (!user) {
+    console.error('User is not defined')
+    return
+  }
+
+  try {
+    const data = await userStore.getUserData(user)
+    userData.value = data
+    if (data.data) {
+      entries.value = Object.entries(data.data)
+    }
+  } catch (error) {
+    console.error('Failed to fetch user data:', error)
   }
 }
 

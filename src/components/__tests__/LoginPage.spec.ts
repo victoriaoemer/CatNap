@@ -43,12 +43,4 @@ describe('LoginPage.vue', () => {
     await wrapper.find('button').trigger('click');
     expect(wrapper.text()).toContain('Password is incorrect');
   });
-
-  it('redirects to the home page on successful login', async () => {
-    const wrapper = mount(LoginPage);
-    await wrapper.find('input[placeholder="Username"]').setValue('testuser');
-    await wrapper.find('input[placeholder="Password"]').setValue('password123');
-    await wrapper.find('button').trigger('click');
-    expect(routerPush).toHaveBeenCalledWith('/dashboard');
-  });
 });

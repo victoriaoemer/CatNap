@@ -77,7 +77,6 @@ onMounted(async () => {
       { immediate: true },
     )
   } catch (error) {
-    console.log('old Theme ' + userData.value.settings.themeImage)
     console.error(error)
   }
 })

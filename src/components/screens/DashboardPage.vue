@@ -105,7 +105,7 @@ const getUsername = computed(() => {
                 <CatNapAverageEmotion :userData="userData" />
               </div>
               <div v-else>
-                <div class="h-full w-full">
+                <div class="h-full w-full justify-items-center">
                   <p>Miau, no data yet</p>
 
                   <img src="@/assets/cat-images/cat-entry2.svg" alt="cat" class="h-28" />

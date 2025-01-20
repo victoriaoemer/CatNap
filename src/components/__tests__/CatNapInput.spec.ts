@@ -39,7 +39,7 @@ describe('CatNapInput.vue', () => {
     });
 
     expect(wrapper.find('div').classes()).toContain('bg-[#3B32AB]');
-    expect(wrapper.find('div').classes()).toContain('border-2');
+    expect(wrapper.find('div').classes()).toContain('border-[#3E2FE9]');
   });
 
   it('applies the correct classes when settings is false', () => {

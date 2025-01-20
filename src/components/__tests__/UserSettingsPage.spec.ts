@@ -39,8 +39,9 @@ describe('UserSettingsPage.vue', () => {
     expect(wrapper.findComponent({ name: 'CatNapSidebar' }).exists()).toBe(true);
     expect(wrapper.classes()).not.toContain('overflow-hidden');
 
-    // Toggle sidebar
-    await wrapper.find('button').trigger('click');
+    // Toggle the sidebar
+    const toggleButton = wrapper.find('button');
+    await toggleButton.trigger('click');
     expect(wrapper.classes()).toContain('overflow-hidden');
   });
 });

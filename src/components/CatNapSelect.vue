@@ -11,7 +11,7 @@
         </option>
       </select>
       <div class="flex flex-col justify-center items-center ml-2 pointer-events-none">
-        <!-- Pfeil nach oben -->
+        <!-- arrow up -->
         <svg class="w-3 h-3 text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
           <path
             fill-rule="evenodd"
@@ -19,7 +19,7 @@
             clip-rule="evenodd"
           />
         </svg>
-        <!-- Pfeil nach unten -->
+        <!-- arrow down -->
         <svg class="w-3 h-3 text-gray-400 -mt-1" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
           <path
             fill-rule="evenodd"

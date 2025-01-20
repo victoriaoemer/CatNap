@@ -105,14 +105,18 @@ const getUsername = computed(() => {
                 <CatNapAverageEmotion :userData="userData" />
               </div>
               <div v-else>
-                <p>No data collected yet</p>
+                <div class="h-full w-full">
+                  <p>Miau, no data yet</p>
+
+                  <img src="@/assets/cat-images/cat-entry2.svg" alt="cat" class="h-28" />
+                </div>
               </div>
             </div>
 
             <div
               class="flex justify-center w-full sm:w-fit bg-gradientGrayDown shadow-2xl rounded-xl"
             >
-              <div v-if="userData.data" class="p-2 flex flex-col h-full">
+              <div class="p-2 flex flex-col h-full">
                 <CatNapCalendar :userData="userData" />
               </div>
             </div>

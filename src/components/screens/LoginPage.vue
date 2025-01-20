@@ -27,7 +27,7 @@ const login = async () => {
 
     const users = await userStore.getUsers()
     // find user in users
-    const user = users.find((user: User) => user.username === username.value)
+    const user = users.find((user: User) => user.username === username.value.trim())
 
     if (user) {
       if (password.value === user.password) {

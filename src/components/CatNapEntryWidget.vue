@@ -1,5 +1,5 @@
 <template>
-  <div class="grid sm:grid-cols-2 gap-5 w-full">
+  <div class="grid sm:grid-cols-2 gap-5 w-full" :class="{ '!grid-cols-1': entries.length === 0 }">
     <div v-if="userData.data">
       <h2 class="text-gradient text-xl md:text-3xl font-bold w-fit pb-3">Your Dream Diary</h2>
       <CatNapDreamEntries

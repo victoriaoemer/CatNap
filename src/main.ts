@@ -10,6 +10,7 @@ import DashboardPage from './components/screens/DashboardPage.vue'
 import LoginPage from './components/screens/LoginPage.vue'
 import SignUpPage from './components/screens/SignUpPage.vue'
 import UserSettingsPage from './components/screens/UserSettingsPage.vue'
+import CatNapButton from './components/CatNapButton.vue';
 import './index.css'
 import { useUserStore } from './types/User'
 
@@ -46,10 +47,11 @@ router.beforeEach((to, from, next) => {
   }
 });
 
+
 const app = createApp(App)
 const pinia = createPinia()
 pinia.use(piniaPluginPersistedstate);
-
+app.component('CatNapButton', CatNapButton);
 app.use(pinia)
 app.use(router)
 app.mount('#app')

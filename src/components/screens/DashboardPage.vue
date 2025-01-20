@@ -1,14 +1,13 @@
 <script setup lang="ts">
-
 import { useUserStore, type UserData } from '@/types/User'
 import { computed, onMounted, ref } from 'vue'
 //import { useRouter } from 'vue-router'
+import { usePixabayStore } from '@/types/Pixabay'
 import CatNapAverageEmotion from '../CatNapAverageEmotion.vue'
 import CatNapCalendar from '../CatNapCalendar.vue'
 import CatNapEntryWidget from '../CatNapEntryWidget.vue'
-import CatNapSidebar from '../CatNapSidebar.vue'
 import CatNapQuoteDisplay from '../CatNapQuoteDisplay.vue'
-import { usePixabayStore } from '@/types/Pixabay'
+import CatNapSidebar from '../CatNapSidebar.vue'
 import CatNapTimestamp from '../CatNapTimestamp.vue'
 
 const userStore = useUserStore()
@@ -18,20 +17,20 @@ const userData = ref<UserData>({} as UserData)
 
 onMounted(async () => {
   try {
-    const data = await userStore.getUserData(user);
-    userData.value = data;
-    const pixabayStore = usePixabayStore();
-    const userImage = pixabayStore.getUserImage(user);
+    const data = await userStore.getUserData(user)
+    userData.value = data
+    const pixabayStore = usePixabayStore()
+    const userImage = pixabayStore.getUserImage(user)
 
     if (userImage.valueOf() === '') {
-      await pixabayStore.fetchImage(true, data.username);
+      await pixabayStore.fetchImage(true, data.username)
     }
-    console.log('User Data:', data);
-    console.log('User Image:', userImage);
+    console.log('User Data:', data)
+    console.log('User Image:', userImage)
   } catch (error) {
-    console.error('Error loading data:', error);
+    console.error('Error loading data:', error)
   }
-});
+})
 
 const isSidebarOpen = ref(false)
 
@@ -79,7 +78,7 @@ const getUsername = computed(() => {
         <button @click="toggleSidebar" class="md:hidden">
           <img src="@/assets/icons/menu.svg" alt="Menu" class="h-8 w-max" />
         </button>
-        <CatNapTimestamp :userData="userData"/>
+        <CatNapTimestamp :userData="userData" />
       </div>
 
       <div class="mb-5 pt-5 px-6 md:p-0">
@@ -90,28 +89,34 @@ const getUsername = computed(() => {
       <!-- Dashboard -->
       <div class="flex flex-col flex-grow pt-5 px-6 md:pb-8 md:px-0 md:pt-0">
         <div class="flex flex-col lg:flex-row gap-8 w-full">
-          <div class="bg-gradient shadow-2xl rounded-xl p-3 lg:w-1/2">
+          <div class="bg-gradient shadow-2xl rounded-xl p-5 lg:w-1/2">
             <div class="flex justify-between">
               <div>
-                <p class="mb-3 mt-1 font-bold text-4xl">Hello, {{ getUsername }}!</p>
+                <p class="mb-3 mt-1 font-bold text-xl md:text-4xl">Hello, {{ getUsername }}!</p>
                 <p class="font-semibold text-lg">What are we doing today?</p>
               </div>
               <img src="@/assets/cat-images/cat-home1.svg" alt="Cat" class="h-36" />
             </div>
           </div>
 
-          <div class="flex lg:w-1/2 gap-8">
+          <div class="flex flex-col sm:flex-row lg:w-1/2 gap-8">
             <div class="w-full bg-gradientGrayDown shadow-2xl rounded-xl p-3">
               <div v-if="userData.data">
                 <CatNapAverageEmotion :userData="userData" />
               </div>
               <div v-else>
-                <p>No data collected yet</p>
+                <div class="h-full w-full justify-items-center">
+                  <p>Miau, no data yet</p>
+
+                  <img src="@/assets/cat-images/cat-entry2.svg" alt="cat" class="h-28" />
+                </div>
               </div>
             </div>
 
-            <div class="w-fit bg-gradientGrayDown shadow-2xl rounded-xl">
-              <div v-if="userData.data" class="p-2 flex flex-col h-full">
+            <div
+              class="flex justify-center w-full sm:w-fit bg-gradientGrayDown shadow-2xl rounded-xl"
+            >
+              <div class="p-2 flex flex-col h-full">
                 <CatNapCalendar :userData="userData" />
               </div>
             </div>

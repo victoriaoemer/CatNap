@@ -20,7 +20,7 @@
         active-class="bg-gradient"
         class="relative p-2 border border-secondary rounded-xl w-full flex items-center justify-center hover:bg-gradient"
       >
-        <img src="@/assets/icons/add.svg" alt="Add" class="w-full h-full object-contain" />
+        <img src="@/assets/icons/add-book.svg" alt="Add" class="w-full h-full object-contain" />
       </RouterLink>
     </div>
     <div class="flex flex-col items-center gap-3">
@@ -29,23 +29,25 @@
         active-class="bg-gradient"
         class="relative p-2 border border-secondary rounded-xl w-full flex items-center justify-center hover:bg-gradient"
       >
-        <img src="@/assets/icons/settings.svg" alt="Settings" class="w-full h-full object-contain" />
+        <img
+          src="@/assets/icons/settings.svg"
+          alt="Settings"
+          class="w-full h-full object-contain"
+        />
       </RouterLink>
-      <CatNapButton
-        text="Logout"
-        type="outline"
+      <button
         @click="logout"
         class="relative p-2 border border-secondary rounded-xl w-full flex items-center justify-center hover:bg-gradient"
       >
-        <img src="@/assets/icons/logout.svg" class="w-full h-full object-contain" />
-      </CatNapButton>
+        <img src="@/assets/icons/logout.svg" alt="Logout" class="w-full h-full object-contain" />
+      </button>
     </div>
   </aside>
 </template>
 
 <script setup lang="ts">
-import { useRouter } from 'vue-router'
 import { useUserStore } from '@/types/User'
+import { useRouter } from 'vue-router'
 const userStore = useUserStore()
 const router = useRouter()
 
@@ -63,5 +65,4 @@ const logout = () => {
   userStore.logout()
   router.push('/')
 }
-
 </script>

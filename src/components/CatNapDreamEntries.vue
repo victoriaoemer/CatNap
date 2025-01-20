@@ -1,13 +1,16 @@
 <template>
   <div v-if="safeDreams.length > 0">
-    <div v-for="([date, details], index) in reversedDreams"
+    <div
+      v-for="([date, details], index) in reversedDreams"
       :key="index"
       :class="[
         'p-2 my-3 flex border bg-gradient border-secondary justify-between gap-5 items-center rounded-xl overflow-hidden transition-all duration-300 ease-in-out',
-        (!disableHover || selectedDream === details) && 'hover:border-violet-500 hover:shadow-xl hover:bg-opacity-80 hover:brightness-125',
+        (!disableHover || selectedDream === details) &&
+          'hover:border-violet-500 hover:shadow-xl hover:bg-opacity-80 hover:brightness-125',
         selectedDream === details && 'border-violet-500 shadow-xl bg-opacity-80 brightness-125',
       ]"
-      @click="selectDream(details, date)">
+      @click="selectDream(details, date)"
+    >
       <p class="title text-lg font-bold">{{ details.title }}</p>
       <div class="flex flex-col gap-2 items-end">
         <p :class="['rounded-full h-2 w-2', emotionConverter(details.emotion)]"></p>
@@ -45,7 +48,7 @@ const emotionConverter = (emotion: number) => {
 
 const reversedDreams = computed(() => {
   if (props.short) {
-    return props.dreams.slice().reverse().slice(0, 5)
+    return props.dreams.slice().reverse().slice(0, 4)
   }
   return props.dreams.slice().reverse()
 })

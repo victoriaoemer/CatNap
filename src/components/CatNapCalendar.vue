@@ -44,6 +44,10 @@ const daysInMonthCount = new Date(currentYear, currentMonth + 1, 0).getDate()
 const startEmptyDays = Array.from({ length: startDayIndex }, (_, i) => i + 1)
 
 const emotionClassForDay = (day: number) => {
+  if (props.userData.data === undefined) {
+    return 'bg-gray-400'
+  }
+
   const dateKey = `${String(day).padStart(2, '0')}/${String(currentMonth + 1).padStart(2, '0')}/${currentYear}`
   const dayData = props.userData.data[dateKey]
 

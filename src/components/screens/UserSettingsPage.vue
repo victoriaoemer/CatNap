@@ -53,7 +53,6 @@ const overlayTitle = ref('hi')
 const overlayButtons = ref([{ text: '', action: () => {} }])
 
 onMounted(async () => {
-
   try {
     const data = await userStore.getUserData(user)
     const loginData = await userStore
@@ -75,15 +74,13 @@ onMounted(async () => {
         newThemeImage.value = pixabayStore.getUserTheme(user)
         profilePicture.value = newSettings?.profilePicture || 1
       },
-      { immediate: true }
-    );
-
+      { immediate: true },
+    )
   } catch (error) {
     console.log('old Theme ' + userData.value.settings.themeImage)
     console.error(error)
   }
 })
-
 
 function toggleSidebar() {
   isSidebarOpen.value = !isSidebarOpen.value
@@ -116,7 +113,7 @@ function closeOverlay() {
 
 async function confirmUpdateUser() {
   const users = await userStore.getUsers()
-  const user = users.find((user: User) => user.username === username.value)
+  const user = users.find((user: User) => user.username === username.value.trim())
 
   if (!firstName.value || !lastName.value || !username.value || !password.value) {
     msg.value = 'Please fill out all fields'
@@ -156,7 +153,7 @@ function confimUpdateTheme() {
 }
 
 const updateTheme = () => {
-  updateThemeAndSyncStores();
+  updateThemeAndSyncStores()
   console.log('Theme updated new Theme ' + newThemeImage.value)
 
   overlayVisible.value = false
@@ -164,24 +161,23 @@ const updateTheme = () => {
 
 const updateThemeAndSyncStores = async () => {
   try {
-    pixabayStore.setNewTheme(user, newThemeImage.value);
+    pixabayStore.setNewTheme(user, newThemeImage.value)
     await userStore.updateUserSettings(user, {
       themeImage: newThemeImage.value,
       profilePicture: profilePicture.value,
-    });
+    })
 
-    console.log('Theme updated in both stores.');
+    console.log('Theme updated in both stores.')
   } catch (error) {
-    console.error('Error syncing theme across stores:', error);
+    console.error('Error syncing theme across stores:', error)
   }
-};
-
+}
 
 const updateUser = async () => {
   userStore.updateUser(userData.value.username, {
-    firstName: firstName.value,
-    lastName: lastName.value,
-    username: username.value,
+    firstName: firstName.value.trim(),
+    lastName: lastName.value.trim(),
+    username: username.value.trim(),
     password: password.value,
   })
 
@@ -190,9 +186,9 @@ const updateUser = async () => {
     profilePicture: profilePicture.value,
   })
 
-  userStore.username = username.value
-  userStore.firstName = firstName.value
-  userStore.lastName = lastName.value
+  userStore.username = username.value.trim()
+  userStore.firstName = firstName.value.trim()
+  userStore.lastName = lastName.value.trim()
   userStore.password = password.value
 
   overlayVisible.value = false
@@ -201,8 +197,6 @@ const updateUser = async () => {
 const clearWarning = () => {
   msg.value = ''
 }
-
-
 
 const resetData = () => {
   userStore.resetUserdata(userStore.username)

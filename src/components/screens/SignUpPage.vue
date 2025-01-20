@@ -31,7 +31,7 @@ const signUp = async () => {
     const users = await userStore.getUsers()
 
     // check if username already exists
-    const user = users.find((user: User) => user.username === username.value)
+    const user = users.find((user: User) => user.username === username.value.trim())
 
     if (user) {
       msg.value = 'Username already exists'
@@ -39,23 +39,23 @@ const signUp = async () => {
     }
 
     userStore.createUser({
-      firstName: firstName.value,
-      lastName: lastName.value,
-      username: username.value,
+      firstName: firstName.value.trim(),
+      lastName: lastName.value.trim(),
+      username: username.value.trim(),
       password: password.value,
     })
 
     userStore.createUserData({
-      username: username.value,
+      username: username.value.trim(),
       settings: {
         themeImage: 'moons',
         profilePicture: 1,
       },
     })
 
-    userStore.username = username.value
-    userStore.firstName = firstName.value
-    userStore.lastName = lastName.value
+    userStore.username = username.value.trim()
+    userStore.firstName = firstName.value.trim()
+    userStore.lastName = lastName.value.trim()
     userStore.password = password.value
 
     firstName.value = ''

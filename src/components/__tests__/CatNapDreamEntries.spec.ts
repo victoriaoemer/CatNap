@@ -8,19 +8,34 @@ describe('CatNapDreamEntries.vue', () => {
     ['2025-01-02', { title: 'Dream 2', content: 'Content 2', emotion: 3 }],
   ];
 
-  it('displays dream entries in reverse order', () => {
+  it('renders the dream entries in reverse chronological order', () => {
     const wrapper = mount(CatNapDreamEntries, {
-      props: { dreams, date: '2025-01-01' },
+      props: { dreams, date: '2025-01-01', selectedDream: null },
     });
     const titles = wrapper.findAll('.title').map((el) => el.text());
     expect(titles).toEqual(['Dream 2', 'Dream 1']);
   });
 
-  it('shows the correct emotion badge', () => {
+  it('displays the correct emotion badge based on emotion level', () => {
     const wrapper = mount(CatNapDreamEntries, {
-      props: { dreams, date: '2025-01-01' },
+      props: { dreams, date: '2025-01-01', selectedDream: null },
     });
     const badges = wrapper.findAll('.bg-emotion-green');
     expect(badges.length).toBe(1);
+  });
+
+  it('renders a message when there are no dream entries', () => {
+    const wrapper = mount(CatNapDreamEntries, {
+      props: { dreams: [], date: '2025-01-01', selectedDream: null },
+    });
+    expect(wrapper.findComponent(CatNapDreamEntries).isVisible()).toBe(false);
+  });
+
+  it('filters dreams based on the provided date', () => {
+    const wrapper = mount(CatNapDreamEntries, {
+      props: { dreams, date: '2025-01-01', selectedDream: null },
+    });
+    const titles = wrapper.findAll('.title').map((el) => el.text());
+    expect(titles).toEqual(['Dream 2', 'Dream 1']);
   });
 });

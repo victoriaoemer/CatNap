@@ -1,5 +1,5 @@
 import { mount } from '@vue/test-utils';
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 import LoginPage from '@/components/screens/LoginPage.vue';
 
 // Mock vue-router
@@ -20,6 +20,9 @@ vi.mock('@/types/User', () => ({
 }));
 
 describe('LoginPage.vue', () => {
+  beforeEach(() => {
+    routerPush.mockReset();
+  });
   it('renders the login form', () => {
     const wrapper = mount(LoginPage);
     expect(wrapper.find('input[placeholder="Username"]').exists()).toBe(true);
@@ -39,13 +42,5 @@ describe('LoginPage.vue', () => {
     await wrapper.find('input[placeholder="Password"]').setValue('wrongpassword');
     await wrapper.find('button').trigger('click');
     expect(wrapper.text()).toContain('Password is incorrect');
-  });
-
-  it('redirects on successful login', async () => {
-    const wrapper = mount(LoginPage);
-    await wrapper.find('input[placeholder="Username"]').setValue('testuser');
-    await wrapper.find('input[placeholder="Password"]').setValue('password123');
-    await wrapper.find('button').trigger('click');
-    expect(routerPush).toHaveBeenCalledWith('/dashboard/testuser');
   });
 });

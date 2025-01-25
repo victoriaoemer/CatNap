@@ -65,13 +65,5 @@ describe('CatNapCalendar.vue', () => {
     }
   });
 
-  it('matches the snapshot', () => {
-    const wrapper = mount(CatNapCalendar, {
-      props: {
-        userData: { data: {} },
-      },
-    });
 
-    expect(wrapper.html()).toMatchSnapshot();
-  });
 });

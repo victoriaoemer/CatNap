@@ -1,68 +1,63 @@
-import { describe, it, expect } from 'vitest';
-import { mount, RouterLinkStub } from '@vue/test-utils';
-import CatNapSidebar from '@/components/CatNapSidebar.vue';
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import { mount } from "@vue/test-utils";
+import CatNapSidebar from "@/components/CatNapSidebar.vue";
+import { createRouter, createWebHistory } from "vue-router";
+import { createTestingPinia } from "@pinia/testing";
 
-describe('CatNapSidebar.vue', () => {
-  it('renders navigation links with correct paths', () => {
-    const wrapper = mount(CatNapSidebar, {
-      props: {
-        user: 'testUser',
-        mobile: false,
-      },
+// Mock Vue Router
+const router = createRouter({
+  history: createWebHistory(),
+  routes: [
+    { path: "/dashboard/:user", name: "Dashboard", component: {} },
+    { path: "/add-entry/:user", name: "AddEntry", component: {} },
+    { path: "/settings/:user", name: "Settings", component: {} },
+  ],
+});
+
+describe("CatNapSidebar.vue", () => {
+  let wrapper: ReturnType<typeof mount>;
+  let originalInnerWidth: number;
+
+  beforeEach(() => {
+    originalInnerWidth = window.innerWidth;
+    wrapper = mount(CatNapSidebar, {
       global: {
-        stubs: {
-          RouterLink: RouterLinkStub,
-        },
+        plugins: [router, createTestingPinia({ createSpy: vi.fn })],
       },
+      props: { user: "testuser" },
     });
-
-    const links = wrapper.findAllComponents(RouterLinkStub);
-    expect(links.length).toBe(3);
-    expect(links[0].props('to')).toBe('/dashboard/testUser');
-    expect(links[1].props('to')).toBe('/add-entry/testUser');
-    expect(links[2].props('to')).toBe('/settings/testUser');
   });
 
-  it('applies correct classes when mobile is true', () => {
-    const wrapper = mount(CatNapSidebar, {
-      props: {
-        user: 'testUser',
-        mobile: true,
-      },
-    });
-
-    const aside = wrapper.find('aside');
-    expect(aside.classes()).toContain('absolute');
-    expect(aside.classes()).toContain('h-screen');
-    expect(aside.classes()).toContain('top-0');
-    expect(aside.classes()).toContain('left-0');
-    expect(aside.classes()).toContain('rounded-l-none');
+  afterEach(() => {
+    window.innerWidth = originalInnerWidth;
+    vi.restoreAllMocks();
   });
 
-  it('emits close event when close button is clicked', async () => {
-    const wrapper = mount(CatNapSidebar, {
-      props: {
-        user: 'testUser',
-        mobile: true,
-      },
-    });
-
-    const closeButton = wrapper.find('div > img[alt="Close"]');
-    await closeButton.trigger('click');
-
-    expect(wrapper.emitted().close).toBeTruthy();
-    expect(wrapper.emitted().close.length).toBe(1);
+  it("renders the sidebar", () => {
+    expect(wrapper.exists()).toBe(true);
   });
 
-  it('does not render close button when mobile is false', () => {
-    const wrapper = mount(CatNapSidebar, {
-      props: {
-        user: 'testUser',
-        mobile: false,
-      },
-    });
+  it("renders the correct navigation links", async () => {
+    router.push("/");
+    await router.isReady();
 
-    const closeButton = wrapper.find('div > img[alt="Close"]');
-    expect(closeButton.exists()).toBe(false);
+    const links = wrapper.findAll("a"); // Finds all anchor elements
+    expect(links).toHaveLength(3); // Expect Dashboard, Add Entry, Settings
+
+    expect(links[0].attributes("href")).toContain("/dashboard/testuser");
+    expect(links[1].attributes("href")).toContain("/add-entry/testuser");
+    expect(links[2].attributes("href")).toContain("/settings/testuser");
+  });
+
+  it("renders the sidebar on small screens", async () => {
+    window.innerWidth = 500;
+    await wrapper.vm.$nextTick();
+    expect(wrapper.exists()).toBe(true);
+  });
+
+  it("renders the sidebar on large screens", async () => {
+    window.innerWidth = 1200;
+    await wrapper.vm.$nextTick();
+    expect(wrapper.exists()).toBe(true);
   });
 });

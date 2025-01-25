@@ -76,8 +76,6 @@ export const usePixabayStore = defineStore('pixabay', {
 
             const newImage = selectedImage.fullHDURL || selectedImage.largeImageURL || selectedImage.webformatURL || selectedImage.pageURL;
 
-            const imagePage = selectedImage.pageURL;
-
             if (!newImage) {
               console.warn("No valid image found for theme:", this.theme);
               return;

@@ -28,16 +28,26 @@
 
 <script setup lang="ts">
 import { useUserStore } from '@/types/User'
-import { usePixabayStore } from '../types/Pixabay'
 import { onMounted, ref } from 'vue'
+import { usePixabayStore } from '../types/Pixabay'
 const pixabayStore = usePixabayStore()
 const userStore = useUserStore()
 const user = userStore.username
 
-const image = ref('')
+const image = ref(pixabayStore.getUserImage(user))
+
+async function isValidImageUrl(url: string) {
+  try {
+    const response = await fetch(url, { method: 'HEAD' })
+    return response.ok
+  } catch (error) {
+    console.error('Error validating image URL:', error)
+    return false
+  }
+}
 
 onMounted(async () => {
-  if (image.value == null) {
+  if (image.value == null || image.value === '' || !(await isValidImageUrl(image.value))) {
     await pixabayStore.fetchImage(true, user)
     image.value = pixabayStore.getUserImage(user)
   } else {

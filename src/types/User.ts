@@ -45,7 +45,6 @@ export const useUserStore = defineStore('user', {
       this.username = user.username;
       this.password = user.password
       this.isAuthenticated = true;
-      //console.log('User logged in:', this.username)
     },
     logout() {
       this.firstName = '';
@@ -92,7 +91,7 @@ export const useUserStore = defineStore('user', {
         if (updatedData && updatedData.settings) {
           this.settings = updatedData.settings;
         } else {
-          this.settings = { themeImage: settings.themeImage , profilePicture: settings.profilePicture }; // fallback
+          this.settings = { themeImage: settings.themeImage, profilePicture: settings.profilePicture }; // fallback
         }
       } catch (error) {
         console.error("Error updating user settings:", error);

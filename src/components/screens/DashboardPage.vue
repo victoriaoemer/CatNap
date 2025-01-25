@@ -25,8 +25,6 @@ onMounted(async () => {
     if (userImage.valueOf() === '') {
       await pixabayStore.fetchImage(true, data.username)
     }
-    console.log('User Data:', data)
-    console.log('User Image:', userImage)
   } catch (error) {
     console.error('Error loading data:', error)
   }

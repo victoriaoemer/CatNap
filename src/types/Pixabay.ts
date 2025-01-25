@@ -51,7 +51,6 @@ export const usePixabayStore = defineStore('pixabay', {
     },
     confirmThemeChange(userID: string) {
       this.fetchImage(true, userID);
-      //console.log('Theme changed to:', theme, 'for user:', userID);
     },
     async fetchImage(force = false, userID: string) {
       if (!this.apiKey) {
@@ -89,9 +88,6 @@ export const usePixabayStore = defineStore('pixabay', {
               lastUpdated: today,
               theme: this.theme,
             };
-
-            console.log("Fetched new image:", newImage);
-            console.log("Image page:", imagePage);
           } else {
             console.warn("No images found for theme:", this.theme);
           }

@@ -153,8 +153,6 @@ function confimUpdateTheme() {
 
 const updateTheme = () => {
   updateThemeAndSyncStores()
-  console.log('Theme updated new Theme ' + newThemeImage.value)
-
   overlayVisible.value = false
 }
 
@@ -165,8 +163,6 @@ const updateThemeAndSyncStores = async () => {
       themeImage: newThemeImage.value,
       profilePicture: profilePicture.value,
     })
-
-    console.log('Theme updated in both stores.')
   } catch (error) {
     console.error('Error syncing theme across stores:', error)
   }

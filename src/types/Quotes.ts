@@ -24,16 +24,13 @@ export const useQuoteStore = defineStore('quote', {
     setNewTheme(newTheme: string) {
       // Temporarily store the new theme
       this.newTheme = newTheme;
-      console.log('New theme set to:', this.newTheme);
     },
     confirmThemeChange() {
       // Compare the new theme with the current theme
       if (this.newTheme && this.newTheme !== this.theme) {
         this.theme = this.newTheme; // Update the theme
         this.fetchQuote(true); // Fetch a new quote immediately
-        // console.log('Theme updated to:', this.theme);
       } else {
-        //console.warn('No theme change detected.');
       }
       // Clear the temporary newTheme after confirmation
       this.newTheme = null;
@@ -43,7 +40,6 @@ export const useQuoteStore = defineStore('quote', {
 
       // Skip fetching if not forced and quote already fetched today
       if (!force && this.lastUpdated === today) {
-        //console.log('Quote already fetched for today:', this.quote);
         return;
       }
 
@@ -59,7 +55,6 @@ export const useQuoteStore = defineStore('quote', {
           this.quote = data[0]?.quote || 'No quote found';
           this.author = data[0]?.author || 'Unknown';
           this.lastUpdated = today; // Update the last updated date
-          //console.log('New quote fetched:', this.quote);
         } else {
           console.error(`Error: ${response.status}`);
         }

@@ -114,7 +114,7 @@ const updateData = async () => {
       props.onUpdateEntries(updatedEntries)
     }
 
-    // Formular zurücksetzen
+    // reset input fields
     title.value = ''
     content.value = ''
     emotion.value = 0

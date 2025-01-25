@@ -22,7 +22,7 @@ import { onMounted, ref } from 'vue'
 import CatNapAddEntry from './CatNapAddEntry.vue'
 import CatNapDreamEntries from './CatNapDreamEntries.vue'
 
-const userData = ref<UserData>({} as UserData) //#endregion
+const userData = ref<UserData>({} as UserData)
 
 interface DreamDetails {
   title: string

@@ -76,13 +76,13 @@ router.get("/get-users", async (req, res) => {
 router.put("/update-user/:username", async (req, res) => {
   try {
     const { username } = req.params;
-    const newEntry = req.body; // Direkter Zugriff auf den gesendeten Eintrag
+    const newEntry = req.body;
     const collection = await getLoginCollection();
     const dataCollection = await getCatNapCollection();
 
     await collection.updateOne({ username }, { $set: newEntry });
 
-    // Update username in data collection
+    // Update also username in data collection not only in login collection
     await dataCollection.updateOne({ username }, { $set: { username: newEntry.username } });
     res.status(200).json({ message: "Daten erfolgreich aktualisiert" });
   } catch (error) {
@@ -133,7 +133,7 @@ router.put("/update-data/:username", async (req, res) => {
 
     const formattedDate = new Date().toLocaleDateString("en-GB");
 
-    // wenn bereits ein eintrag bei einem Datum existiert, dann wird dieser überschrieben
+    // if a new entry on the same day is made, the old entry will be overwritten
 
     await collection.updateOne(
       { username },

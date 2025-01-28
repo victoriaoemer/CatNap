@@ -119,7 +119,7 @@ async function confirmUpdateUser() {
     return
   }
 
-  if (user) {
+  if (user && userData.value.username !== username.value) {
     msg.value = 'Username already exists'
     return
   }

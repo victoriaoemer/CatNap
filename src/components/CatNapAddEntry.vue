@@ -2,7 +2,7 @@
   <div class="flex flex-col h-full">
     <div class="flex flex-col md:flex-row gap-4 pb-5">
       <input
-        :id="title"
+        id="title"
         v-model="title"
         type="text"
         placeholder="Enter Title"
@@ -55,6 +55,7 @@
 
     <div class="flex-grow relative">
       <textarea
+        id="content"
         v-model="content"
         placeholder="Enter Text"
         class="bg-[#3B32AB] border border-purple rounded-xl p-2 md:text-xl w-full h-full resize-none min-h-28"

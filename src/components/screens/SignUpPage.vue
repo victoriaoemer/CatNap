@@ -65,6 +65,8 @@ const signUp = async () => {
 
     router.push('/')
   } catch (error) {
+    // display this message as a pop up if there is an error: Database unreachable - please check the .env file and run "npm run dev" locally!
+    window.alert('Database unreachable - please check the .env file and run "npm run dev" locally!')
     console.error('Fehler beim Abrufen der Benutzer:', error)
   }
 }
@@ -87,14 +89,28 @@ const clearWarning = () => {
 
       <div class="flex flex-col items-center justify-center space-y-10">
         <CatNapInput
+          id="firstname"
           v-model="firstName"
           type="text"
           placeholder="First Name"
           @input="clearWarning"
         />
-        <CatNapInput v-model="lastName" type="text" placeholder="Last Name" @input="clearWarning" />
-        <CatNapInput v-model="username" type="text" placeholder="Username" @input="clearWarning" />
         <CatNapInput
+          id="lastname"
+          v-model="lastName"
+          type="text"
+          placeholder="Last Name"
+          @input="clearWarning"
+        />
+        <CatNapInput
+          id="username"
+          v-model="username"
+          type="text"
+          placeholder="Username"
+          @input="clearWarning"
+        />
+        <CatNapInput
+          id="password"
           v-model="password"
           type="password"
           placeholder="Password"

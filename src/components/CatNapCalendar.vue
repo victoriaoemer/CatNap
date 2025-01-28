@@ -33,7 +33,7 @@
 const weekDays = ['M', 'T', 'W', 'T', 'F', 'S', 'S']
 
 const today = new Date()
-const currentDay = (today.getDay() + 6) % 7 // Montag = 0, Sonntag = 6
+const currentDay = (today.getDay() + 6) % 7 // monday = 0, sunday = 6
 
 const currentMonth = today.getMonth()
 const currentYear = today.getFullYear()

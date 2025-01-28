@@ -2,6 +2,7 @@
   <div class="flex flex-col h-full">
     <div class="flex flex-col md:flex-row gap-4 pb-5">
       <input
+        :id="title"
         v-model="title"
         type="text"
         placeholder="Enter Title"
@@ -113,7 +114,7 @@ const updateData = async () => {
       props.onUpdateEntries(updatedEntries)
     }
 
-    // Formular zurücksetzen
+    // reset input fields
     title.value = ''
     content.value = ''
     emotion.value = 0

@@ -153,8 +153,6 @@ function confimUpdateTheme() {
 
 const updateTheme = () => {
   updateThemeAndSyncStores()
-  console.log('Theme updated new Theme ' + newThemeImage.value)
-
   overlayVisible.value = false
 }
 
@@ -165,8 +163,6 @@ const updateThemeAndSyncStores = async () => {
       themeImage: newThemeImage.value,
       profilePicture: profilePicture.value,
     })
-
-    console.log('Theme updated in both stores.')
   } catch (error) {
     console.error('Error syncing theme across stores:', error)
   }
@@ -266,7 +262,7 @@ const deleteAccount = () => {
 
           <div class="flex flex-col gap-3 mt-4">
             <div class="flex flex-col gap-3 pb-2">
-              <label for="firstName" class="w-32 font-semibold text-lg">Profile Picture</label>
+              <p class="w-32 font-semibold text-lg">Profile Picture</p>
               <div class="flex gap-5 items-center justify-center">
                 <button
                   v-for="i in 5"
@@ -286,6 +282,7 @@ const deleteAccount = () => {
               <div class="flex flex-col gap-2 pb-2 pr-3 w-1/2">
                 <label for="firstName" class="font-semibold text-lg">First Name</label>
                 <CatNapInput
+                  id="firstName"
                   v-model="firstName"
                   :placeholder="'First Name'"
                   :settings="true"
@@ -295,6 +292,7 @@ const deleteAccount = () => {
               <div class="flex flex-col gap-2 pb-2 pl-3 w-1/2">
                 <label for="lastName" class="font-semibold text-lg">Last Name</label>
                 <CatNapInput
+                  id="lastName"
                   v-model="lastName"
                   :placeholder="'Last Name'"
                   :settings="true"
@@ -305,6 +303,7 @@ const deleteAccount = () => {
             <div class="flex flex-col gap-2 pb-2">
               <label for="username" class="w-24 font-semibold text-lg">Username</label>
               <CatNapInput
+                id="username"
                 v-model="username"
                 :placeholder="'Username'"
                 :settings="true"
@@ -314,6 +313,7 @@ const deleteAccount = () => {
             <div class="flex flex-col gap-2 pb-2">
               <label for="password" class="w-24 font-semibold text-lg">Password</label>
               <CatNapInput
+                id="password"
                 v-model="password"
                 type="password"
                 :placeholder="'Password'"
@@ -345,6 +345,7 @@ const deleteAccount = () => {
               <div>
                 <label for="image" class="block mb-2 font-semibold text-lg">Image</label>
                 <CatNapSelect
+                  id="image"
                   v-model="newThemeImage"
                   :options="[
                     'Dreams',

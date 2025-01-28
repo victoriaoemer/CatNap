@@ -1,8 +1,7 @@
 <script setup lang="ts">
+import { usePixabayStore } from '@/types/Pixabay'
 import { useUserStore, type UserData } from '@/types/User'
 import { computed, onMounted, ref } from 'vue'
-//import { useRouter } from 'vue-router'
-import { usePixabayStore } from '@/types/Pixabay'
 import CatNapAverageEmotion from '../CatNapAverageEmotion.vue'
 import CatNapCalendar from '../CatNapCalendar.vue'
 import CatNapEntryWidget from '../CatNapEntryWidget.vue'
@@ -25,8 +24,6 @@ onMounted(async () => {
     if (userImage.valueOf() === '') {
       await pixabayStore.fetchImage(true, data.username)
     }
-    console.log('User Data:', data)
-    console.log('User Image:', userImage)
   } catch (error) {
     console.error('Error loading data:', error)
   }

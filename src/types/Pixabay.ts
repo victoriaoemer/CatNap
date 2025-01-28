@@ -51,7 +51,6 @@ export const usePixabayStore = defineStore('pixabay', {
     },
     confirmThemeChange(userID: string) {
       this.fetchImage(true, userID);
-      //console.log('Theme changed to:', theme, 'for user:', userID);
     },
     async fetchImage(force = false, userID: string) {
       if (!this.apiKey) {
@@ -77,8 +76,6 @@ export const usePixabayStore = defineStore('pixabay', {
 
             const newImage = selectedImage.fullHDURL || selectedImage.largeImageURL || selectedImage.webformatURL || selectedImage.pageURL;
 
-            const imagePage = selectedImage.pageURL;
-
             if (!newImage) {
               console.warn("No valid image found for theme:", this.theme);
               return;
@@ -89,9 +86,6 @@ export const usePixabayStore = defineStore('pixabay', {
               lastUpdated: today,
               theme: this.theme,
             };
-
-            console.log("Fetched new image:", newImage);
-            console.log("Image page:", imagePage);
           } else {
             console.warn("No images found for theme:", this.theme);
           }

@@ -40,6 +40,7 @@ const login = async () => {
       msg.value = 'Username does not exist'
     }
   } catch (error) {
+    window.alert('Database unreachable - please check the .env file and run "npm run dev" locally!')
     console.error('Fehler beim Abrufen der Benutzer:', error)
   }
 }
@@ -61,8 +62,15 @@ const clearWarning = () => {
       </div>
 
       <div class="flex flex-col items-center justify-center space-y-10">
-        <CatNapInput v-model="username" type="text" placeholder="Username" @input="clearWarning" />
         <CatNapInput
+          id="usename"
+          v-model="username"
+          type="text"
+          placeholder="Username"
+          @input="clearWarning"
+        />
+        <CatNapInput
+          id="password"
           v-model="password"
           type="password"
           placeholder="Password"

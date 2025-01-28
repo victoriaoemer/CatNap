@@ -3,7 +3,7 @@ import MunchkinBlue from '@/assets/cat-profile/munchkin-blue.svg'
 import MunchkinDefault from '@/assets/cat-profile/munchkin-default.svg'
 import MunchkinGreen from '@/assets/cat-profile/munchkin-green.svg'
 import MunchkinLucky from '@/assets/cat-profile/munchkin-lucky.svg'
-import MunchKindRed from '@/assets/cat-profile/munchkin-red.svg'
+import MunchkinRed from '@/assets/cat-profile/munchkin-red.svg'
 import { usePixabayStore } from '@/types/Pixabay'
 import type { User, UserData } from '@/types/User'
 import { useUserStore } from '@/types/User'
@@ -40,7 +40,7 @@ const password = ref('')
 
 const imageMap: Record<number, string> = {
   1: MunchkinDefault,
-  2: MunchKindRed,
+  2: MunchkinRed,
   3: MunchkinBlue,
   4: MunchkinLucky,
   5: MunchkinGreen,
@@ -119,7 +119,7 @@ async function confirmUpdateUser() {
     return
   }
 
-  if (user) {
+  if (user && userData.value.username !== username.value) {
     msg.value = 'Username already exists'
     return
   }

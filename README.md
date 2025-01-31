@@ -69,6 +69,8 @@ To test Catnap you should:
 - npm run dev
 - https://victoriaoemer.github.io/CatNap/
 
+- take user "test" and password "1234" for the login page to see existing dashboard
+
 ## Project Setup
 
 ```sh
